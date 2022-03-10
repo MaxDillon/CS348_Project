@@ -4,7 +4,7 @@
 	- Run `docker -v` to verify it is properly installed
 - cd into this directory
 - run `docker build -t pythonapp .`
-- run `run -p 80:5000 -v $(pwd):/app pythonapp`
+- run `docker run -p 80:5000 -v $(pwd):/app pythonapp`
 	- I will modify dockerfile and shell scripts to make this easier later
 	- Python Server should now be running. Go to localhost:8080
 	- Edits to server should automatically update the docker container
