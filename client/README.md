@@ -8,4 +8,6 @@
 	- I will modify dockerfile and shell scripts to make this easier later
 	- React App should now be running. Go to localhost:3000
 - Close server with `Ctrl-C`
-- When you are finished with rinning and debugging, run `docker container prune`
+- When you are finished with rinning and debugging, 
+	- run `docker container prune`
+	- run `docker image prune`
