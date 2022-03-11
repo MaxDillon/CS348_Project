@@ -1,11 +1,14 @@
 from flask import Flask
+from datetime import datetime
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
+@app.route('/api', methods=['GET'])
 def index():
-	return("Hello there!")
-
+	now = datetime.now()
+	return {
+		"date": str(now)
+	}
 
 
 if __name__ == "__main__":
