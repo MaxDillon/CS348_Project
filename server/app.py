@@ -1,14 +1,12 @@
+
+# DB_NAME = "mysql://root:password@localhost:3306"
+
 from flask import Flask
-from datetime import datetime
+from blueprints.loginPage import loginPage
 
 app = Flask(__name__)
-
-@app.route('/api', methods=['GET'])
-def index():
-	now = datetime.now()
-	return {
-		"date": str(now)
-	}
+app.config['SECRET_KEY'] = 'key'
+app.register_blueprint(loginPage, url_prefix='/login')
 
 
 if __name__ == "__main__":

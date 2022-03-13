@@ -6,7 +6,7 @@ export const LoginPage = () => {
 	const [state, setState] = useState([])
  
 	useEffect(() => {
-	  fetch('/getDate').then(response => {
+	  fetch('/login/getDate').then(response => {
 		 if (response.status === 200) {
 			return response.json()
 		 }
