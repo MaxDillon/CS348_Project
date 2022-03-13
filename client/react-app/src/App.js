@@ -1,24 +1,11 @@
 import './App.css';
-import {useState, useEffect} from 'react'
-import { LoginPage } from './Components/LoginPage/LoginPage'
+import { LoginPage } from './Pages/LoginPage';
 
 function App() {
-
-  const [initialState, setState] = useState([])
-  const url = '/api'
-
-  useEffect(() => {
-    fetch(url).then(response => {
-      if (response.status === 200) {
-        return response.json()
-      }
-    }).then(data => setState(data))
-  }, [])
-
   return (
     <div className="App">
-        <p>Doing Something</p>
-        <LoginPage data={initialState}/>
+      <h1>Login Page</h1>
+      <LoginPage />
     </div>
   );
 }
