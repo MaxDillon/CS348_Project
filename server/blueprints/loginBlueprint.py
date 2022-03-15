@@ -39,19 +39,19 @@ def login():
 	token = validatePassword(username, password)
 	if token is None:
 		resp.status_code = 401
-		resp.set_data(json.dumps({}))
+		resp.set_data(json.dumps(token))
 		return resp
 
 
 	resp.set_cookie(
 		key = 'token', 
-		value = token,
+		value = token['token'],
 		secure=True,
 		expires=datetime.now() + timedelta(days=1),
 		httponly=True
 	)
-	logged_in[token] = username
-	resp.set_data(json.dumps({}))
+	logged_in[token['token']] = username
+	resp.set_data(json.dumps(token))
 	return resp
 
 
