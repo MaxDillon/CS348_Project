@@ -1,11 +1,24 @@
 import './App.css';
-import { LoginPage } from './Pages/LoginPage';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import LoginPage from './Pages/LoginPage/LoginPage'
+import { useState } from 'react';
+import InvestorPage from './Pages/InvestorPage/InvestorPage';
 
 function App() {
+  const [token, setToken] = useState();
+
+
   return (
     <div className="App">
-      <h1>Login Page</h1>
-      <LoginPage />
+      <h1>Application</h1>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage/>} />
+          <Route path="/abc" element={<InvestorPage/>} />
+        </Routes>
+
+      </BrowserRouter>
     </div>
   );
 }
