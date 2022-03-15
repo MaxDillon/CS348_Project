@@ -15,8 +15,8 @@ database = {}
 def hello(sql):
 	print(f"---------{sql}-----------", file=sys.stderr)
 	db = init_database()
-	execute_query(db, sql)
-	return ""
+	result = execute_query(db, sql)
+	return result
 
 
 

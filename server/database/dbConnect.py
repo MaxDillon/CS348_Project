@@ -13,8 +13,12 @@ def init_database():
 
 def execute_query(database, sql):
 	result = database.execute(sql)
+	results = {}
 	for r in result:
-		print(r, file=sys.stderr)
+		toObj = {key: value for key, value in r.items()}
+		results[toObj['user_id']] = toObj
+	return results
+
 
 
 
