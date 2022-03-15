@@ -15,8 +15,8 @@ async function loginUser(username, password) {
 			'username': username,
 			'passHash': sha256(password).toString()
 		})
-	}).catch(e => console.log(1))
-	console.log(await res.json())
+	})
+
 	return res.status != 401
 }
 
@@ -27,8 +27,6 @@ export default function LoginPage() {
 
 	async function onSubmit(username, password) {
 		const success = await loginUser(username, password)
-		console.log(success)
-
 		if (success) {
 			navigate("/abc")
 			return true

@@ -22,7 +22,8 @@ export default function InvestorPage() {
 			}
 		
 			const data = await res.json()
-			setState(data['question'])
+			console.log(data)
+			setState(data['username'])
 		}
 		getTestRequired()
 
