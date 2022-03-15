@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 export function LoginPanel({loginUser}) {
 	const [username, setUsername] = useState("")
 	const [password, setPassword] = useState("")
-
+	const [toggleFailure, setToggleFailure] = useState(false)
 
 	function validateForm() {
 		return username.length > 0 && password.length > 0
@@ -18,6 +18,11 @@ export function LoginPanel({loginUser}) {
 
 	return (
 		<div className={styles.loginPanel}>
+			{toggleFailure && 
+			<p className={styles.errorMessage}>
+				The Username or Password you entered was Incorrect!
+			</p>
+			}
 			<Form.Group size="lg" controlId="username">
 				<Form.Label>Username</Form.Label>
 				<Form.Control 
@@ -41,6 +46,7 @@ export function LoginPanel({loginUser}) {
 					e.preventDefault()
 					const success = loginUser(username, password).then(success => {
 						if (!success) {
+							setToggleFailure(true)
 							setUsername("")
 							setPassword("")
 						}
