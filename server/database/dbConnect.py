@@ -2,41 +2,44 @@
 
 import sys
 from sqlalchemy import Column, MetaData, Table, create_engine, String
+from sqlalchemy.inspection import inspect
 import typing
 
 import sqlalchemy
 
 def init_database():
-	engine = create_engine('postgresql://postgres:postgres@postgres:5432/postgres', echo=True)
+	engine = create_engine('postgresql://postgres:postgres@postgres:5432/postgres') #, echo=True)
 	return engine
 
 
-def execute_query(database, sql):
-	result = database.execute(sql)
-	results = {}
-	for r in result:
-		toObj = {key: value for key, value in r.items()}
-		results[toObj['user_id']] = toObj
-	return results
+def _json_from_result_set(result_set, table=None):
+
+	return {
+		'result': [
+			{key: value for key, value in r.items()}
+			for r in result_set
+		],
+		'table': table
+	}
+
+
+def execute_query(engine, sql):
+	result = engine.execute(sql)
+	return _json_from_result_set(result)
 
 
 
 
-def print_customers(database: sqlalchemy.engine.Engine):
-	meta = MetaData(database)
-	user_table = Table('', meta, 
-		Column('user_id', String),
-		Column('username', String),
-		Column('first_name', String),
-		Column('last_name', String),
-		Column('email', String),
-		Column('phone', sqlalchemy.Integer),
-		Column('pass_hash', String),
-		Column('money_invested', sqlalchemy.Integer)
-	)
 
-	with database.connect() as conn:
-		conn: sqlalchemy.engine.Connection
-		result = conn.execute(user_table.select())
-		for r in result:
-			print(r, file=sys.stderr)
+def print_customers(engine):
+	connection = engine.connect()
+	metadata = sqlalchemy.MetaData()
+	customer = Table('customer', metadata, autoload=True, autoload_with=engine)
+	query = sqlalchemy.select([customer]) 
+
+	resultProxy = connection.execute(query)
+	resultSet = resultProxy.fetchall()
+
+	return _json_from_result_set(resultSet, customer.name)
+
+
