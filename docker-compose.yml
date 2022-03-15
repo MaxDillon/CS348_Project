@@ -8,6 +8,8 @@ services:
       - ./server:/app
     environment:
       FLASK_ENV: development
+    depends_on:
+      - postgres
   web:
     build: ./client/react-app
     ports:
