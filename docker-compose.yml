@@ -14,8 +14,8 @@ services:
     build: ./client/react-app
     ports:
       - "3000:3000"
-    volumes:
-      - ./client/react-app:/user/src/app
+#    volumes:
+#      - ./client/react-app:/user/src/app
     depends_on:
       - server
   postgres:
