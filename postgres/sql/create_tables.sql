@@ -1,15 +1,19 @@
 -- Creation of user table
 
-CREATE TABLE IF NOT EXISTS Customer (
-  user_id INT NOT NULL,
+CREATE TABLE IF NOT EXISTS Account (
+  user_id SERIAL PRIMARY KEY,
   username varchar(250) NOT NULL,
   first_name varchar(250),
   last_name varchar(250),
   email varchar(250),
   phone INT,
-  pass_hash varchar(250) NOT NULL,
-  money_invested INT NOT NULL,
-  PRIMARY KEY (user_id)
+  pass_hash BYTEA NOT NULL,
+  money_invested INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Session (
+  user_id INT NOT NULL,
+  pass_hash BYTEA NOT NULL
 );
 
 -- Creation of holding table
