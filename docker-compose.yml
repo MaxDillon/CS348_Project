@@ -16,6 +16,8 @@ services:
       - "3000:3000"
     depends_on:
       - server
+    volumes:
+      - ./client/src:/user/src/app/src
   postgres:
     image: postgres:10.5
     restart: always

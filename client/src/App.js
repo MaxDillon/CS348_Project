@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import LoginPage from './Pages/LoginPage/LoginPage'
+import RegisterPage from './Pages/RegisterPage/RegisterPage'
 import { useState } from 'react';
 import InvestorPage from './Pages/InvestorPage/InvestorPage';
 
@@ -15,7 +16,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage/>} />
-          <Route path="/abc" element={<InvestorPage/>} />
+          <Route path="/Dashboard" element={<InvestorPage/>} />
+          <Route path="/register" element={<RegisterPage/>} />
         </Routes>
 
       </BrowserRouter>
