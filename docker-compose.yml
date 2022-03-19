@@ -11,11 +11,9 @@ services:
     depends_on:
       - postgres
   web:
-    build: ./client/react-app
+    build: ./client
     ports:
       - "3000:3000"
-#    volumes:
-#      - ./client/react-app:/user/src/app
     depends_on:
       - server
   postgres:
