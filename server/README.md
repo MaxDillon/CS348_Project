@@ -1,3 +1,8 @@
+# Setup
+- Runn app with docker compose
+- Run `docker exec cs348_project-server-1 create_schema`
+	- This will generate the sqlalchemy code for the database
+
 # How To Use Docker
 
 - Make Sure to [install docker desktop](https://docs.docker.com/get-docker/)

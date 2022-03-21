@@ -4,3 +4,4 @@ bcrypt==3.2.0
 SQLAlchemy==1.4.32
 psycopg2-binary==2.9.3
 retry==0.9.2
+sqlacodegen==2.3.0
