@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS Account (
 
 CREATE TABLE IF NOT EXISTS Session (
   user_id INT NOT NULL,
-  pass_hash BYTEA NOT NULL
+  token BYTEA NOT NULL
 );
 
 -- Creation of holding table
