@@ -15,15 +15,14 @@ export default function InvestorPage() {
 
 	useEffect(() => {
 		async function getTestRequired() {
-			const res = await fetch('/login/testRequired')
+			const res = await fetch('/login/isLoggedIn')
 			if (res.status === 401) {
 				navigate("/login")
 				return
 			}
-		
 			const data = await res.json()
 			console.log(data)
-			setState(data['username'])
+			setState(data['message'])
 		}
 		getTestRequired()
 

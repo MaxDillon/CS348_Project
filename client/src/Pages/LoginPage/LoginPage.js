@@ -28,7 +28,7 @@ export default function LoginPage() {
 	async function onSubmit(username, password) {
 		const success = await loginUser(username, password)
 		if (success) {
-			navigate("/abc")
+			navigate("/dashboard")
 			return true
 		} else {
 			navigate("/login")
