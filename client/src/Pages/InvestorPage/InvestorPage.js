@@ -18,6 +18,8 @@ export default function InvestorPage() {
 			const res = await fetch('/login/isLoggedIn')
 			if (res.status === 401) {
 				navigate("/login")
+				const data = await res.json()
+				console.log(data)
 				return
 			}
 			const data = await res.json()

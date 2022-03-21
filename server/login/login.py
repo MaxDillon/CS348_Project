@@ -92,6 +92,8 @@ def get_accounts(database: DatabaseEndpoint):
 	}
 
 def validate_token(token, database: DatabaseEndpoint):
+	if token is None:
+		return None
 	connection = database.connect()
 	session_table = database.session
 	session_query = sqlalchemy.select([session_table]).where(session_table.columns.token == token.encode('utf-8'))
@@ -112,9 +114,9 @@ def login_required(database):
 			user_info = validate_token(cookie_token, database)
 
 			if user_info is None: # or cookie_username != user_info.get('username'):
-				return redirect("", 401, make_response({
-					'message': 'Incorrect Auth Token'
-				}))
+				resp = make_response({'message': 'Incorrect Auth Token'})
+				resp.status_code = 401
+				return resp
 			user_id = user_info.get('user_id')
 			return func(*args, user_id=user_id, **kwargs)
 		return _wrapper
