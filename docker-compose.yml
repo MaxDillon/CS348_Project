@@ -6,18 +6,16 @@ services:
       - "80:5000"
     volumes:
       - ./server:/app
-    environment:
-      FLASK_ENV: development
     depends_on:
       - postgres
   web:
     build: ./client
     ports:
       - "3000:3000"
-    depends_on:
-      - server
     volumes:
       - ./client/src:/user/src/app/src
+    depends_on:
+      - server
   postgres:
     image: postgres:10.5
     restart: always
@@ -28,8 +26,6 @@ services:
       options:
         max-size: 10m
         max-file: "3"
-    ports:
-      - '5438:5432'
     volumes:
       - ./postgres/postgres-data:/var/lib/postgresql/data
       # copy the sql script to create tables
