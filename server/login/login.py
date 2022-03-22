@@ -1,16 +1,16 @@
 from datetime import timedelta
-from multiprocessing import connection
 import secrets
 import bcrypt
 import sys
-from flask import make_response, redirect, request
+from flask import make_response, request
 import sqlalchemy
-
+from sqlalchemy import select, delete, String
+from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.sql import cast
 from functools import wraps
-
+from database.schema import Account, Loginsession
 from datetime import datetime
 
-from database.DatabaseEndpoint import DatabaseEndpoint
 
 
 def compare_passwords(passHashString, bcryptPassword):
@@ -18,26 +18,19 @@ def compare_passwords(passHashString, bcryptPassword):
 	return bcrypt.checkpw(passHashBytes, bcryptPassword)
 
 
-def get_user_data(username, database, connection):
-	account = database.account
-	account_query = sqlalchemy.select([account]).where(account.columns.username == username)
+def get_user_data(username, session: Session):
+	account_query = select(Account.user_id, Account.pass_hash).where(Account.username == username)
+	this_account = session.execute(account_query).one_or_none()
 
-	this_account = connection.execute(account_query).fetchone()
+	return dict(this_account) if this_account is not None else None
+		
 
-	if this_account is None:
-		return None
-	
-	return {key: value for key, value in this_account.items()}
-	
-
-def generate_auth_cookie(resp, user_id, database, connection):
+def generate_auth_cookie(resp, user_id: str, session: Session):
 	token = secrets.token_hex(32).encode('utf-8')
 
-	query = sqlalchemy.insert(database.session).values(
-		user_id=user_id,
-		token=token
-	)
-	connection.execute(query)
+	new_login_session = Loginsession(user_id=user_id, token=token, create_time=datetime.now())
+	session.add(new_login_session)
+	session.commit()
 
 	resp.set_cookie(
 		key='token',
@@ -48,27 +41,29 @@ def generate_auth_cookie(resp, user_id, database, connection):
 	)
 
 
-def login_user(resp, username, password, database: DatabaseEndpoint):
-	connection = database.connect()
-	user_data = get_user_data(username, database, connection)
+def login_user(resp, username, password, MakeSession: sessionmaker):
+	with MakeSession() as session:
+		session: Session
+		user_data = get_user_data(username, session)
 
-	if user_data is None or not compare_passwords(password, user_data.get("pass_hash")):
-		return False
+		if user_data is None or not compare_passwords(password, user_data.get("pass_hash")):
+			return False
+		user_id = user_data.get("user_id")
+
+		generate_auth_cookie(resp, user_id, session)
+		return True
 
 
-	user_id = user_data.get("user_id")
-	generate_auth_cookie(resp, user_id, database, connection)
-	return True
 
-
-
-def logout_user(resp, user_id, database: DatabaseEndpoint):
+def logout_user(resp, user_id, MakeSession: sessionmaker):
 	token = request.cookies.get('token')
 	resp.delete_cookie('token')
-	connection = database.connect()
-	session_table = database.session
-	session_query = sqlalchemy.delete(session_table).where(session_table.columns.token == token.encode('utf-8'))
-	connection.execute(session_query)
+
+	with MakeSession() as session:
+		session: Session
+		del_login_session = delete(Loginsession).where(Loginsession.token == token.encode('utf-8')).execution_options(synchronize_session="fetch")
+		session.execute(del_login_session)
+		session.commit()
 
 
 def encode_password(password):
@@ -78,32 +73,39 @@ def encode_password(password):
 
 
 
-def get_accounts(database: DatabaseEndpoint):
-	connection = database.connect()
-	account_table = database.account
-	account_query = sqlalchemy.select([account_table])
-	accounts = connection.execute(account_query).fetchall()
+def get_accounts(MakeSession: sessionmaker):
+	with MakeSession() as session:
+		session: Session
+		account_query = select(Account.user_id, Account.username, cast(Account.pass_hash, String).label("pass_hash"))
+		accounts = session.execute(account_query).all()
 
-	return {
-		'data':[
-			{key: str(value) for key, value in account.items()}
-			for account in accounts
-		]
-	}
+		return {'data':[dict(account) for account in accounts]}
 
-def validate_token(token, database: DatabaseEndpoint):
+
+
+def get_tokens(MakeSession: sessionmaker):
+	with MakeSession() as session:
+		session: Session
+		session_query = select(cast(Loginsession.token, String).label("token"), Loginsession.user_id)
+		login_sessions = session.execute(session_query).all()
+
+		return {'data':[ dict(login_session) for login_session in login_sessions]}
+
+
+
+def validate_token(token, MakeSession: sessionmaker):
 	if token is None:
 		return None
-	connection = database.connect()
-	session_table = database.session
-	session_query = sqlalchemy.select([session_table]).where(session_table.columns.token == token.encode('utf-8'))
-	this_session = connection.execute(session_query).fetchone()
-	if this_session is None:
-		return None
-	
-	return {key: value for key, value in this_session.items()}
+	with MakeSession() as session:
+		session: Session
+		session_query = select(Loginsession.user_id).where(Loginsession.token == token.encode('utf-8'))
+		this_session = session.execute(session_query).one_or_none()
 
-def login_required(database):
+
+		return dict(this_session) if this_session is not None else None 
+
+		
+def login_required(MakeSession: sessionmaker):
 	def _wrapped_decorator(func):
 		@wraps(func)
 		def _wrapper(*args, **kwargs):
@@ -111,10 +113,11 @@ def login_required(database):
 			cookie_token = request.cookies.get('token')
 			cookie_username = request.cookies.get('username')
 			
-			user_info = validate_token(cookie_token, database)
+			user_info = validate_token(cookie_token, MakeSession)
 
 			if user_info is None: # or cookie_username != user_info.get('username'):
 				resp = make_response({'message': 'Incorrect Auth Token'})
+				resp.delete_cookie('token')
 				resp.status_code = 401
 				return resp
 			user_id = user_info.get('user_id')

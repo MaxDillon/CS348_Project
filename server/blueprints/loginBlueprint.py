@@ -1,9 +1,7 @@
 
-from datetime import datetime, timedelta
-import json
-import sys
-from flask import Blueprint, make_response, redirect, request
-from login.login import get_accounts, login_required, login_user, logout_user
+
+from flask import Blueprint, make_response, request
+from login.login import get_accounts, login_required, login_user, logout_user, get_tokens
 
 
 
@@ -37,7 +35,6 @@ def create_blueprint(database):
 		return resp
 		
 
-
 	@loginBlueprint.route('/logout', methods=['GET'])
 	@login_required(database)
 	def logout(user_id=None):
@@ -51,7 +48,14 @@ def create_blueprint(database):
 	def getAccounts(user_id=None):
 		resp = make_response(get_accounts(database))
 		resp.status_code = 200
-		# resp.set_data(json.dumps(get_accounts(database)))
+
+		return resp
+
+
+	@loginBlueprint.route('/getTokens', methods=['GET'])
+	def getTokens(user_id=None):
+		resp = make_response(get_tokens(database))
+		resp.status_code = 200
 
 		return resp
 
