@@ -8,12 +8,13 @@ CREATE TABLE IF NOT EXISTS Account (
   email varchar(250),
   phone INT,
   pass_hash BYTEA NOT NULL,
-  money_invested INT NOT NULL
+  money_invested INT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS Session (
-  user_id INT NOT NULL,
-  token BYTEA NOT NULL
+CREATE TABLE IF NOT EXISTS LoginSession (
+  token BYTEA PRIMARY KEY,
+  user_id INT REFERENCES Account (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
+  create_time TIMESTAMP NOT NULL
 );
 
 -- Creation of holding table
