@@ -2,10 +2,10 @@
 
 from flask import Blueprint, make_response, request
 from login.login import get_accounts, login_required, login_user, logout_user, get_tokens
+from sqlalchemy.orm import sessionmaker
 
 
-
-def create_blueprint(database):
+def create_blueprint(MakeSession: sessionmaker):
 	loginBlueprint = Blueprint('loginBlueprint', __name__)
 
 	@loginBlueprint.route('/login', methods=['POST'])
@@ -15,7 +15,8 @@ def create_blueprint(database):
 		username = data.get('username')
 		password = data.get('password')
 
-		success = login_user(resp, username, password, database)
+		with MakeSession() as session:
+			success = login_user(resp, username, password, session)
 
 		if not success:
 			resp.status_code = 401
@@ -26,7 +27,7 @@ def create_blueprint(database):
 
 
 	@loginBlueprint.route('/isLoggedIn', methods=['GET'])
-	@login_required(database)
+	@login_required(MakeSession)
 	def isLoggedIn(user_id=None):
 		resp = make_response({
 			'message': 'Success'
@@ -36,17 +37,19 @@ def create_blueprint(database):
 		
 
 	@loginBlueprint.route('/logout', methods=['GET'])
-	@login_required(database)
+	@login_required(MakeSession)
 	def logout(user_id=None):
 		resp = make_response()
 		resp.status_code = 200
-		logout_user(resp, user_id, database)
+		with MakeSession() as session:
+			logout_user(resp, user_id, session)
 
 		return resp
 
 	@loginBlueprint.route('/getAccounts', methods=['GET'])
 	def getAccounts(user_id=None):
-		resp = make_response(get_accounts(database))
+		with MakeSession() as session:
+			resp = make_response(get_accounts(session))
 		resp.status_code = 200
 
 		return resp
@@ -54,7 +57,8 @@ def create_blueprint(database):
 
 	@loginBlueprint.route('/getTokens', methods=['GET'])
 	def getTokens(user_id=None):
-		resp = make_response(get_tokens(database))
+		with MakeSession() as session:
+			resp = make_response(get_tokens(session))
 		resp.status_code = 200
 
 		return resp
