@@ -1,3 +1,0 @@
-#!/bin/bash
-
-sqlacodegen postgresql://postgres:postgres@postgres:5432/postgres --outfile database/schema.py
