@@ -29,7 +29,7 @@ export default function RegisterPage() {
 		const success = await registerUser(email, username, password)
 
 		if (success) {
-			navigate("/abc")
+			navigate("/dashboard")
 			return true
 		} else {
 			navigate("/register")

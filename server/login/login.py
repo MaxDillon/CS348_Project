@@ -1,8 +1,9 @@
 from datetime import timedelta
+import json
 import secrets
 import bcrypt
 import sys
-from flask import make_response, request
+from flask import Response, make_response, request
 import sqlalchemy
 from sqlalchemy import select, delete, String
 from sqlalchemy.orm import sessionmaker, Session
@@ -52,6 +53,40 @@ def login_user(resp, username, password, session: Session):
 	return True
 
 
+def encode_password(password: str):
+	passwordEncode = password.encode("utf-8")
+	bcryptHash = bcrypt.hashpw(passwordEncode, bcrypt.gensalt())
+	return bcryptHash
+
+
+def register_account(resp: Response, email, username, password, session: Session):
+	username_query = select(Account.username).where(Account.username == username)
+	username_exists = session.execute(username_query).one_or_none()
+	print(username_exists, file=sys.stderr)
+	email_query = select(Account.email).where(Account.email == email)
+	email_exists = session.execute(email_query).one_or_none()
+
+	if username_exists is not None:
+		resp.set_data(json.dumps({'message': 'username already exists'}))
+		resp.status_code = 401;
+		return resp
+	if email_exists is not None:
+		resp.set_data(json.dumps({'message': 'email already exists'}))
+		resp.status_code = 401;
+		return resp
+	
+	new_account = Account(email=email, username=username, pass_hash=encode_password(password))
+	session.add(new_account)
+	session.commit()
+
+	user_id_query = select(Account.user_id).where(Account.username == username)
+	user_id = session.execute(user_id_query).one()[0]
+	print(user_id, file=sys.stderr)
+
+	generate_auth_cookie(resp, user_id, session)
+	return resp
+
+
 
 def logout_user(resp, user_id, session: Session):
 	token = request.cookies.get('token')
@@ -60,12 +95,6 @@ def logout_user(resp, user_id, session: Session):
 	del_login_session = delete(Loginsession).where(Loginsession.token == token.encode('utf-8')).execution_options(synchronize_session="fetch")
 	session.execute(del_login_session)
 	session.commit()
-
-
-def encode_password(password):
-	passwordEncode = password.encode("utf-8")
-	bcryptHash = bcrypt.hashpw(passwordEncode, bcrypt.gensalt())
-	return bcryptHash
 
 
 

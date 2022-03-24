@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 import LoginPage from './Pages/LoginPage/LoginPage'
 import RegisterPage from './Pages/RegisterPage/RegisterPage'
@@ -15,6 +15,9 @@ function App() {
       <h1>Application</h1>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={
+            <Navigate replace to="/login"/>
+          } />
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/dashboard" element={<InvestorPage/>} />
           <Route path="/register" element={<RegisterPage/>} />
