@@ -25,6 +25,17 @@ async function registerUser(email, username, password) {
 export default function RegisterPage() {
 	const navigate = useNavigate()
 
+	useEffect(() => {
+		fetch('/login/isLoggedIn')
+		.then(response => response.json())
+		.then(data => {
+			if (data.answer === true) {
+				navigate("/dashboard")
+			}
+			return data.answer
+		}).then(answer => console.log(answer))
+	}, [])
+
 	async function onSubmit(email, username, password) {
 		const success = await registerUser(email, username, password)
 
