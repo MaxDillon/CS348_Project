@@ -25,6 +25,18 @@ async function loginUser(username, password) {
 export default function LoginPage() {
 	const navigate = useNavigate()
 
+	useEffect(() => {
+		fetch('/login/isLoggedIn')
+		.then(response => response.json())
+		.then(data => {
+			if (data.answer === true) {
+				navigate("/dashboard")
+			}
+			return data.answer
+		}).then(answer => console.log(answer))
+	}, [])
+
+
 	async function onSubmit(username, password) {
 		const success = await loginUser(username, password)
 		if (success) {

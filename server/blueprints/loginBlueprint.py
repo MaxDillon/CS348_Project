@@ -5,7 +5,7 @@ from flask import Blueprint, make_response, request
 from login.login import get_accounts, login_required, login_user, logout_user, get_tokens
 from sqlalchemy.orm import sessionmaker
 
-from login.login import register_account
+from login.login import register_account, check_loggedin_token
 
 
 def create_blueprint(MakeSession: sessionmaker):
@@ -43,12 +43,13 @@ def create_blueprint(MakeSession: sessionmaker):
 		return resp
 		
 
-
 	@loginBlueprint.route('/isLoggedIn', methods=['GET'])
-	@login_required(MakeSession)
-	def isLoggedIn(user_id=None):
+	def isLoggedIn():
+		cookie_token = request.cookies.get('token')
+		with MakeSession() as session:
+			answer = check_loggedin_token(cookie_token, session)
 		resp = make_response({
-			'message': 'Success'
+			'answer': answer
 		})
 		resp.status_code = 200
 		return resp
@@ -56,15 +57,15 @@ def create_blueprint(MakeSession: sessionmaker):
 
 	@loginBlueprint.route('/logout', methods=['GET'])
 	@login_required(MakeSession)
-	def logout(user_id=None):
+	def logout():
 		resp = make_response()
 		resp.status_code = 200
 		with MakeSession() as session:
-			logout_user(resp, user_id, session)
+			logout_user(resp, session)
 		return resp
 
 	@loginBlueprint.route('/getAccounts', methods=['GET'])
-	def getAccounts(user_id=None):
+	def getAccounts():
 		with MakeSession() as session:
 			resp = make_response(get_accounts(session))
 		resp.status_code = 200
@@ -73,7 +74,7 @@ def create_blueprint(MakeSession: sessionmaker):
 
 
 	@loginBlueprint.route('/getTokens', methods=['GET'])
-	def getTokens(user_id=None):
+	def getTokens():
 		with MakeSession() as session:
 			resp = make_response(get_tokens(session))
 		resp.status_code = 200

@@ -88,12 +88,14 @@ def register_account(resp: Response, email, username, password, session: Session
 
 
 
-def logout_user(resp, user_id, session: Session):
-	token = request.cookies.get('token')
+def logout_user(resp, session: Session):
+	token = request.cookies.get('token').encode('utf-8')
 	resp.delete_cookie('token')
 
-	del_login_session = delete(Loginsession).where(Loginsession.token == token.encode('utf-8')).execution_options(synchronize_session="fetch")
-	session.execute(del_login_session)
+	# login_session_query = select(Loginsession).where(Loginsession.token == token.encode('utf-8'))
+	# login_session = session.execute(login_session_query).one()
+	delete_login_session = delete(Loginsession).where(Loginsession.token == token).execution_options(synchronize_session="fetch")
+	session.execute(delete_login_session)
 	session.commit()
 
 
@@ -114,16 +116,18 @@ def get_tokens(session: Session):
 
 
 
-def validate_token(token, session: Session):
+def check_loggedin_token(token, session: Session):
 	if token is None:
-		return None
+		return False
 
-	session_query = select(Loginsession.user_id).where(Loginsession.token == token.encode('utf-8'))
+	session_query = select(Loginsession).where(Loginsession.token == token.encode('utf-8'))
 	this_session = session.execute(session_query).one_or_none()
 
-	return dict(this_session) if this_session is not None else None 
+	# return dict(this_session) if this_session is not None else None 
+	return this_session is not None
 
 		
+
 def login_required(MakeSession: sessionmaker):
 	def _wrapped_decorator(func):
 		@wraps(func)
@@ -133,15 +137,14 @@ def login_required(MakeSession: sessionmaker):
 			cookie_username = request.cookies.get('username')
 			
 			with MakeSession() as session:
-				user_info = validate_token(cookie_token, session)
+				is_logged_in = check_loggedin_token(cookie_token, session)
 
-			if user_info is None: # or cookie_username != user_info.get('username'):
+			if not is_logged_in: # or cookie_username != user_info.get('username'):
 				resp = make_response({'message': 'Incorrect Auth Token'})
 				resp.delete_cookie('token')
 				resp.status_code = 401
 				return resp
-			user_id = user_info.get('user_id')
-			return func(*args, user_id=user_id, **kwargs)
+			return func(*args, **kwargs)
 		return _wrapper
 	return _wrapped_decorator
 

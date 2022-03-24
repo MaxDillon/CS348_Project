@@ -14,20 +14,16 @@ export default function InvestorPage() {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		async function getTestRequired() {
-			const res = await fetch('/login/isLoggedIn')
-			if (res.status === 401) {
+		fetch('/login/isLoggedIn')
+		.then(response => response.json())
+		.then(data => {
+			console.log(data)
+			if (data.answer === false) {
 				navigate("/login")
-				const data = await res.json()
-				console.log(data)
 				return
 			}
-			const data = await res.json()
-			console.log(data)
 			setState(data['message'])
-		}
-		getTestRequired()
-
+		})
 	}, [])
 
 
