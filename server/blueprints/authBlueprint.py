@@ -2,10 +2,12 @@
 
 import sys
 from flask import Blueprint, make_response, request
-from login.login import get_accounts, login_required, login_user, logout_user, get_tokens
+from auth.login import login_user
+from auth.logout import logout_user
+from auth.register import register_account
+from auth.auth_tools import get_accounts, get_tokens, login_required, check_loggedin_token
 from sqlalchemy.orm import sessionmaker
 
-from login.login import register_account, check_loggedin_token
 
 
 def create_blueprint(MakeSession: sessionmaker):
@@ -35,7 +37,6 @@ def create_blueprint(MakeSession: sessionmaker):
 		email = data.get('email')
 		username = data.get('username')
 		password = data.get('password')
-		print(username, password, file=sys.stderr)
 
 		with MakeSession() as session:
 			resp = register_account(resp, email, username, password, session)
