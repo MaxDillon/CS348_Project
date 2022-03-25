@@ -6,7 +6,7 @@ import sha256 from 'crypto-js/sha256'
 
 async function loginUser(username, password) {
 
-	const res = await fetch('/login/login', {
+	const res = await fetch('/auth/login', {
 		method: 'POST',
 		headers: {
 		  'Content-Type': 'application/json'
@@ -26,7 +26,7 @@ export default function LoginPage() {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		fetch('/login/isLoggedIn')
+		fetch('/auth/isLoggedIn')
 		.then(response => response.json())
 		.then(data => {
 			if (data.answer === true) {

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import sha256 from 'crypto-js/sha256'
 
 async function registerUser(email, username, password) {
-	const res = await fetch('/login/register', {
+	const res = await fetch('/auth/register', {
 		method: 'POST',
 		headers: {
 		  'Content-Type': 'application/json'
@@ -26,7 +26,7 @@ export default function RegisterPage() {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		fetch('/login/isLoggedIn')
+		fetch('/auth/isLoggedIn')
 		.then(response => response.json())
 		.then(data => {
 			if (data.answer === true) {

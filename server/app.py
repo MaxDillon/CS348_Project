@@ -1,7 +1,7 @@
 
 from flask import Flask
 from retry import retry
-from blueprints import loginBlueprint
+from blueprints import authBlueprint
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -18,5 +18,5 @@ if __name__ == "__main__":
 
 	sessionmaker = get_sessionmaker()
 
-	app.register_blueprint(loginBlueprint.create_blueprint(sessionmaker), url_prefix='/login')
+	app.register_blueprint(authBlueprint.create_blueprint(sessionmaker), url_prefix='/auth')
 	app.run(debug=True, host='0.0.0.0')

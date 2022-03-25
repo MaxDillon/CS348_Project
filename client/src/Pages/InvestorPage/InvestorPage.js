@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 async function logout() {
-	const res = await fetch('/login/logout')
+	const res = await fetch('/auth/logout')
 	return res
 }
 
@@ -14,7 +14,7 @@ export default function InvestorPage() {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		fetch('/login/isLoggedIn')
+		fetch('/auth/isLoggedIn')
 		.then(response => response.json())
 		.then(data => {
 			console.log(data)
