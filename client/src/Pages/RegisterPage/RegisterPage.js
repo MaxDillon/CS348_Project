@@ -30,7 +30,7 @@ export default function RegisterPage() {
 		.then(response => response.json())
 		.then(data => {
 			if (data.answer === true) {
-				navigate("/dashboard")
+				navigate("/account/dashboard")
 			}
 			return data.answer
 		}).then(answer => console.log(answer))
@@ -40,7 +40,7 @@ export default function RegisterPage() {
 		const success = await registerUser(email, username, password)
 
 		if (success) {
-			navigate("/dashboard")
+			navigate("/account/dashboard")
 			return true
 		} else {
 			navigate("/register")

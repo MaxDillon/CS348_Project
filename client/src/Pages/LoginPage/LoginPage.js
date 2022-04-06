@@ -30,7 +30,7 @@ export default function LoginPage() {
 		.then(response => response.json())
 		.then(data => {
 			if (data.answer === true) {
-				navigate("/dashboard")
+				navigate("/account/dashboard")
 			}
 			return data.answer
 		}).then(answer => console.log(answer))
@@ -40,7 +40,7 @@ export default function LoginPage() {
 	async function onSubmit(username, password) {
 		const success = await loginUser(username, password)
 		if (success) {
-			navigate("/dashboard")
+			navigate("/account/dashboard")
 			return true
 		} else {
 			navigate("/login")
