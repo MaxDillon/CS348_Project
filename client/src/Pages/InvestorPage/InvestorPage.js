@@ -1,5 +1,5 @@
 import React from "react";
-import {useState, useEffect} from 'react'
+import {useState, useLayoutEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 
 
@@ -13,7 +13,7 @@ export default function InvestorPage() {
 	const [state, setState] = useState("")
 	const navigate = useNavigate()
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		fetch('/auth/isLoggedIn')
 		.then(response => response.json())
 		.then(data => {
@@ -24,7 +24,7 @@ export default function InvestorPage() {
 			}
 			setState(data['message'])
 		})
-	}, [])
+	}, [navigate])
 
 
 	return (

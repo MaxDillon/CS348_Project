@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../loginPage.module.css'
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import {useState, useEffect} from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types';
 
 
@@ -44,7 +44,7 @@ export function LoginPanel({loginUser}) {
 			<Form.Group>
 				<Button size="lg" type="submit" disabled={!validateForm()} onClick={e => {
 					e.preventDefault()
-					const success = loginUser(username, password).then(success => {
+					loginUser(username, password).then(success => {
 						if (!success) {
 							setToggleFailure(true)
 							setUsername("")

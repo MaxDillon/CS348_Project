@@ -1,6 +1,6 @@
 import React from 'react'
 import { LoginPanel } from './Components/LoginPanel'
-import {useState, useEffect} from 'react'
+import { useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import sha256 from 'crypto-js/sha256'
 
@@ -17,7 +17,7 @@ async function loginUser(username, password) {
 		})
 	})
 
-	return res.status != 401
+	return res.status !== 401
 }
 
 
@@ -25,7 +25,7 @@ async function loginUser(username, password) {
 export default function LoginPage() {
 	const navigate = useNavigate()
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		fetch('/auth/isLoggedIn')
 		.then(response => response.json())
 		.then(data => {
@@ -34,7 +34,7 @@ export default function LoginPage() {
 			}
 			return data.answer
 		}).then(answer => console.log(answer))
-	}, [])
+	}, [navigate])
 
 
 	async function onSubmit(username, password) {

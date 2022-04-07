@@ -3,12 +3,9 @@ import { BrowserRouter, Route, Routes, Navigate, Link, Outlet } from 'react-rout
 
 import LoginPage from './Pages/LoginPage/LoginPage'
 import RegisterPage from './Pages/RegisterPage/RegisterPage'
-import { useState } from 'react';
 import InvestorPage from './Pages/InvestorPage/InvestorPage';
 
 function App() {
-  const [token, setToken] = useState();
-
 
   return (
     <div className="App">
