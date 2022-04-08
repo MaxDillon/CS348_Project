@@ -1,11 +1,11 @@
 import React from "react";
-import {useState, useEffect} from 'react'
+import {useState, useLayoutEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 
 
 
 async function logout() {
-	const res = await fetch('/login/logout')
+	const res = await fetch('/auth/logout')
 	return res
 }
 
@@ -13,22 +13,18 @@ export default function InvestorPage() {
 	const [state, setState] = useState("")
 	const navigate = useNavigate()
 
-	useEffect(() => {
-		async function getTestRequired() {
-			const res = await fetch('/login/isLoggedIn')
-			if (res.status === 401) {
+	useLayoutEffect(() => {
+		fetch('/auth/isLoggedIn')
+		.then(response => response.json())
+		.then(data => {
+			console.log(data)
+			if (data.answer === false) {
 				navigate("/login")
-				const data = await res.json()
-				console.log(data)
 				return
 			}
-			const data = await res.json()
-			console.log(data)
 			setState(data['message'])
-		}
-		getTestRequired()
-
-	}, [])
+		})
+	}, [navigate])
 
 
 	return (

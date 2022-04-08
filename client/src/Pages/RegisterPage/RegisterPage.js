@@ -1,11 +1,11 @@
 import React from 'react'
 import { RegisterPanel } from './Components/RegisterPanel';
-import {useState, useEffect} from 'react'
+import { useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import sha256 from 'crypto-js/sha256'
 
 async function registerUser(email, username, password) {
-	const res = await fetch('/login/register', {
+	const res = await fetch('/auth/register', {
 		method: 'POST',
 		headers: {
 		  'Content-Type': 'application/json'
@@ -25,11 +25,22 @@ async function registerUser(email, username, password) {
 export default function RegisterPage() {
 	const navigate = useNavigate()
 
+	useLayoutEffect(() => {
+		fetch('/auth/isLoggedIn')
+		.then(response => response.json())
+		.then(data => {
+			if (data.answer === true) {
+				navigate("/account/dashboard")
+			}
+			return data.answer
+		}).then(answer => console.log(answer))
+	}, [navigate])
+
 	async function onSubmit(email, username, password) {
 		const success = await registerUser(email, username, password)
 
 		if (success) {
-			navigate("/abc")
+			navigate("/account/dashboard")
 			return true
 		} else {
 			navigate("/register")

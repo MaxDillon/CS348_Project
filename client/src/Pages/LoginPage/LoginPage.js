@@ -1,12 +1,12 @@
 import React from 'react'
 import { LoginPanel } from './Components/LoginPanel'
-import {useState, useEffect} from 'react'
+import { useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import sha256 from 'crypto-js/sha256'
 
 async function loginUser(username, password) {
 
-	const res = await fetch('/login/login', {
+	const res = await fetch('/auth/login', {
 		method: 'POST',
 		headers: {
 		  'Content-Type': 'application/json'
@@ -17,7 +17,7 @@ async function loginUser(username, password) {
 		})
 	})
 
-	return res.status != 401
+	return res.status !== 401
 }
 
 
@@ -25,10 +25,22 @@ async function loginUser(username, password) {
 export default function LoginPage() {
 	const navigate = useNavigate()
 
+	useLayoutEffect(() => {
+		fetch('/auth/isLoggedIn')
+		.then(response => response.json())
+		.then(data => {
+			if (data.answer === true) {
+				navigate("/account/dashboard")
+			}
+			return data.answer
+		}).then(answer => console.log(answer))
+	}, [navigate])
+
+
 	async function onSubmit(username, password) {
 		const success = await loginUser(username, password)
 		if (success) {
-			navigate("/dashboard")
+			navigate("/account/dashboard")
 			return true
 		} else {
 			navigate("/login")
