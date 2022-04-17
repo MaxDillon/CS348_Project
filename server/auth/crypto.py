@@ -20,7 +20,7 @@ def compare_passwords(passHashString, bcryptPassword):
 def generate_auth_cookie(resp, user_id: str, session: Session):
 	token = secrets.token_hex(32).encode('utf-8')
 
-	new_login_session = Loginsession(user_id=user_id, token=token, create_time=datetime.now())
+	new_login_session = Loginsession(user_id=user_id, token=token, time_created=datetime.now())
 	session.add(new_login_session)
 	session.commit()
 
