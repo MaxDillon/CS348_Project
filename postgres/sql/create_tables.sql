@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS Account (
   first_name varchar(250),
   last_name varchar(250),
   email varchar(250),
-  phone INT,
+  phone varchar(250),
   pass_hash BYTEA NOT NULL,
   money_invested INT NOT NULL DEFAULT 0
 );
@@ -14,42 +14,47 @@ CREATE TABLE IF NOT EXISTS Account (
 CREATE TABLE IF NOT EXISTS LoginSession (
   token BYTEA PRIMARY KEY,
   user_id INT REFERENCES Account (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
-  create_time TIMESTAMP NOT NULL
+  time_created TIMESTAMP 
 );
 
--- Creation of holding table
-CREATE TABLE IF NOT EXISTS Holding (
-  company_id INT NOT NULL,
+CREATE TABLE IF NOT EXISTS PaymentHistory (
+  user_id INT REFERENCES Account (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
+  time_created TIMESTAMP NOT NULL,
+  amount_invested INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Company (
+  company_id varchar(250) PRIMARY KEY,
   company_name varchar(250) NOT NULL,
-  stocks INT NOT NULL,
-  buying_val INT NOT NULL,
-  PRIMARY KEY (company_id)
+  current_trading_price MONEY NOT NULL,
+  num_shares INT NOT NULL
 );
 
--- Creation of market table
-CREATE TABLE IF NOT EXISTS Market (
-  company_id INT NOT NULL,
-  market_name varchar(250) NOT NULL,
-  total_stocks INT NOT NULL,
-  trading_price INT NOT NULL,
-  PRIMARY KEY (company_id)
+CREATE TABLE IF NOT EXISTS Transactions (
+  company_id varchar(250) REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
+  user_id INT REFERENCES Account (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
+  time_executed TIMESTAMP NOT NULL,
+  num_shares INT NOT NULL,
+  buy_or_sell BOOLEAN NOT NULL
 );
 
--- Creation of store table
-CREATE TABLE IF NOT EXISTS TransactionHistory (
-  company_id INT NOT NULL,
-  executed_by varchar(250) NOT NULL,
-  buy_sell BOOLEAN NOT NULL,
-  number INT NOT NULL,
-  PRIMARY KEY (company_id)
+CREATE TABLE IF NOT EXISTS Employee (
+  employee_id SERIAL PRIMARY KEY,
+  username varchar(250) NOT NULL,
+  first_name varchar(250),
+  last_name varchar(250),
+  email varchar(250),
+  phone varchar(250),
+  pass_hash BYTEA NOT NULL
 );
 
--- Creation of user table
-CREATE TABLE IF NOT EXISTS FundInformation (
-  order_id INT NOT NULL,
-  fund_name varchar(250) NOT NULL,
-  free_money INT NOT NULL,
-  keywords varchar(250) NOT NULL,
-  fund_value INT NOT NULL,
-  PRIMARY KEY (order_id)
+CREATE TABLE IF NOT EXISTS CompanyHistory (
+  company_id varchar(250) REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
+  time_fetched TIMESTAMP NOT NULL,
+  trading_price MONEY NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Manages (
+  manager_id INT REFERENCES Employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE,
+  employee_id INT REFERENCES Employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
