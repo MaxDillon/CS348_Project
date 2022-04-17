@@ -82,8 +82,8 @@ t_paymenthistory = Table(
 )
 
 
-t_transaction = Table(
-    'transaction', metadata,
+t_transactions = Table(
+    'transactions', metadata,
     Column('company_id', ForeignKey('company.company_id', ondelete='CASCADE', onupdate='CASCADE')),
     Column('user_id', ForeignKey('account.user_id', ondelete='CASCADE', onupdate='CASCADE')),
     Column('time_executed', DateTime, nullable=False),
