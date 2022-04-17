@@ -53,8 +53,7 @@ t_companyhistory = Table(
     'companyhistory', metadata,
     Column('company_id', ForeignKey('company.company_id', ondelete='CASCADE', onupdate='CASCADE')),
     Column('time_fetched', DateTime, nullable=False),
-    Column('trading_price', MONEY, nullable=False),
-    Column('num_shares', Integer, nullable=False)
+    Column('trading_price', MONEY, nullable=False)
 )
 
 
