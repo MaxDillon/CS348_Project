@@ -24,14 +24,14 @@ CREATE TABLE IF NOT EXISTS PaymentHistory (
 );
 
 CREATE TABLE IF NOT EXISTS Company (
-  company_id SERIAL PRIMARY KEY,
+  company_id varchar(250) PRIMARY KEY,
   company_name varchar(250) NOT NULL,
   current_trading_price MONEY NOT NULL,
   num_shares INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Transactions (
-  company_id INT REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
+  company_id varchar(250) REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
   user_id INT REFERENCES Account (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
   time_executed TIMESTAMP NOT NULL,
   num_shares INT NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS Employee (
 );
 
 CREATE TABLE IF NOT EXISTS CompanyHistory (
-  company_id INT REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
+  company_id varchar(250) REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
   time_fetched TIMESTAMP NOT NULL,
   trading_price MONEY NOT NULL
 );

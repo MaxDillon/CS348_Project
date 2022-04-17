@@ -24,7 +24,7 @@ class Account(Base):
 class Company(Base):
     __tablename__ = 'company'
 
-    company_id = Column(Integer, primary_key=True, server_default=text("nextval('company_company_id_seq'::regclass)"))
+    company_id = Column(String(250), primary_key=True)
     company_name = Column(String(250), nullable=False)
     current_trading_price = Column(MONEY, nullable=False)
     num_shares = Column(Integer, nullable=False)
