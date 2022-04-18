@@ -1,22 +1,62 @@
+from datetime import datetime
+from turtle import st
+import psycopg2
 import numpy as np
 import pandas as pd
 import time
-import yfinance as yf
+from yahoo_fin import stock_info as si
+import datetime
 
 
 def fetchLoop():
 
-    while True:
-        msft = yf.Ticker("MSFT")
-        googl = yf.Ticker("GOOGL")
-        appl = yf.Ticker("APPL")
-        gs = yf.Ticker("GS")
-        uber = yf.Ticker("UBER")
+    stocks = ["MSFT", "GOOGL", "AMZN", "GS", "UBER"]
 
-        print(msft.history("5m"))
+    con = psycopg2.connect(
+        database="postgres",
+        user="megha",
+        password="megha",
+        host="127.0.0.1",
+        port="5432",
+    )
 
-        time.sleep(60*5)
+    cur = con.cursor()
 
+    cur.execute(
+        """CREATE TABLE IF NOT EXISTS CompanyHistory (
+            company_id varchar(250),
+            time_fetched TIMESTAMP NOT NULL,
+            trading_price MONEY NOT NULL
+            );"""
+    )
+
+    # for i in range(10):
+    #     current_prices = {}
+
+    #     for stock in stocks:
+    #         current_prices[stock] = si.get_live_price(stock)
+
+    #     query = f"""INSERT INTO CompanyHistory(company_id, time_fetched, trading_price) VALUES (%s, %s, %s)"""
+
+    #     for stock in stocks:
+    #         cur.execute(
+    #             query, (stock, datetime.date.today(), current_prices[stock]))
+
+    #     con.commit()
+
+    #     time.sleep(60)
+
+    cur.execute("Select * from CompanyHistory")
+
+    for row in cur.fetchall():
+        print(row)
+
+    con.commit()
+    con.close()
+
+
+if __name__ == "__main__":
+    fetchLoop()
 
 # df.head()
 
