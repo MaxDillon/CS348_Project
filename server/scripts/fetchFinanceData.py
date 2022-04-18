@@ -1,11 +1,33 @@
+# %%
 from datetime import datetime
 from turtle import st
 import psycopg2
 import numpy as np
 import pandas as pd
 import time
+from tqdm import tqdm
 from yahoo_fin import stock_info as si
 import datetime
+# import requests
+
+#  sudo service postgresql start
+
+# API_KEY = """4VCCJ8MVXHVCNL14"""
+
+# # %%
+
+# company = 'AMZN'
+# url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={company}&interval=5min&apikey={API_KEY}'
+# r = requests.get(url)
+# data = r.json()
+
+# print(data)
+
+# # %%
+
+# datetime.strptime('2022-04-14 20:00:00', '%Y-%m-%d %H:%M:%S')
+
+# %%
 
 
 def fetchLoop():
@@ -30,21 +52,21 @@ def fetchLoop():
             );"""
     )
 
-    # for i in range(10):
-    #     current_prices = {}
+    for i in tqdm(range(10)):
+        current_prices = {}
 
-    #     for stock in stocks:
-    #         current_prices[stock] = si.get_live_price(stock)
+        for stock in stocks:
+            current_prices[stock] = si.get_live_price(stock)
 
-    #     query = f"""INSERT INTO CompanyHistory(company_id, time_fetched, trading_price) VALUES (%s, %s, %s)"""
+        query = f"""INSERT INTO CompanyHistory(company_id, time_fetched, trading_price) VALUES (%s, %s, %s)"""
 
-    #     for stock in stocks:
-    #         cur.execute(
-    #             query, (stock, datetime.date.today(), current_prices[stock]))
+        for stock in stocks:
+            cur.execute(
+                query, (stock, datetime.datetime.now(), current_prices[stock]))
 
-    #     con.commit()
+        con.commit()
 
-    #     time.sleep(60)
+        time.sleep(60)
 
     cur.execute("Select * from CompanyHistory")
 
@@ -57,8 +79,6 @@ def fetchLoop():
 
 if __name__ == "__main__":
     fetchLoop()
-
-# df.head()
 
 
 # # %%
