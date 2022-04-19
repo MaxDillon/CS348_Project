@@ -1,5 +1,6 @@
 # coding: utf-8
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, LargeBinary, String, text
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, LargeBinary, String, Table, text
+from sqlalchemy.dialects.postgresql import MONEY
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -15,46 +16,45 @@ class Account(Base):
     first_name = Column(String(250))
     last_name = Column(String(250))
     email = Column(String(250))
-    phone = Column(Integer)
+    phone = Column(String(250))
     pass_hash = Column(LargeBinary, nullable=False)
     money_invested = Column(Integer, nullable=False, server_default=text("0"))
 
 
-class Fundinformation(Base):
-    __tablename__ = 'fundinformation'
+class Company(Base):
+    __tablename__ = 'company'
 
-    order_id = Column(Integer, primary_key=True)
-    fund_name = Column(String(250), nullable=False)
-    free_money = Column(Integer, nullable=False)
-    keywords = Column(String(250), nullable=False)
-    fund_value = Column(Integer, nullable=False)
-
-
-class Holding(Base):
-    __tablename__ = 'holding'
-
-    company_id = Column(Integer, primary_key=True)
+    company_id = Column(String(250), primary_key=True)
     company_name = Column(String(250), nullable=False)
-    stocks = Column(Integer, nullable=False)
-    buying_val = Column(Integer, nullable=False)
+    current_trading_price = Column(MONEY, nullable=False)
+    num_shares = Column(Integer, nullable=False)
 
 
-class Market(Base):
-    __tablename__ = 'market'
+class Employee(Base):
+    __tablename__ = 'employee'
 
-    company_id = Column(Integer, primary_key=True)
-    market_name = Column(String(250), nullable=False)
-    total_stocks = Column(Integer, nullable=False)
-    trading_price = Column(Integer, nullable=False)
+    employee_id = Column(Integer, primary_key=True, server_default=text("nextval('employee_employee_id_seq'::regclass)"))
+    username = Column(String(250), nullable=False)
+    first_name = Column(String(250))
+    last_name = Column(String(250))
+    email = Column(String(250))
+    phone = Column(String(250))
+    pass_hash = Column(LargeBinary, nullable=False)
+
+    managers = relationship(
+        'Employee',
+        secondary='manages',
+        primaryjoin='Employee.employee_id == manages.c.employee_id',
+        secondaryjoin='Employee.employee_id == manages.c.manager_id'
+    )
 
 
-class Transactionhistory(Base):
-    __tablename__ = 'transactionhistory'
-
-    company_id = Column(Integer, primary_key=True)
-    executed_by = Column(String(250), nullable=False)
-    buy_sell = Column(Boolean, nullable=False)
-    number = Column(Integer, nullable=False)
+t_companyhistory = Table(
+    'companyhistory', metadata,
+    Column('company_id', ForeignKey('company.company_id', ondelete='CASCADE', onupdate='CASCADE')),
+    Column('time_fetched', DateTime, nullable=False),
+    Column('trading_price', MONEY, nullable=False)
+)
 
 
 class Loginsession(Base):
@@ -62,6 +62,31 @@ class Loginsession(Base):
 
     token = Column(LargeBinary, primary_key=True)
     user_id = Column(ForeignKey('account.user_id', ondelete='CASCADE', onupdate='CASCADE'))
-    create_time = Column(DateTime, nullable=False)
+    time_created = Column(DateTime)
 
     user = relationship('Account')
+
+
+t_manages = Table(
+    'manages', metadata,
+    Column('manager_id', ForeignKey('employee.employee_id', ondelete='CASCADE', onupdate='CASCADE')),
+    Column('employee_id', ForeignKey('employee.employee_id', ondelete='CASCADE', onupdate='CASCADE'))
+)
+
+
+t_paymenthistory = Table(
+    'paymenthistory', metadata,
+    Column('user_id', ForeignKey('account.user_id', ondelete='CASCADE', onupdate='CASCADE')),
+    Column('time_created', DateTime, nullable=False),
+    Column('amount_invested', Integer, nullable=False)
+)
+
+
+t_transactions = Table(
+    'transactions', metadata,
+    Column('company_id', ForeignKey('company.company_id', ondelete='CASCADE', onupdate='CASCADE')),
+    Column('user_id', ForeignKey('account.user_id', ondelete='CASCADE', onupdate='CASCADE')),
+    Column('time_executed', DateTime, nullable=False),
+    Column('num_shares', Integer, nullable=False),
+    Column('buy_or_sell', Boolean, nullable=False)
+)
