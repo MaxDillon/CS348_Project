@@ -1,6 +1,5 @@
 # %%
 from datetime import datetime
-from turtle import st
 import psycopg2
 import numpy as np
 import pandas as pd
@@ -36,9 +35,9 @@ def fetchLoop():
 
     con = psycopg2.connect(
         database="postgres",
-        user="megha",
-        password="megha",
-        host="127.0.0.1",
+        user="postgres",
+        password="postgres",
+        host="postgres",
         port="5432",
     )
 

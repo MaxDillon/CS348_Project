@@ -5,8 +5,6 @@ from blueprints import authBlueprint
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from scripts.fetchFinanceData import fetchLoop
-
 
 @retry(delay=1)
 def get_sessionmaker():
@@ -16,8 +14,6 @@ def get_sessionmaker():
 
 
 if __name__ == "__main__":
-
-    fetchLoop()
 
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'key'

@@ -16,6 +16,12 @@ services:
       - ./client/src:/user/src/app/src
     depends_on:
       - server
+  script:
+    build: ./scripts
+    volumes:
+      - ./scripts:/scripts
+    depends_on:
+      - postgres
   postgres:
     image: postgres:10.5
     restart: always
