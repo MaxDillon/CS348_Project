@@ -1,4 +1,5 @@
 from flask import make_response, request
+from matplotlib.pyplot import get
 from sqlalchemy import select, String
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.sql import cast
@@ -21,6 +22,14 @@ def get_tokens(session: Session):
 
 	return {'data':[ dict(login_session) for login_session in login_sessions]}
 
+
+def get_user(session: Session) -> Account:
+	token = request.cookies.get("token")
+
+	session_query = select(Loginsession.user).where(Loginsession.token == token.encode('utf-8'))
+	this_session = session.execute(session_query).one_or_none()
+
+	return this_session;
 
 
 def check_loggedin_token(token, session: Session):
