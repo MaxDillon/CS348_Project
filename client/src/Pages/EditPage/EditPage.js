@@ -2,8 +2,12 @@ import React from "react";
 import {useState, useLayoutEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import './Edit.css'
-export default function EditPage() {
-    const users = [{
+import Field from './Field.js'
+
+export default function EditPage(props) {
+    const [details, setDetails] = useState([]);
+    const users = [
+        {
         user: "User1",
         name: "Name1",
         money: 1234
@@ -16,21 +20,39 @@ export default function EditPage() {
         name: "Name1",
         money: 1234
     }]
-    const userDetails = {
+    const userDetails = 
+        {
         user: "User1",
         name: "Name1",
-        money: 1234
+        money: 1234,
+        email: "email@i1232"
     }
-    const userList = users.map(user => (<li>
-        <div className={"stackIt"}>{user.user} button</div>
-        <div className={"stackIt"}>{user.name} button</div>
-        <div className={"stackIt"}>{user.money} button</div>
-        </li>))
+    const test = [];
+
+
+    for(const[key, value] of Object.entries(userDetails)) {
+        test.push([key, value]);
+    }
+
+    const userList = test.map(field => (
+        <div className={"stackIt"}>{field[0]} {field[1]} button</div>
+        
+        )
+        )
+
+    const users1 = test.map(field => (
+        <Field details={field} id={field[0]}/>        
+        )
+    )
+
     return (
         <div> <h1>Your Profile</h1> 
-            <ul>
-                {userList}
-            </ul>
+        <div >
+    
+                 <ul className={"verticalSpace"}>
+                {users1}
+                </ul>
+        </div>
         </div>
 
     );
