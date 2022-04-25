@@ -1,8 +1,27 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./transactions.css";
 import data from './trans_data.json';
+
+
+async function getContacts() {
+	var res = await fetch("/transactions/getTransactions")
+	.then(res => res.json())
+	.then( data => {
+		return data
+	})
+
+}
+
 export default function TransactionPage() {
-	const [contacts, setContacts] = useState(data);
+	const [contacts, setContacts] = useState({});
+
+	useEffect(() => {
+		var newContacts = await getContacts()
+
+		setContacts(newContacts)
+
+	}, [])
+
 	return (
 		<div classname="app-container">
 			<h1>Transaction History:</h1>
