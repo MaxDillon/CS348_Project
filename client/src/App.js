@@ -3,7 +3,9 @@ import { BrowserRouter, Route, Routes, Navigate, Link, Outlet } from 'react-rout
 
 import LoginPage from './Pages/LoginPage/LoginPage'
 import RegisterPage from './Pages/RegisterPage/RegisterPage'
-import InvestorPage from './Pages/InvestorPage/InvestorPage';
+import InvestorPage from './Pages/InvestorPage/InvestorPage'
+import TransactionPage from './Pages/transactionPage/transactionPage'
+import PageTwo from './Pages/PageTwo/PageTwo'
 
 function App() {
 
@@ -17,6 +19,8 @@ function App() {
           </Route>
           <Route path="login" element={<LoginPage/>} />
           <Route path="register" element={<RegisterPage/>} />
+          <Route path="transaction" element={<TransactionPage/>} />
+          <Route path="pageTwo" element={<PageTwo/>} />
         </Routes>
 
       </BrowserRouter>
