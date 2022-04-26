@@ -1,5 +1,5 @@
 # %%
-from datetime import datetime
+import signal
 import psycopg2
 import numpy as np
 import pandas as pd
@@ -7,26 +7,14 @@ import time
 from tqdm import tqdm
 from yahoo_fin import stock_info as si
 import datetime
-# import requests
+from zoneinfo import ZoneInfo
 
-#  sudo service postgresql start
+kill_now = False
 
-# API_KEY = """4VCCJ8MVXHVCNL14"""
 
-# # %%
-
-# company = 'AMZN'
-# url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={company}&interval=5min&apikey={API_KEY}'
-# r = requests.get(url)
-# data = r.json()
-
-# print(data)
-
-# # %%
-
-# datetime.strptime('2022-04-14 20:00:00', '%Y-%m-%d %H:%M:%S')
-
-# %%
+def signalHandler(sig, frame):
+    global kill_now
+    kill_now = True
 
 
 def fetchLoop():
@@ -43,15 +31,10 @@ def fetchLoop():
 
     cur = con.cursor()
 
-    cur.execute(
-        """CREATE TABLE IF NOT EXISTS CompanyHistory (
-            company_id varchar(250),
-            time_fetched TIMESTAMP NOT NULL,
-            trading_price MONEY NOT NULL
-            );"""
-    )
+    print("booting up")
 
-    for i in tqdm(range(10)):
+    while not kill_now:
+        # try:
         current_prices = {}
 
         for stock in stocks:
@@ -59,24 +42,27 @@ def fetchLoop():
 
         query = f"""INSERT INTO CompanyHistory(company_id, time_fetched, trading_price) VALUES (%s, %s, %s)"""
 
+        current_time = datetime.datetime.now(
+            tz=ZoneInfo(key='America/New_York'))
+
+        print("time:\t", current_time)
+
         for stock in stocks:
             cur.execute(
-                query, (stock, datetime.datetime.now(), current_prices[stock]))
+                query, (stock, current_time, current_prices[stock]))
 
         con.commit()
 
         time.sleep(60)
-
-    cur.execute("Select * from CompanyHistory")
-
-    for row in cur.fetchall():
-        print(row)
-
-    con.commit()
-    con.close()
+        # except KeyboardInterrupt:
+        #     con.commit()
+        #     con.close()
+        #     break
 
 
 if __name__ == "__main__":
+    signal.signal(signal.SIGINT, signalHandler)
+    signal.signal(signal.SIGTERM, signalHandler)
     fetchLoop()
 
 
