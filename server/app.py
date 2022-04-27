@@ -8,16 +8,19 @@ from sqlalchemy.orm import sessionmaker
 
 @retry(delay=1)
 def get_sessionmaker():
-	engine = create_engine('postgresql://postgres:postgres@postgres:5432/postgres')
-	return sessionmaker(bind=engine)
+    engine = create_engine(
+        'postgresql://postgres:postgres@postgres:5432/postgres')
+    return sessionmaker(bind=engine)
 
 
 if __name__ == "__main__":
-	app = Flask(__name__)
-	app.config['SECRET_KEY'] = 'key'
 
-	sessionmaker = get_sessionmaker()
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'key'
 
-	app.register_blueprint(authBlueprint.create_blueprint(sessionmaker), url_prefix='/auth')
+    sessionmaker = get_sessionmaker()
+
+    app.register_blueprint(authBlueprint.create_blueprint(
+        sessionmaker), url_prefix='/auth')
 	app.register_blueprint(editBlueprint.create_blueprint(sessionmaker), url_prefix='/edit')
-	app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')
