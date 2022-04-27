@@ -1,25 +1,26 @@
 import React from "react";
-import {useState, useLayoutEffect} from 'react'
+import {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import './Edit.css'
 import Field from './Field.js'
 
+async function getUserdetails() {
+	var res = await fetch("/edit/getUser")
+	.then(res => res.json())
+	.then( data => {
+		return data
+	})
+
+}
+
 export default function EditPage(props) {
     const [details, setDetails] = useState([]);
-    const users = [
-        {
-        user: "User1",
-        name: "Name1",
-        money: 1234
-    }, {
-        user: "User2",
-        name: "Name1",
-        money: 1234
-    }, {
-        user: "User3",
-        name: "Name1",
-        money: 1234
-    }]
+    useEffect(async () => {
+		var details = await getUserdetails()
+		setDetails(details)
+
+    }, [])
+    
     const userDetails = 
         {
         user: "User1",
@@ -28,9 +29,10 @@ export default function EditPage(props) {
         email: "email@i1232"
     }
     const test = [];
+    console.log(details)
 
-
-    for(const[key, value] of Object.entries(userDetails)) {
+    for(const[key, value] of Object.entries(details)) {
+        console.log(key, value)
         test.push([key, value]);
     }
 
