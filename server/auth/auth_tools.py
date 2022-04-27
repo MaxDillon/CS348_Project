@@ -1,3 +1,4 @@
+import sys
 from flask import make_response, request
 from sqlalchemy import select, String
 from sqlalchemy.orm import sessionmaker, Session
@@ -24,10 +25,13 @@ def get_tokens(session: Session):
 
 def get_user(session: Session) -> Account:
 	token = request.cookies.get("token")
-	session_query = select(Loginsession.user).where(Loginsession.token == token.encode('utf-8'))
+	if (token == None):
+		return None
+	session_query = select(Account).join(Loginsession).where(Loginsession.token == token.encode('utf-8'))
+	print(session_query, file=sys.stderr)
 	this_session = session.execute(session_query).one_or_none()
 
-	return this_session
+	return this_session.Account
 
 
 def check_loggedin_token(token, session: Session):

@@ -21,6 +21,7 @@ def create_blueprint(MakeSession: sessionmaker):
 		with MakeSession() as session:
 			user = get_user(session)
 
+
 		resp.set_data(json.dumps({
 			"user_id": user.user_id,
             "username": user.username,
@@ -28,7 +29,6 @@ def create_blueprint(MakeSession: sessionmaker):
             "last_name": user.last_name,
             "email": user.email,
             "phone": user.phone,
-            "pass_hash": user.pass_hash,
             "money_invested": user.money_invested
 		
 		}))
