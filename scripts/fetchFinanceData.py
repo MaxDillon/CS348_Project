@@ -33,6 +33,15 @@ def fetchLoop():
 
     print("booting up")
 
+    query = f"""SELECT company_id FROM Company"""
+    cur.execute(query)
+
+    stocks = []
+    for row in cur.fetchall():
+        stocks.append(row[0])
+
+    print("stocks: ", stocks)
+
     while not kill_now:
         # try:
         current_prices = {}
@@ -41,15 +50,20 @@ def fetchLoop():
             current_prices[stock] = si.get_live_price(stock)
 
         query = f"""INSERT INTO CompanyHistory(company_id, time_fetched, trading_price) VALUES (%s, %s, %s)"""
+        updateCompanyQuery = f"""UPDATE Company SET current_trading_price = %s WHERE company_id = %s"""
 
-        current_time = datetime.datetime.now(
-            tz=ZoneInfo(key='America/New_York'))
+        current_time = int(time.time())
 
         print("time:\t", current_time)
 
         for stock in stocks:
             cur.execute(
-                query, (stock, current_time, current_prices[stock]))
+                query, (stock, current_time, current_prices[stock])
+            )
+
+            cur.execute(
+                updateCompanyQuery, (current_prices[stock], stock)
+            )
 
         con.commit()
 
