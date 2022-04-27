@@ -1,8 +1,6 @@
 import json
 import sys
-from flask 
-import Blueprint, make_response, request
-from soupsieve import select
+from flask import Blueprint, make_response, request
 from auth.login import login_user
 from auth.logout import logout_user
 from auth.register import register_account
@@ -32,7 +30,7 @@ def create_blueprint(MakeSession: sessionmaker):
             "phone": user.phone,
             "pass_hash": user.pass_hash,
             "money_invested": user.money_invested
-            
+		
 		}))
 
 		return resp
