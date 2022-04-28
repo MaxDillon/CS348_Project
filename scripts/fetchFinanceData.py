@@ -1,9 +1,6 @@
 import signal
 import psycopg2
-import numpy as np
-import pandas as pd
 import time
-from tqdm import tqdm
 from yahoo_fin import stock_info as si
 
 kill_now = False
