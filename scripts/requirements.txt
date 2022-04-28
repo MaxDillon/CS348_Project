@@ -1,2 +1,5 @@
 psycopg2
+numpy 
+pandas
+tqdm
 yahoo_fin
