@@ -22,48 +22,22 @@ export default function EditPage(props) {
         .then( data => {
             setDetails(data)
         })
-		//setDetails(details)
 
     }, [])
     
-    const userDetails = 
-        {
-        user: "User1",
-        name: "Name1",
-        money: 1234,
-        email: "email@i1232"
-    }
-    const test = [];
-    console.log(details)
-
-    for(const[key, value] of Object.entries(details)) {
-        console.log(key, value)
-        test.push([key, value]);
-    }
-
-    const userList = test.map(field => (
-        <div className={"stackIt"}>{field[0]} {field[1]} button</div>
-        
-        )
-        )
-    const userId = test.filter(field => field[0] == "user_id");
-    //console.log(userId[0][1])
-
-    const toDisplay = test.filter(field => field[0] != "user_id");
-
-    const users1 = toDisplay.map(field => (
-        <Field details={field} id={userId[0][1]}/>         
-
-    )
-    )
-
     return (
         <div> <h1>Your Profile</h1> 
-        <div >
+        <div>
     
-                 <ul className={"verticalSpace"}>
-                {users1}
-                </ul>
+            <ul className={"verticalSpace"}>
+                <Field name="Username" field="user_id" id={details.user_id} value={details.username}></Field>
+                <Field name="First Name" field="first_name" id={details.user_id} value={details.first_name}></Field>
+                <Field name="Last Name" field="last_name" id={details.user_id} value={details.last_name}></Field>
+                <Field name="Email" field="email" id={details.user_id} value={details.email}></Field>
+                <Field name="Phone Number" field="phone" id={details.user_id} value={details.phone}></Field>
+                <Field name="Money Invested" field="money_invested" id={details.user_id} value={details.money_invested}></Field>
+
+            </ul>
         </div>
         </div>
 
