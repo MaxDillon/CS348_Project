@@ -3,6 +3,7 @@ from retry import retry
 from blueprints import authBlueprint, buySellBlueprint
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from flask_cors import CORS
 
 
 @retry(delay=1)
@@ -16,6 +17,8 @@ if __name__ == "__main__":
 
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'key'
+
+    CORS(app)
 
     sessionmaker = get_sessionmaker()
 

@@ -4,8 +4,8 @@ from sqlalchemy.orm import sessionmaker, Session
 import flask
 from auth.auth_tools import login_required
 from database.schema import t_companyhistory
-from plotly.offline import plot
-from plotly.graph_objs import Scatter
+# from plotly.offline import plot
+# from plotly.graph_objs import Scatter
 
 
 def create_blueprint(Makesession: sessionmaker):
@@ -37,27 +37,11 @@ def create_blueprint(Makesession: sessionmaker):
 
         response = [x._asdict() for x in companyHistory]
 
+        # response: {time_fetched:int, trading_price:str}[]
+
         response_body["data"] = response
 
         res = flask.make_response(flask.jsonify(response_body), 200)
         return res
-
-        # k = companyHistory[0]
-
-        # k = k._mapping
-
-        # res = ""
-        # for s in companyHistory:
-        #     res += s.__repr__() + '\t'
-
-        # print(companyHistory, flush=True)
-
-        # div = plot([Scatter(x=[1, 2, 3], y=[3, 1, 6])], output_type='div')
-
-        # return flask.Markup(div)
-
-        # return companyHistory
-
-        # return k.__repr__()
 
     return buySellBlueprint

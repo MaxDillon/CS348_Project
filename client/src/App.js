@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes, Navigate, Link, Outlet } from 'react-rout
 import LoginPage from './Pages/LoginPage/LoginPage'
 import RegisterPage from './Pages/RegisterPage/RegisterPage'
 import InvestorPage from './Pages/InvestorPage/InvestorPage';
+import BuyAndSellPage from './Pages/BuyAndSellPage';
 
 function App() {
 
@@ -11,12 +12,13 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate replace to="/login"/>} />
+          <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="account" element={<AccountLayout />} >
-            <Route path="dashboard" element={<InvestorPage/>} />
+            <Route path="dashboard" element={<InvestorPage />} />
           </Route>
-          <Route path="login" element={<LoginPage/>} />
-          <Route path="register" element={<RegisterPage/>} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+          <Route path="trade" element={<BuyAndSellPage />} />
         </Routes>
 
       </BrowserRouter>
