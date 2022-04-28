@@ -1,20 +1,38 @@
 import signal
 import psycopg2
-import numpy as np
-import pandas as pd
 import time
-from tqdm import tqdm
 from yahoo_fin import stock_info as si
+import datetime
 
-kill_now = False
+con = None
+cur = None
 
 
 def signalHandler(sig, frame):
-    global kill_now
-    kill_now = True
+    global con, cur
+
+    if cur:
+        cur.close()
+
+    if con:
+        con.commit()
+        con.close()
+
+    exit(0)
+
+
+def marketOpen():
+    currentTime = datetime.datetime.now().time()
+
+    start = datetime.time(9, 30, 0)
+    end = datetime.time(16, 30, 0)
+
+    return start <= currentTime <= end
 
 
 def fetchLoop():
+    global con
+    global cur
 
     con = psycopg2.connect(
         database="postgres",
@@ -37,7 +55,7 @@ def fetchLoop():
 
     print("stocks: ", stocks)
 
-    while not kill_now:
+    while True:
 
         current_prices = {}
 
@@ -63,9 +81,6 @@ def fetchLoop():
         con.commit()
 
         time.sleep(60)
-
-    con.commit()
-    con.close()
 
 
 if __name__ == "__main__":
