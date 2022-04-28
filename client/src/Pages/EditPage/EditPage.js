@@ -14,10 +14,16 @@ async function getUserdetails() {
 }
 
 export default function EditPage(props) {
-    const [details, setDetails] = useState([]);
+    const [details, setDetails] = useState({});
+
     useEffect(async () => {
-		var details = await getUserdetails()
-		setDetails(details)
+        var details = await fetch("/edit/getUser")
+        .then(res => res.json())
+        .then( data => {
+            setDetails(data)
+        })
+        console.log(details)
+		//setDetails(details)
 
     }, [])
     
