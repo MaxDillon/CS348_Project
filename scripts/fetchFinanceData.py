@@ -22,6 +22,10 @@ def signalHandler(sig, frame):
 
 
 def marketOpen():
+    if datetime.datetime.today().weekday() in (5, 6):
+        # https://stackoverflow.com/a/29384769/17005788
+        return False
+
     currentTime = datetime.datetime.now().time()
 
     start = datetime.time(9, 30, 0)
@@ -57,28 +61,32 @@ def fetchLoop():
 
     while True:
 
-        current_prices = {}
+        if marketOpen():
 
-        for stock in stocks:
-            current_prices[stock] = si.get_live_price(stock)
+            current_prices = {}
 
-        query = f"""INSERT INTO CompanyHistory(company_id, time_fetched, trading_price) VALUES (%s, %s, %s)"""
-        updateCompanyQuery = f"""UPDATE Company SET current_trading_price = %s WHERE company_id = %s"""
+            for stock in stocks:
+                current_prices[stock] = si.get_live_price(stock)
 
-        current_time = int(time.time())
+            query = f"""INSERT INTO CompanyHistory(company_id, time_fetched, trading_price) VALUES (%s, %s, %s)"""
+            updateCompanyQuery = f"""UPDATE Company SET current_trading_price = %s WHERE company_id = %s"""
 
-        print("time:\t", current_time)
+            current_time = int(time.time())
 
-        for stock in stocks:
-            cur.execute(
-                query, (stock, current_time, current_prices[stock])
-            )
+            print("time:\t", current_time)
 
-            cur.execute(
-                updateCompanyQuery, (current_prices[stock], stock)
-            )
+            for stock in stocks:
+                cur.execute(
+                    query, (stock, current_time, current_prices[stock])
+                )
 
-        con.commit()
+                cur.execute(
+                    updateCompanyQuery, (current_prices[stock], stock)
+                )
+
+            con.commit()
+        else:
+            print("Market closed")
 
         time.sleep(60)
 
