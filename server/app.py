@@ -18,8 +18,6 @@ if __name__ == "__main__":
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'key'
 
-    CORS(app)
-
     sessionmaker = get_sessionmaker()
 
     app.register_blueprint(authBlueprint.create_blueprint(

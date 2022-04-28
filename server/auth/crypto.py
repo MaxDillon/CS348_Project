@@ -31,6 +31,5 @@ def generate_auth_cookie(resp, user_id: str, session: Session):
         value=token,
         expires=datetime.now() + timedelta(days=1),
         secure=True,
-        httponly=True,
-        domain="localhost"
+        httponly=True
     )
