@@ -28,6 +28,10 @@ def marketOpen():
 
     currentTime = datetime.datetime.now().time()
 
+    # datetime.tzinfo.
+
+    print(currentTime)
+
     start = datetime.time(9, 30, 0)
     end = datetime.time(16, 30, 0)
 
@@ -39,12 +43,7 @@ def fetchLoop():
     global cur
 
     con = psycopg2.connect(
-        database="postgres",
-        user="postgres",
-        password="postgres",
-        host="postgres",
-        port="5432",
-    )
+        'postgresql://postgres:postgres@postgres:5432/postgres')
 
     cur = con.cursor()
 
