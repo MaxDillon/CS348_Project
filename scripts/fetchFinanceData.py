@@ -14,12 +14,7 @@ def signalHandler(sig, frame):
 def fetchLoop():
 
     con = psycopg2.connect(
-        database="postgres",
-        user="postgres",
-        password="postgres",
-        host="postgres",
-        port="5432",
-    )
+        'postgresql://postgres:postgres@postgres:5432/postgres')
 
     cur = con.cursor()
 
