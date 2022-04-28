@@ -31,11 +31,12 @@ function handleSubmit(e) {
     setEditing(false);
     update();
     console.log(newField);
+    setNewfield('');
   }
 const view = ( <div className={"stackIt"}>
     <p>{props.details[0]}</p> 
     <p>{props.details[1]}</p> 
-    <p><button className={"button"} onClick={() => setEditing(true)}>Click</button></p>
+    <p><button className={"button"} onClick={() => setEditing(true)}>Edit</button></p>
     </div>
 );
 
@@ -44,7 +45,11 @@ const editing = (
 
 <p>{props.details[0]}</p>
     <input type="text" onChange={handleChange} value={newField} ></input>
-<p><button className={"button"} onClick={handleSubmit}>Save</button></p>
+<p>
+    <button className={"button"} onClick={handleSubmit}>Save</button>
+    <button className={"button"} onClick={() => setEditing(false)}>Cancel</button>
+
+</p>
 </div>
 );
 

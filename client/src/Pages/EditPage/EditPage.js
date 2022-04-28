@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import './Edit.css'
@@ -49,9 +49,12 @@ export default function EditPage(props) {
     const userId = test.filter(field => field[0] == "user_id");
     //console.log(userId[0][1])
 
-    const users1 = test.map(field => (
-        <Field details={field} id={userId[0][1]}/>        
-        )
+    const toDisplay = test.filter(field => field[0] != "user_id");
+
+    const users1 = toDisplay.map(field => (
+        <Field details={field} id={userId[0][1]}/>         
+
+    )
     )
 
     return (
