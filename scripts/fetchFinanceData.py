@@ -3,7 +3,7 @@ import psycopg2
 import time
 from yahoo_fin import stock_info as si
 import datetime
-from tenacity import retry, stop_after_attempt, wait_fixed
+import retry
 
 con = None
 cur = None
@@ -39,7 +39,7 @@ def marketOpen():
     return start <= currentTime <= end
 
 
-@retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
+@retry.retry(delay=1, tries=5, backoff=2)
 def connectToPostgres():
     return psycopg2.connect(
         'postgresql://postgres:postgres@postgres:5432/postgres')
