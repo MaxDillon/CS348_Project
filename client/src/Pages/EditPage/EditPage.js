@@ -22,7 +22,6 @@ export default function EditPage(props) {
         .then( data => {
             setDetails(data)
         })
-        console.log(details)
 		//setDetails(details)
 
     }, [])
@@ -47,9 +46,11 @@ export default function EditPage(props) {
         
         )
         )
+    const userId = test.filter(field => field[0] == "user_id");
+    //console.log(userId[0][1])
 
     const users1 = test.map(field => (
-        <Field details={field} id={field[0]}/>        
+        <Field details={field} id={userId[0][1]}/>        
         )
     )
 

@@ -3,7 +3,7 @@ import sys
 from flask import Blueprint, make_response, request
 from auth.login import login_user
 from auth.logout import logout_user
-from auth.register import register_account
+from auth.updateField import update_account
 from auth.auth_tools import (
     get_accounts,
     get_tokens,
@@ -40,6 +40,19 @@ def create_blueprint(MakeSession: sessionmaker):
                 }
             )
         )
+
+        return resp
+
+    @editBlueprint.route("/update", methods=["post"])
+    def updateField():
+        resp = make_response()
+        data = request.get_json()
+        userid = data.get("id")
+        fieldName = data.get("fieldName")
+        fieldVal = data.get("fieldVal")
+
+        with MakeSession() as session:
+            resp = update_account(resp, userid, fieldName, fieldVal, session)
 
         return resp
 

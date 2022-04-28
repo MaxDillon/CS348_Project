@@ -3,12 +3,34 @@ import {useState, useLayoutEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import './Edit.css'
 export default function Field(props) {
-    const[details, setDetails] = useState(props);
+    const[newField, setNewfield] = useState('');
     const [isEditing, setEditing] = useState(false);
 
+    async function update() {
+        const res = await fetch('/edit/update', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'id': props.id,
+                'fieldName': props.details[0],
+                'fieldVal': newField
+            })
+        })
+    
+        return res.status < 400 || res.status >= 500
+    }
+
+
+function handleChange(e) {
+    setNewfield(e.target.value);
+}
 function handleSubmit(e) {
     e.preventDefault();
     setEditing(false);
+    update();
+    console.log(newField);
   }
 const view = ( <div className={"stackIt"}>
     <p>{props.details[0]}</p> 
@@ -21,11 +43,11 @@ const editing = (
         <div className={"stackIt"}>
 
 <p>{props.details[0]}</p>
-    <input></input>
-<p><button className={"button"} onClick={() => setEditing(false)}>Save</button></p>
+    <input type="text" onChange={handleChange} value={newField} ></input>
+<p><button className={"button"} onClick={handleSubmit}>Save</button></p>
 </div>
 );
 
-return <div>{isEditing ? editing : view}</div>;
+return <div key={props.details[0]}>{isEditing ? editing : view}</div>;
 
 }
