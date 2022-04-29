@@ -24,19 +24,17 @@ def create_blueprint(MakeSession: sessionmaker):
 
 		# with MakeSession() as session:
 		user = get_user(session)
-	#	print("User->\t", user, flush=True)
-	#	print("hello!!!  ", user.user_id, flush=True)
+		#print("User->\t", user, flush=True)
+		#print("hello!!!  ", user.user_id, flush=True)
 
 		numb = user.user_id
 		transactionHistory = select(t_transactions.columns.company_id,t_transactions.columns.num_shares,t_transactions.columns.buy_or_sell,t_transactions.columns.time_executed).filter(t_transactions.columns.user_id == numb)
 		historyDetails = session.execute(transactionHistory).all()
-	#	print("response: ",historyDetails)
 		response = [x._asdict() for x in historyDetails]
-	#	print("response: ",response)
 		res = flask.make_response(flask.jsonify(response), 200)
 		session.close()
-
-		return resp
+		#print(res)
+		return res
 
 
 	return transactionBlueprint

@@ -1,48 +1,55 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import "./transactions.css";
 import data from './trans_data.json';
 
 
 async function getContacts() {
 	var res = await fetch("/transactions/getTransactions")
-	.then(res => res.json())
-	.then( data => {
-		return data
-	})
-
+		.then(res => res.json())
+		.then(data => {
+			return data
+		})
+		return res
 }
 
 export default function TransactionPage() {
-	const [contacts, setContacts] = useState({});
+	const [contacts, setContacts] = useState([]);
 
-	useEffect(async() => {
+	useEffect(async () => {
 		var newContacts = await getContacts()
-
+		console.log("answer: ", newContacts)
 		setContacts(newContacts)
 
 	}, [])
 
 	return (
-		<div classname="app-container">
+		<div className="app-container">
 			<h1>Transaction History:</h1>
-			<table class= "table1">
+			<table className="table1">
 				<thead>
-					<tr class = "tr1">
-    					<th class="th1">Company ID</th>
-    					<th class="th1">Number Of Shares</th>
+					<tr class="tr1">
+						<th class="th1">Company ID</th>
+						<th class="th1">Number Of Shares</th>
 						<th class="th1">Buy/Sell</th>
-    					<th class="th1">Time</th>
-  					</tr>
+						<th class="th1">Time</th>
+					</tr>
 				</thead>
 				<tbody>
-					
-						<tr>
-    						<td class="td1">{contacts.companyId}</td>
-    						<td class="td1">{contacts.buySell}</td>
-   			 				<td class="td1">{contacts.companyId}</td>
-    						<td class="td1">{contacts.sharesHeld}</td>
-  						</tr>
-					
+
+					{
+
+						contacts.map(company => {
+							return (
+								<tr key={company.company_id}>
+									<td class="td1">{company.company_id}</td>
+									<td class="td1">{company.num_shares}</td>
+									<td class="td1">{company.buy_or_sell}</td>
+									<td class="td1">{company.time_executed}</td>
+								</tr>
+							)
+						})
+					}
+
 				</tbody>
 			</table>
 
@@ -50,27 +57,3 @@ export default function TransactionPage() {
 	);
 }
 
-
-
-/*<table class= "table1">
-<thead>
-<tr class = "tr1">
-	<th class="th1">Employee ID</th>
-	<th class="th1">Buy/Sell</th>
-	<th class="th1">Company ID</th>
-	<th class="th1">Shares Held</th>
-  </tr>
-</thead>
-<tbody>
-{contacts.map((contact)=>(
-		<tr>
-		<td class="td1">{contact.companyId}</td>
-		<td class="td1">{contact.buySell}</td>
-			<td class="td1">{contact.companyId}</td>
-		<td class="td1">{contact.sharesHeld}</td>
-	  </tr>
-))}
-
-</tbody>
-</table>
-*/
