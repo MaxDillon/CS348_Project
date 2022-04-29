@@ -11,8 +11,7 @@ metadata = Base.metadata
 class Account(Base):
     __tablename__ = 'account'
 
-    user_id = Column(Integer, primary_key=True, server_default=text(
-        "nextval('account_user_id_seq'::regclass)"))
+    user_id = Column(Integer, primary_key=True, server_default=text("nextval('account_user_id_seq'::regclass)"))
     username = Column(String(250), nullable=False)
     first_name = Column(String(250))
     last_name = Column(String(250))
@@ -34,8 +33,7 @@ class Company(Base):
 class Employee(Base):
     __tablename__ = 'employee'
 
-    employee_id = Column(Integer, primary_key=True, server_default=text(
-        "nextval('employee_employee_id_seq'::regclass)"))
+    employee_id = Column(Integer, primary_key=True, server_default=text("nextval('employee_employee_id_seq'::regclass)"))
     username = Column(String(250), nullable=False)
     first_name = Column(String(250))
     last_name = Column(String(250))
@@ -51,10 +49,27 @@ class Employee(Base):
     )
 
 
+class Fundinfo(Base):
+    __tablename__ = 'fundinfo'
+
+    fund_name = Column(String(50), primary_key=True)
+    fund_description = Column(String(200), nullable=False)
+    parent_company = Column(String(50), nullable=False)
+    fund_value = Column(MONEY, nullable=False)
+    fund_invested = Column(MONEY, nullable=False)
+
+
+t_fundperformance = Table(
+    'fundperformance', metadata,
+    Column('ts', DateTime, nullable=False),
+    Column('fund_value', MONEY, nullable=False),
+    Column('fund_invested', MONEY, nullable=False)
+)
+
+
 t_companyhistory = Table(
     'companyhistory', metadata,
-    Column('company_id', ForeignKey('company.company_id',
-           ondelete='CASCADE', onupdate='CASCADE')),
+    Column('company_id', ForeignKey('company.company_id', ondelete='CASCADE', onupdate='CASCADE')),
     Column('time_fetched', Integer, nullable=False),
     Column('trading_price', MONEY, nullable=False)
 )
@@ -64,8 +79,7 @@ class Loginsession(Base):
     __tablename__ = 'loginsession'
 
     token = Column(LargeBinary, primary_key=True)
-    user_id = Column(ForeignKey('account.user_id',
-                     ondelete='CASCADE', onupdate='CASCADE'))
+    user_id = Column(ForeignKey('account.user_id', ondelete='CASCADE', onupdate='CASCADE'))
     time_created = Column(DateTime)
 
     user = relationship('Account')
@@ -73,17 +87,14 @@ class Loginsession(Base):
 
 t_manages = Table(
     'manages', metadata,
-    Column('manager_id', ForeignKey('employee.employee_id',
-           ondelete='CASCADE', onupdate='CASCADE')),
-    Column('employee_id', ForeignKey('employee.employee_id',
-           ondelete='CASCADE', onupdate='CASCADE'))
+    Column('manager_id', ForeignKey('employee.employee_id', ondelete='CASCADE', onupdate='CASCADE')),
+    Column('employee_id', ForeignKey('employee.employee_id', ondelete='CASCADE', onupdate='CASCADE'))
 )
 
 
 t_paymenthistory = Table(
     'paymenthistory', metadata,
-    Column('user_id', ForeignKey('account.user_id',
-           ondelete='CASCADE', onupdate='CASCADE')),
+    Column('user_id', ForeignKey('account.user_id', ondelete='CASCADE', onupdate='CASCADE')),
     Column('time_created', DateTime, nullable=False),
     Column('amount_invested', Integer, nullable=False)
 )
@@ -91,10 +102,8 @@ t_paymenthistory = Table(
 
 t_transactions = Table(
     'transactions', metadata,
-    Column('company_id', ForeignKey('company.company_id',
-           ondelete='CASCADE', onupdate='CASCADE')),
-    Column('user_id', ForeignKey('account.user_id',
-           ondelete='CASCADE', onupdate='CASCADE')),
+    Column('company_id', ForeignKey('company.company_id', ondelete='CASCADE', onupdate='CASCADE')),
+    Column('user_id', ForeignKey('account.user_id', ondelete='CASCADE', onupdate='CASCADE')),
     Column('time_executed', DateTime, nullable=False),
     Column('num_shares', Integer, nullable=False),
     Column('buy_or_sell', Boolean, nullable=False)
