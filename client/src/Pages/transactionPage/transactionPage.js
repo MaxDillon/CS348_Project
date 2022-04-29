@@ -15,7 +15,7 @@ async function getContacts() {
 export default function TransactionPage() {
 	const [contacts, setContacts] = useState({});
 
-	useEffect(() => {
+	useEffect(async() => {
 		var newContacts = await getContacts()
 
 		setContacts(newContacts)
@@ -28,21 +28,20 @@ export default function TransactionPage() {
 			<table class= "table1">
 				<thead>
 					<tr class = "tr1">
-    					<th class="th1">Employee ID</th>
-    					<th class="th1">Buy/Sell</th>
     					<th class="th1">Company ID</th>
-    					<th class="th1">Shares Held</th>
+    					<th class="th1">Number Of Shares</th>
+						<th class="th1">Buy/Sell</th>
+    					<th class="th1">Time</th>
   					</tr>
 				</thead>
 				<tbody>
-					{contacts.map((contact)=>(
-							<tr>
-    						<td class="td1">{contact.companyId}</td>
-    						<td class="td1">{contact.buySell}</td>
-   			 				<td class="td1">{contact.companyId}</td>
-    						<td class="td1">{contact.sharesHeld}</td>
+					
+						<tr>
+    						<td class="td1">{contacts.companyId}</td>
+    						<td class="td1">{contacts.buySell}</td>
+   			 				<td class="td1">{contacts.companyId}</td>
+    						<td class="td1">{contacts.sharesHeld}</td>
   						</tr>
-					))}
 					
 				</tbody>
 			</table>
@@ -51,3 +50,27 @@ export default function TransactionPage() {
 	);
 }
 
+
+
+/*<table class= "table1">
+<thead>
+<tr class = "tr1">
+	<th class="th1">Employee ID</th>
+	<th class="th1">Buy/Sell</th>
+	<th class="th1">Company ID</th>
+	<th class="th1">Shares Held</th>
+  </tr>
+</thead>
+<tbody>
+{contacts.map((contact)=>(
+		<tr>
+		<td class="td1">{contact.companyId}</td>
+		<td class="td1">{contact.buySell}</td>
+			<td class="td1">{contact.companyId}</td>
+		<td class="td1">{contact.sharesHeld}</td>
+	  </tr>
+))}
+
+</tbody>
+</table>
+*/

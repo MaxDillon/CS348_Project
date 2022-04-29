@@ -14,3 +14,8 @@ VALUES ('MSFT', 'Microsoft', 0, 0),
        ('AMZN', 'Amazon', 0, 0),
        ('GS', 'Goldman Sachs', 0, 0),
        ('UBER', 'Uber', 0, 0);
+
+INSERT INTO Transactions(company_id, user_id, time_executed, num_shares, buy_or_sell)
+VALUES ('123', 1, '2014-07-02 06:14:00.742000000', 3,0), 
+       ('1222', 1, '2014-07-02 06:14:00.742000000', 4,1),
+       ('AMZN', 2, '2014-07-02 06:14:00.742000000', 5,0);

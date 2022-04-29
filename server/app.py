@@ -18,14 +18,12 @@ if __name__ == "__main__":
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'key'
 
-<<<<<<< HEAD
-	app.register_blueprint(authBlueprint.create_blueprint(sessionmaker), url_prefix='/auth')
-	app.register_blueprint(transactionBlueprint.create_blueprint(sessionmaker), url_prefix='/transactions')
-	app.run(debug=True, host='0.0.0.0')
-=======
+    # app.register_blueprint(authBlueprint.create_blueprint(sessionmaker), url_prefix='/auth')
+    # app.register_blueprint(transactionBlueprint.create_blueprint(sessionmaker), url_prefix='/transactions')
+    # app.run(debug=True, host='0.0.0.0')
     sessionmaker = get_sessionmaker()
 
     app.register_blueprint(authBlueprint.create_blueprint(
         sessionmaker), url_prefix='/auth')
+    app.register_blueprint(transactionBlueprint.create_blueprint(sessionmaker), url_prefix='/transactions')
     app.run(debug=True, host='0.0.0.0')
->>>>>>> origin/main
