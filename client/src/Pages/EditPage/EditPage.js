@@ -30,12 +30,12 @@ export default function EditPage(props) {
         <div>
     
             <ul className={"verticalSpace"}>
-                <Field name="Username" field="user_id" id={details.user_id} value={details.username}></Field>
-                <Field name="First Name" field="first_name" id={details.user_id} value={details.first_name}></Field>
-                <Field name="Last Name" field="last_name" id={details.user_id} value={details.last_name}></Field>
-                <Field name="Email" field="email" id={details.user_id} value={details.email}></Field>
-                <Field name="Phone Number" field="phone" id={details.user_id} value={details.phone}></Field>
-                <Field name="Money Invested" field="money_invested" id={details.user_id} value={details.money_invested}></Field>
+                <Field name="Username" field="username" value={details.username}/>
+                <Field name="First Name" field="first_name" value={details.first_name}/>
+                <Field name="Last Name" field="last_name" value={details.last_name}/>
+                <Field name="Email" field="email" value={details.email}/>
+                <Field name="Phone Number" field="phone" value={details.phone}/>
+                <Field name="Money Invested" field="money_invested" value={details.money_invested}/>
 
             </ul>
         </div>
