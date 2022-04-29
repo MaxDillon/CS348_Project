@@ -68,7 +68,7 @@ class Employee(Base):
 
 
 class Fundinfo(Base):
-    __tablename__ = 'fundinfo'
+    __tablename__ = "fundinfo"
 
     fund_name = Column(String(50), primary_key=True)
     fund_description = Column(String(200), nullable=False)
@@ -78,10 +78,11 @@ class Fundinfo(Base):
 
 
 t_fundperformance = Table(
-    'fundperformance', metadata,
-    Column('ts', DateTime, nullable=False),
-    Column('fund_value', MONEY, nullable=False),
-    Column('fund_invested', MONEY, nullable=False)
+    "fundperformance",
+    metadata,
+    Column("ts", DateTime, nullable=False),
+    Column("fund_value", MONEY, nullable=False),
+    Column("fund_invested", MONEY, nullable=False),
 )
 
 
