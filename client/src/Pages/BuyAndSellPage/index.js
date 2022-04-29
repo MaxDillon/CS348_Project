@@ -1,27 +1,56 @@
 import React, { useEffect, useState } from "react";
 import Plot from 'react-plotly.js';
 import { DateTime } from "luxon";
-
+// import { useHistory } from "react-router-history"
 /*
 TODO:
 [] Figure out cors
 [] 
 */
 
+
 export default () => {
 
-    const companyName = "uber"
+    const companyID = "uber"
 
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState()
+    const [companyDetails, setCompanyDetails] = useState()
+
+    const [value, setValue] = useState(0);
+
+    /**
+     * 
+     * @param {int} value Number of stocks in transaction
+     * @param {boolean} buy Is it a buy or a sell transaction
+     */
+    const onSubmitHandler = async (value, buy) => {
+        const res = await fetch("/buySell/", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ buy, "value": value })
+        })
+        const parsedResponse = await res.json()
+
+        if (parsedResponse.ok == false) {
+            alert(parsedResponse.error)
+        }
+        else {
+            alert("Transaction successful")
+            // return to previous page
+        }
+    }
 
     useEffect(() => {
         (async () => {
-            const response = await fetch("/buySell/?company=" + companyName)
+            const response = await fetch("/buySell/?company=" + companyID)
             const parsedResponse = await response.json()
             // parsedResponse: {data: {time_fetched:int, trading_price:str}[], error: str}
 
-            const dates = parsedResponse.data.map(row => row.time_fetched).map(ts => {
+            const dates = parsedResponse.data.stockData.map(row => row.time_fetched).map(ts => {
                 return DateTime
                     .fromSeconds(ts).setZone("America/New_York")
                     .toFormat("kkkk-LL-dd HH:mm:ss")
@@ -29,7 +58,7 @@ export default () => {
                 // https://plotly.com/javascript/time-series/
             })
 
-            const prices = parsedResponse.data.map(row => row.trading_price)
+            const prices = parsedResponse.data.stockData.map(row => row.trading_price)
 
             // console.log(date_data)
             setData(() => ([{
@@ -37,6 +66,12 @@ export default () => {
                 y: prices,
                 type: 'scatter'
             }]))
+
+            setCompanyDetails(
+                parsedResponse.data.companyDetails
+            )
+
+            console.log(parsedResponse)
 
             setIsLoading(false)
         })()
@@ -48,9 +83,29 @@ export default () => {
         {
             !isLoading
                 ? (<>
-                    <h1>{companyName.toUpperCase()}</h1>
+                    <h1>{companyDetails.company_name} - {companyID.toUpperCase()}</h1>
                     <h2>Trading price: {data[0].y[data[0].y.length - 1]}</h2>
-                    <Plot data={data} />
+                    <h2>Current holdings: {companyDetails.num_shares}</h2>
+                    <Plot data={data} style={{
+                        display: "block", width: "80%", margin: "0 auto"
+                    }} />
+                    <div style={{
+                        width: "80%",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-evenly",
+                        alignItems: "center",
+                        margin: "0 auto"
+                    }}>
+                        <h2>Transaction Volume: </h2>
+                        <input value={value} onChange={e => setValue(e.target.value)} type={"number"} />
+                        <button onClick={() => {
+                            onSubmitHandler(value, true)
+                        }}>Buy</button>
+                        <button onClick={() => {
+                            onSubmitHandler(value, true)
+                        }}>Sell</button>
+                    </div>
                 </>
                 )
                 : "Loading"
