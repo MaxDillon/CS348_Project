@@ -35,7 +35,6 @@ export default function EditPage(props) {
                 <Field name="Last Name" field="last_name" value={details.last_name}/>
                 <Field name="Email" field="email" value={details.email}/>
                 <Field name="Phone Number" field="phone" value={details.phone}/>
-                <Field name="Money Invested" field="money_invested" value={details.money_invested}/>
 
             </ul>
         </div>

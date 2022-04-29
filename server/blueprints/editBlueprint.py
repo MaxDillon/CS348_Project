@@ -30,13 +30,11 @@ def create_blueprint(MakeSession: sessionmaker):
         resp.set_data(
             json.dumps(
                 {
-                    "user_id": user.user_id,
                     "username": user.username,
                     "first_name": user.first_name,
                     "last_name": user.last_name,
                     "email": user.email,
                     "phone": user.phone,
-                    "money_invested": user.money_invested,
                 }
             )
         )
