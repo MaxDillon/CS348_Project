@@ -21,3 +21,7 @@ VALUES ('Vanguard 500',
        'As the industry’s first index fund for individual investors, the 500 Index Fund is a low-cost way to gain diversified exposure to the U.S. equity market. ',
        'Vanguard',
        0, 0);
+
+-- Creates fund history --
+INSERT INTO FundPerformance (ts, fund_value, fund_invested)
+VALUES (CURRENT_DATE, 0, 0);
