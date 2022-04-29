@@ -16,7 +16,6 @@ export default function TransactionPage() {
 	useEffect(async () => {
 		var newContacts = await getMarkets()
 		setContacts(newContacts)
-
 	}, [])
 
 	return (
