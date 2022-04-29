@@ -5,6 +5,7 @@ import LoginPage from './Pages/LoginPage/LoginPage'
 import RegisterPage from './Pages/RegisterPage/RegisterPage'
 import InvestorPage from './Pages/InvestorPage/InvestorPage';
 import BuyAndSellPage from './Pages/BuyAndSellPage';
+import FundInfo from './Pages/FundInfoPage/FundInfo';
 
 function App() {
 
@@ -19,6 +20,8 @@ function App() {
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="trade" element={<BuyAndSellPage />} />
+          <Route path="fundinfo" element={<FundInfo />} />
+
         </Routes>
 
       </BrowserRouter>
