@@ -17,7 +17,7 @@ export default function TransactionPage() {
 
 	useEffect(async () => {
 		var newContacts = await getContacts()
-		console.log("answer: ", newContacts)
+		//console.log("answer: ", newContacts)
 		setContacts(newContacts)
 
 	}, [])

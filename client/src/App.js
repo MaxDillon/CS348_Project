@@ -5,7 +5,7 @@ import LoginPage from './Pages/LoginPage/LoginPage'
 import RegisterPage from './Pages/RegisterPage/RegisterPage'
 import InvestorPage from './Pages/InvestorPage/InvestorPage'
 import TransactionPage from './Pages/transactionPage/transactionPage'
-import PageTwo from './Pages/PageTwo/PageTwo'
+import FundInfo from './Pages/fundInfo/fundInfo'
 
 function App() {
 
@@ -20,7 +20,7 @@ function App() {
           <Route path="login" element={<LoginPage/>} />
           <Route path="register" element={<RegisterPage/>} />
           <Route path="transaction" element={<TransactionPage/>} />
-          <Route path="pageTwo" element={<PageTwo/>} />
+          <Route path="fundInfo" element={<FundInfo/>} />
         </Routes>
 
       </BrowserRouter>

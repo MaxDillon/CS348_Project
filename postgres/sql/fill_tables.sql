@@ -19,3 +19,14 @@ INSERT INTO Transactions(company_id, user_id, time_executed, num_shares, buy_or_
 VALUES ('MSFT', 1, '2014-07-02 06:14:00.742000000', 3,'0'), 
        ('APPL', 1, '2014-07-02 06:14:00.742000000', 4,'1'),
        ('AMZN', 2, '2014-07-02 06:14:00.742000000', 5,'0');
+
+-- Creates fund details --
+INSERT INTO FundInfo (fund_name, fund_description, parent_company, fund_value, fund_invested)
+VALUES ('Vanguard 500', 
+       'As the industry’s first index fund for individual investors, the 500 Index Fund is a low-cost way to gain diversified exposure to the U.S. equity market. ',
+       'Vanguard',
+       0, 0);
+
+-- Creates fund history --
+INSERT INTO FundPerformance (ts, fund_value, fund_invested)
+VALUES (CURRENT_DATE, 0, 0);
