@@ -58,3 +58,17 @@ CREATE TABLE IF NOT EXISTS Manages (
   manager_id INT REFERENCES Employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE,
   employee_id INT REFERENCES Employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS FundInfo (
+  fund_name varchar(50) NOT NULL PRIMARY KEY,
+  fund_description varchar(200) NOT NULL,
+  parent_company varchar(50) NOT NULL,
+  fund_value MONEY NOT NULL,
+  fund_invested MONEY NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS FundPerformance (
+  ts TIMESTAMP NOT NULL,
+  fund_value MONEY NOT NULL,
+  fund_invested MONEY NOT NULL
+);
