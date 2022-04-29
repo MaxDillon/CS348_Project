@@ -12,7 +12,7 @@ from auth.auth_tools import (
     check_loggedin_token,
 )
 from sqlalchemy.orm import sessionmaker
-from database.schema import t_transactions
+from database.schema import Account, t_transactions
 
 from database.schema import Employee
 
@@ -47,12 +47,13 @@ def create_blueprint(MakeSession: sessionmaker):
     def updateField():
         resp = make_response()
         data = request.get_json()
-        userid = data.get("id")
         fieldName = data.get("fieldName")
         fieldVal = data.get("fieldVal")
 
         with MakeSession() as session:
-            resp = update_account(resp, userid, fieldName, fieldVal, session)
+            user: Account = get_user(session)
+
+            update_account(user, fieldName, fieldVal, session)
 
         return resp
 
