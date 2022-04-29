@@ -112,9 +112,6 @@ export default function FundInfo() {
                         alignItems: "center",
                         margin: "0 auto"
                     }}>
-                        <h2>Transaction Volume: </h2>
-                        <button>Buy</button>
-                        <button>Sell</button>
                     </div>
                 </>
                 )
