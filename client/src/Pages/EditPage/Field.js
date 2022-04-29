@@ -38,7 +38,7 @@ export default function Field({ name, field, value }) {
     }
 
     return (
-        <div key={name}>
+        <div key={name} className={"stackIt"}>
             <p>{name}</p>
             {isEditing ? 
                 <Edit onSave={handleSubmit} onCancel={() => setEditing(false)} /> : 
@@ -54,18 +54,19 @@ export default function Field({ name, field, value }) {
 function Edit({ onSave, onCancel }) {
     const [value, setValue] = useState("")
     return (
-        <div className={"stackIt"}>
+        <div>
             <input type="text" onChange={e => setValue(e.target.value)} value={value} ></input>
-            <p>
-                <button className={"button"} onClick={e => {
-                    e.preventDefault()
-                    onSave(value)
-                }}>Save</button>
-                <button className={"button"} onClick={ e => {
-                    e.preventDefault()
-                    onCancel()
-                }}>Cancel</button>
-            </p>
+
+            <button className={"button"} onClick={e => {
+                e.preventDefault()
+                onSave(value)
+            }}>Save</button>
+
+            <button className={"button"} onClick={ e => {
+                e.preventDefault()
+                onCancel()
+            }}>Cancel</button>
+
         </div>
 
     )
@@ -73,12 +74,12 @@ function Edit({ onSave, onCancel }) {
 
 function View({ value, onEdit }) {
     return (
-        <div className={"stackIt"}>
-            <p>{value}</p> 
-            <p><button className="button" onClick={e => {
+        <div>
+            <div>{value}</div> 
+            <button className="button" onClick={e => {
                 e.preventDefault()
                 onEdit()
-            }}>Edit</button></p>
+            }}>Edit</button>
         </div>
     )
 }
