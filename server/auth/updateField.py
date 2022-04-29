@@ -8,11 +8,8 @@ from database.schema import Account
 from auth.crypto import encode_password, generate_auth_cookie
 
 
-def update_account(resp: Response, userid, fieldName, fieldVal, session: Session):
-    upd = update(Account)
-    upd = upd.values({fieldName: fieldVal})
-    upd = upd.where(Account.user_id == userid)
-    session.execute(upd)
+def update_account(account: Account, fieldName, fieldVal, session: Session):
+    print(f"set {fieldName} to {fieldVal}", sys.stderr)
+    
+    setattr(account, fieldName, fieldVal)
     session.commit()
-
-    return resp
