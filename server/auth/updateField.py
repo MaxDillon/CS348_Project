@@ -10,6 +10,6 @@ from auth.crypto import encode_password, generate_auth_cookie
 
 def update_account(account: Account, fieldName, fieldVal, session: Session):
     print(f"set {fieldName} to {fieldVal}", sys.stderr)
-    
+
     setattr(account, fieldName, fieldVal)
     session.commit()
