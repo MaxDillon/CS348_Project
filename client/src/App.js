@@ -5,6 +5,7 @@ import LoginPage from './Pages/LoginPage/LoginPage'
 import RegisterPage from './Pages/RegisterPage/RegisterPage'
 import InvestorPage from './Pages/InvestorPage/InvestorPage';
 import EditPage from './Pages/EditPage/EditPage';
+import  CurrentMarketPage  from "./Pages/CurrentMarketPage/CurrentMarketPage";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="login" element={<LoginPage/>} />
           <Route path="register" element={<RegisterPage/>} />
           <Route path="edit" element={<EditPage />} />
+          <Route path="current" element={<CurrentMarketPage />} />
         </Routes>
 
       </BrowserRouter>
