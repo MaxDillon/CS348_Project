@@ -6,7 +6,7 @@ async function getMarkets() {
 		.then(res => res.json())
 		.then(data => {
 			return data
-		})
+		}, [])
 	return res
 }
 
@@ -23,25 +23,25 @@ export default function TransactionPage() {
 			<h1>Markets:</h1>
 			<table className="table1">
 				<thead>
-					<tr class="tr1">
-						<th class="th1">Company ID</th>
-						<th class="th1">Company Name</th>
-						<th class="th1">Number Of Shares</th>
-						<th class="th1">Current Trading Price</th>
-						
+					<tr className="tr1">
+						<th className="th1">Company ID</th>
+						<th className="th1">Company Name</th>
+						<th className="th1">Number Of Shares</th>
+						<th className="th1">Current Trading Price</th>
+
 					</tr>
 				</thead>
 				<tbody>
 
 					{
 
-						contacts.map(company => {
+						contacts.data.map(company => {
 							return (
 								<tr key={company.company_id}>
-									<td class="td1">{company.company_id}</td>
-									<td class="td1">{company.company_name}</td>
-									<td class="td1">{company.num_shares}</td>
-									<td class="td1">{company.current_trading_price}</td>
+									<td className="td1">{company.company_id}</td>
+									<td className="td1">{company.company_name}</td>
+									<td className="td1">{company.num_shares}</td>
+									<td className="td1">{company.current_trading_price}</td>
 								</tr>
 							)
 						})
