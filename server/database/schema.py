@@ -67,6 +67,25 @@ class Employee(Base):
     )
 
 
+class Fundinfo(Base):
+    __tablename__ = "fundinfo"
+
+    fund_name = Column(String(50), primary_key=True)
+    fund_description = Column(String(200), nullable=False)
+    parent_company = Column(String(50), nullable=False)
+    fund_value = Column(MONEY, nullable=False)
+    fund_invested = Column(MONEY, nullable=False)
+
+
+t_fundperformance = Table(
+    "fundperformance",
+    metadata,
+    Column("ts", DateTime, nullable=False),
+    Column("fund_value", MONEY, nullable=False),
+    Column("fund_invested", MONEY, nullable=False),
+)
+
+
 t_companyhistory = Table(
     "companyhistory",
     metadata,
