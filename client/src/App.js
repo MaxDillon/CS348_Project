@@ -5,6 +5,11 @@ import LoginPage from './Pages/LoginPage/LoginPage'
 import RegisterPage from './Pages/RegisterPage/RegisterPage'
 import InvestorPage from './Pages/InvestorPage/InvestorPage';
 import EditPage from './Pages/EditPage/EditPage';
+import BuyAndSellPage from './Pages/BuyAndSellPage';
+import FundInfo from './Pages/FundInfoPage/FundInfo';
+import { useLayoutEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 function App() {
 
@@ -27,6 +32,20 @@ function App() {
 }
 
 function AccountLayout() {
+  const navigate = useNavigate()
+
+	useLayoutEffect(() => {
+		fetch('/auth/isLoggedIn')
+		.then(response => response.json())
+		.then(data => {
+			console.log(data)
+			if (data.answer === false) {
+				navigate("/login")
+				return
+			}
+		})
+	}, [navigate])
+
   return (
     <div>
       <h1>Welcome to the app!</h1>

@@ -10,26 +10,11 @@ async function logout() {
 }
 
 export default function InvestorPage() {
-	const [state, setState] = useState("")
 	const navigate = useNavigate()
-
-	useLayoutEffect(() => {
-		fetch('/auth/isLoggedIn')
-		.then(response => response.json())
-		.then(data => {
-			console.log(data)
-			if (data.answer === false) {
-				navigate("/login")
-				return
-			}
-			setState(data['message'])
-		})
-	}, [navigate])
 
 
 	return (
 	  <div className="App">
-		  <p>{state}</p>
 		  <button onClick={e => {
 				e.preventDefault()
 				logout()
