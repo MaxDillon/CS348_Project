@@ -1,21 +1,17 @@
-.date {
-	color: green;
+.menu_icon {
+	color: aqua;
+	float: left;
+	margin: 25px;
 }
 
-
-
-.loginPanel {
-	background-color: floralwhite;
-	border: 2px solid black;
-	display: inline-block;
-	padding: 20px;
-	border-radius: 10px;
+.menu_bar {
+	background-color: navy;
+	height: 100px;
+	
 }
 
-
-
-.errorMessage {
-	background-color: indianred;
-
-
+.menu_dropdown {
+	flex: auto;
+	background-color: aqua;
+	text-align: left;
 }

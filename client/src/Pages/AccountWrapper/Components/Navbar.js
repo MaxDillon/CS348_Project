@@ -21,13 +21,13 @@ function Navbar() {
 
    return (
       <div>
-         <div>
-            <Link to="#" className="menu-bars">
+         <div className={styles.menu_bar}>
+            <Link to="#" className={styles.menu_icon}>
                <FaIcons.FaBars onClick={toggleSidebar}/>
             </Link>
          </div>
          
-         <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
+         <nav className={sidebar ? styles.menu_dropdown : styles.hidden}>
             <ul className="nav-menu-items">
                <li className="navbar-toggle">
                   <Link to="#" className="menu-bars" >
