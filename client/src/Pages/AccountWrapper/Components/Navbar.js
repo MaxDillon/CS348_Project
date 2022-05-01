@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import * as FaIcons from 'react-icons/fa'
 import * as AiIcons from 'react-icons/ai'
 import { useState } from 'react'
+import cx from 'classnames'
 
 async function logout(navigate) {
 	await fetch('/auth/logout')
@@ -27,7 +28,7 @@ function Navbar() {
             </Link>
          </div>
          
-         <nav className={sidebar ? styles.menu_dropdown : styles.hidden}>
+         <nav className={sidebar ? styles.menu_dropdown : cx(styles.menu_dropdown, styles.hidden)}>
             <ul className="nav-menu-items">
                <li className="navbar-toggle">
                   <Link to="#" className="menu-bars" >
@@ -50,10 +51,12 @@ function Navbar() {
 
 
    function Navlink({ Icon, nav, text, onClick}) {
-
+      const [isHover, setIsHover] = useState(false);
       return (
          <>
-            <li>
+            <li className={isHover ? cx(styles.menu_item, styles.hover): styles.menu_item } 
+               onMouseOver={() => setIsHover(true)} 
+               onMouseOut={() => setIsHover(false)}>
                {onClick ? 
                   <div onClick={e => {
                      e.preventDefault()

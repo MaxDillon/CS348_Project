@@ -1,17 +1,53 @@
 .menu_icon {
 	color: aqua;
-	float: left;
-	margin: 25px;
+	font-size: 2rem;
+	margin: 1rem;
+
 }
 
 .menu_bar {
 	background-color: navy;
-	height: 100px;
+	display: flex;
+	justify-content: start;
+	align-items: center;
+
 	
 }
 
 .menu_dropdown {
-	flex: auto;
+	display: inline-flex;
+	justify-content: center;
 	background-color: aqua;
 	text-align: left;
+	width: 250px;
+	transition: 500ms;
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 100%;	
 }
+
+.menu_dropdown.hidden {
+
+	left: -100%;
+	transition: 500ms;
+}
+
+.menu_item {
+	/* margin-right: 2rem; */
+	display: flex;
+	align-items: center;
+	justify-content: start;
+	list-style-type: none;
+	height: 50px;
+	padding: 10px;
+	width: 100%;
+	
+}
+
+
+.menu_item.hover {
+	background-color: antiquewhite;
+	border-radius: 4px;
+}
+
