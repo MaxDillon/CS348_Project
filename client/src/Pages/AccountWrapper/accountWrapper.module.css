@@ -56,13 +56,20 @@
 	height: 50px;
 	padding: 10px;
 	margin: 0px;
-	width: 100%;
+	width: 90%;
 	cursor: pointer;
 }
 
 .menu_items {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	padding-left: 0;
 	width: 100%;
+	justify-content: flex-start;
+	top: 0px;
+	margin: 0px;
+
 }
 .menu_items span {
 	padding-left: 10px;
@@ -71,8 +78,9 @@
 .exit_button {
 	size: 100px;
 	display: flex;
-	justify-self: end;
-	margin-right: 0px;
+	align-self: flex-start;
+	margin-left: 15px;
+	margin-top: 15px;
 }
 
 .menu_item.hover {
