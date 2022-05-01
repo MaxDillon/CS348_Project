@@ -1,11 +1,11 @@
 # coding: utf-8
 from sqlalchemy import (
-    BigInteger,
     Boolean,
     Column,
     ForeignKey,
     Integer,
     LargeBinary,
+    Numeric,
     String,
     Table,
     text,
@@ -80,7 +80,7 @@ class Fundinfo(Base):
 t_fundperformance = Table(
     "fundperformance",
     metadata,
-    Column("ts", BigInteger, nullable=False),
+    Column("ts", Numeric, nullable=False),
     Column("fund_value", MONEY, nullable=False),
     Column("fund_invested", MONEY, nullable=False),
 )
@@ -93,8 +93,9 @@ t_companyhistory = Table(
         "company_id",
         ForeignKey("company.company_id", ondelete="CASCADE", onupdate="CASCADE"),
     ),
-    Column("time_fetched", BigInteger, nullable=False),
+    Column("time_fetched", Numeric, nullable=False),
     Column("trading_price", MONEY, nullable=False),
+    Column("num_shares", Integer, nullable=False),
 )
 
 
@@ -105,7 +106,7 @@ class Loginsession(Base):
     user_id = Column(
         ForeignKey("account.user_id", ondelete="CASCADE", onupdate="CASCADE")
     )
-    time_created = Column(BigInteger)
+    time_created = Column(Numeric)
 
     user = relationship("Account")
 
@@ -130,7 +131,7 @@ t_paymenthistory = Table(
     Column(
         "user_id", ForeignKey("account.user_id", ondelete="CASCADE", onupdate="CASCADE")
     ),
-    Column("time_created", BigInteger, nullable=False),
+    Column("time_created", Numeric, nullable=False),
     Column("amount_invested", Integer, nullable=False),
 )
 
@@ -145,7 +146,7 @@ t_transactions = Table(
     Column(
         "user_id", ForeignKey("account.user_id", ondelete="CASCADE", onupdate="CASCADE")
     ),
-    Column("time_executed", BigInteger, nullable=False),
+    Column("time_executed", Numeric, nullable=False),
     Column("num_shares", Integer, nullable=False),
     Column("buy_or_sell", Boolean, nullable=False),
 )
