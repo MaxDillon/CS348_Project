@@ -1,10 +1,12 @@
 import React from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { useLayoutEffect } from 'react' 
+import { useState, useLayoutEffect } from 'react' 
+
 import Navbar from './Components/Navbar'
 
 function AccountWrapper() {
   const navigate = useNavigate()
+  const [canDisplay, setCanDisplay] = useState(false);
 
 	useLayoutEffect(() => {
 
@@ -13,18 +15,26 @@ function AccountWrapper() {
 		.then(data => {
 			if (data.answer === false) {
 				navigate("/login")
-				return
-			}
+				
+			} else {
+        setCanDisplay(true)
+      }
 		})
-	}, [navigate])
+	}, [])
 
   return (
-    <div>
-      <Navbar fundName="CS348 Investing Fund"/>
-      <div className="content">
-        <Outlet />
-      </div>
-    </div>
+  
+    <>
+      {canDisplay ?
+        <div>
+          <Navbar fundName="CS348 Investing Fund"/>
+          <div className="content">
+            <Outlet />
+          </div>
+        </div>
+      : <></>}
+
+    </>
   );
 }
 export default AccountWrapper
