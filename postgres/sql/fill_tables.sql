@@ -25,3 +25,14 @@ VALUES ('Vanguard 500',
 -- Creates fund history --
 INSERT INTO FundPerformance (ts, fund_value, fund_invested)
 VALUES (CURRENT_DATE, 0, 0);
+
+
+INSERT INTO PaymentHistory (user_id, time_created, amount_invested)
+VALUES (1, '2016-06-22 19:10:25-07', 10);
+
+INSERT INTO PaymentHistory (user_id, time_created, amount_invested)
+VALUES (1, '2017-06-22 19:10:25-07', 12);
+
+
+INSERT INTO CompanyHistory (company_id, time_fetched, trading_price)
+VALUES ('GOOGL', 1474588929, 12);
