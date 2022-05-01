@@ -17,13 +17,13 @@ def create_blueprint(MakeSession: sessionmaker):
         resp = make_response()
         time_end = datetime.now().timestamp()
 
-        time_start = (datetime.now() - timedelta(days=14365)).timestamp()
+        time_start = (datetime.now() - timedelta(days=(365 * 2))).timestamp()
 
         with MakeSession() as session:
             account = get_user(session)
             data = get_past_holding_dump(session, account, time_start, time_end)
 
-        resp.set_data(json.dumps("asdfa"))
+        resp.set_data(json.dumps({"data": data}))
 
         return resp
 
