@@ -3,48 +3,46 @@ import sys
 from sqlalchemy.orm import Session
 from sqlalchemy import alias, select, func
 from database.schema import Account, t_paymenthistory, t_companyhistory
-
-
-def get_time_range(session: Session, account: Account, time_start: int, time_end: int):
-
-    time_created = t_paymenthistory.columns.time_created
-    earliest_query = (
-        select(func.min(time_created))
-        .where(t_paymenthistory.columns.user_id == account.user_id)
-        .having(func.min(time_created) >= time_start)
-    )
-    start_time = session.execute(earliest_query).one_or_none()
-
-    latest_query = (
-        select(func.max(time_created))
-        .where(t_paymenthistory.columns.user_id == account.user_id)
-        .having(func.max(time_created) <= time_end)
-    )
-    end_time = session.execute(latest_query).one_or_none()
-
-    return (start_time, end_time)
+import numpy as np
 
 
 def get_past_holding_dump(
-    session: Session, account: Account, time_start: datetime, time_end: datetime
+    session: Session, account: Account, time_start: float, time_end: float
 ):
 
-    start_time, end_time = get_time_range(session, account, time_start, time_end)
-    if start_time is None or end_time is None:
-        return None
+    # start_time, end_time = get_time_range(session, account, time_start, time_end)
+    # if start_time is None or end_time is None:
+    #     return None
 
     time_created = t_paymenthistory.columns.time_created
     amount_invested = t_paymenthistory.columns.amount_invested
     user_id = t_paymenthistory.columns.user_id
     time_fetched = t_companyhistory.columns.time_fetched
+    trading_price = t_companyhistory.columns.trading_price
+    company_id = t_companyhistory.columns.company_id
 
-    query = select(
-        time_fetched
-    )  # .where(time_fetched >= start_time, time_fetched <= end_time)
-    print(query, file=sys.stderr)
+    ret = []
 
-    times = session.execute(query).all()
+    for latest_time in np.linspace(time_start, time_end, 100, False):
 
-    print("values", start_time, end_time, times, file=sys.stderr)
+        user_money_query = (
+            select(amount_invested, func.max(time_created))
+            .where(user_id == account.user_id, time_created <= latest_time)
+            .group_by(amount_invested)
+        )
 
-    return []
+        latest_times = (
+            select(company_id, func.max(time_fetched).label("time"))
+            .where(time_fetched <= latest_time)
+            .group_by(company_id)
+            .subquery()
+        )
+
+        total_holdings_query = select(func.sum(trading_price).label("price")).where(
+            company_id == latest_times.c.company_id, time_fetched == latest_times.c.time
+        )
+
+        res = session.execute(total_holdings_query).one()
+        ret.append((latest_time, res.price))
+
+    return ret
