@@ -21,7 +21,7 @@
 	background-color: rgb(0, 0, 111);
 	text-align: left;
 	width: 200px;
-	transition: 500ms;
+	transition: 200ms;
 	position: fixed;
 	
 	top: 0;
@@ -31,8 +31,9 @@
 
 .menu_dropdown.hidden {
 
-	left: -100%;
-	transition: 500ms;
+	/* left: -100%; */
+	transform: translate(-100%, 0px);
+	transition: 200ms;
 }
 
 .menu_item {
