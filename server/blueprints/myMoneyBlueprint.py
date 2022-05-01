@@ -15,9 +15,9 @@ def create_blueprint(MakeSession: sessionmaker):
     def pastHoldings():
 
         resp = make_response()
-        time_end = datetime.now()
+        time_end = datetime.now().timestamp()
 
-        time_start = datetime.now() - timedelta(days=14365)
+        time_start = (datetime.now() - timedelta(days=14365)).timestamp()
 
         with MakeSession() as session:
             account = get_user(session)

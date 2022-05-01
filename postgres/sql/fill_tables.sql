@@ -28,10 +28,10 @@ VALUES (CURRENT_DATE, 0, 0);
 
 
 INSERT INTO PaymentHistory (user_id, time_created, amount_invested)
-VALUES (1, '2016-06-22 19:10:25-07', 10);
+VALUES 
+(1, 1574588929, 10),
+(1, 1374588929, 12);
 
-INSERT INTO PaymentHistory (user_id, time_created, amount_invested)
-VALUES (1, '2017-06-22 19:10:25-07', 12);
 
 
 INSERT INTO CompanyHistory (company_id, time_fetched, trading_price)

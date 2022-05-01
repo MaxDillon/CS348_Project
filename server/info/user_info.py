@@ -8,7 +8,7 @@ from database.schema import Account, t_paymenthistory, t_companyhistory
 
 
 
-def get_time_range(session: Session, account: Account, time_start: datetime, time_end: datetime):
+def get_time_range(session: Session, account: Account, time_start: int, time_end: int):
 
 	time_created = t_paymenthistory.columns.time_created
 	earliest_query = select(func.min(time_created)).where(t_paymenthistory.columns.user_id == account.user_id).having(func.min(time_created) >= time_start)
