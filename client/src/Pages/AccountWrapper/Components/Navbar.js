@@ -11,7 +11,7 @@ async function logout(navigate) {
    .then(() => navigate("/login"))
 }
 
-function Navbar() {
+function Navbar({ fundName }) {
    const navigate = useNavigate()
 
    const [sidebar, setSidebar] = useState(false);
@@ -26,6 +26,8 @@ function Navbar() {
             <Link to="#" className={styles.menu_icon}>
                <FaIcons.FaBars onClick={toggleSidebar}/>
             </Link>
+            <span>{fundName}</span>
+
          </div>
          
          <nav className={sidebar ? styles.menu_dropdown : cx(styles.menu_dropdown, styles.hidden)}>
@@ -60,7 +62,7 @@ function Navbar() {
                if (onClick) { onClick() }
                else if (path) { navigate(path) }
                
-            }}className={isHover ? cx(styles.menu_item, styles.hover): styles.menu_item } 
+            }} className={isHover ? cx(styles.menu_item, styles.hover): styles.menu_item } 
                onMouseOver={() => setIsHover(true)} 
                onMouseOut={() => setIsHover(false)}>
                   <Icon />

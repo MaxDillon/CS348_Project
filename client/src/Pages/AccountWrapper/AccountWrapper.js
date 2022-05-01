@@ -20,7 +20,7 @@ function AccountWrapper() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar fundName="CS348 Investing Fund"/>
       <div className="content">
         <Outlet />
       </div>
