@@ -14,12 +14,12 @@ CREATE TABLE IF NOT EXISTS Account (
 CREATE TABLE IF NOT EXISTS LoginSession (
   token BYTEA PRIMARY KEY,
   user_id INT REFERENCES Account (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
-  time_created BIGINT 
+  time_created DECIMAL 
 );
 
 CREATE TABLE IF NOT EXISTS PaymentHistory (
   user_id INT REFERENCES Account (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
-  time_created BIGINT NOT NULL,
+  time_created DECIMAL NOT NULL,
   amount_invested INT NOT NULL
 );
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS Company (
 CREATE TABLE IF NOT EXISTS Transactions (
   company_id varchar(250) REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
   user_id INT REFERENCES Account (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
-  time_executed BIGINT NOT NULL,
+  time_executed DECIMAL NOT NULL,
   num_shares INT NOT NULL,
   buy_or_sell BOOLEAN NOT NULL
 );
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS Employee (
 
 CREATE TABLE IF NOT EXISTS CompanyHistory (
   company_id varchar(250) REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
-  time_fetched BIGINT NOT NULL,
+  time_fetched DECIMAL NOT NULL,
   trading_price MONEY NOT NULL,
   num_shares INT NOT NULL
 );
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS FundInfo (
 );
 
 CREATE TABLE IF NOT EXISTS FundPerformance (
-  ts BIGINT NOT NULL,
+  ts DECIMAL NOT NULL,
   fund_value MONEY NOT NULL,
   fund_invested MONEY NOT NULL
 );
