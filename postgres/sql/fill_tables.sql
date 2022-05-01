@@ -30,9 +30,22 @@ VALUES (CURRENT_DATE, 0, 0);
 INSERT INTO PaymentHistory (user_id, time_created, amount_invested)
 VALUES 
 (1, 1574588929, 10),
+(1, 1774588929, 2),
+(1, 1574582346, 3),
+(1, 1574581191, 7),
+(1, 1574588929, 5),
 (1, 1374588929, 12);
 
 
 
 INSERT INTO CompanyHistory (company_id, time_fetched, trading_price)
-VALUES ('GOOGL', 1474588929, 12);
+VALUES 
+('GOOGL', 1511362342, 1),
+('GOOGL', 1588366500, 2),
+('GOOGL', 1588366502, 3),
+('GOOGL', 1588366505, 4),
+('GOOGL', 1621324232, 5),
+('GOOGL', 1651438500, 6),
+('GOOGL', 1651438502, 7),
+('GOOGL', 1651438505, 8),
+('GOOGL', 1689234123, 9);
