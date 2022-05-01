@@ -11,7 +11,6 @@ function AccountWrapper() {
     fetch('/auth/isLoggedIn')
 		.then(response => response.json())
 		.then(data => {
-			console.log(data)
 			if (data.answer === false) {
 				navigate("/login")
 				return

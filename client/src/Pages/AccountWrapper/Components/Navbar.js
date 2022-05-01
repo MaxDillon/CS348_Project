@@ -29,16 +29,15 @@ function Navbar() {
          </div>
          
          <nav className={sidebar ? styles.menu_dropdown : cx(styles.menu_dropdown, styles.hidden)}>
-            <ul className="nav-menu-items">
-               <li className="navbar-toggle">
+            <ul className={styles.menu_items}>
+               <li className={styles.exit_button}>
                   <Link to="#" className="menu-bars" >
-                     <AiIcons.AiOutlineClose onClick={toggleSidebar}/>
+                     <AiIcons.AiOutlineClose onClick={toggleSidebar} size={40} color="white"/>
                   </Link>
                </li>
-               <Navlink Icon={AiIcons.AiOutlineClose} onClick={()=>{logout(navigate)}} text="Logout"/>
-               <Navlink Icon={AiIcons.AiOutlineClose} onClick={()=>{logout(navigate)}} text="Logout"/>
-               <Navlink Icon={AiIcons.AiOutlineClose} onClick={()=>{logout(navigate)}} text="Logout"/>
-               <Navlink Icon={AiIcons.AiOutlineClose} onClick={()=>{logout(navigate)}} text="Logout"/>
+               <Navlink Icon={FaIcons.FaDoorOpen} onClick={()=>{logout(navigate)}} text="Logout"/>
+               <Navlink Icon={FaIcons.FaDesktop} path="/account/dashboard" text="Dashboard"/>
+               <Navlink Icon={AiIcons.AiOutlineClose} path="/account/test" text="Test"/>
 
             </ul>
          </nav>
@@ -50,26 +49,22 @@ function Navbar() {
 
 
 
-   function Navlink({ Icon, nav, text, onClick}) {
+   function Navlink({ Icon, path, text, onClick}) {
       const [isHover, setIsHover] = useState(false);
+      const navigate = useNavigate()
+
       return (
          <>
-            <li className={isHover ? cx(styles.menu_item, styles.hover): styles.menu_item } 
+            <li onClick={e => {
+               e.preventDefault()
+               if (onClick) { onClick() }
+               else if (path) { navigate(path) }
+               
+            }}className={isHover ? cx(styles.menu_item, styles.hover): styles.menu_item } 
                onMouseOver={() => setIsHover(true)} 
                onMouseOut={() => setIsHover(false)}>
-               {onClick ? 
-                  <div onClick={e => {
-                     e.preventDefault()
-                     onClick()
-                  }}>
                   <Icon />
                   <span>{text}</span>
-                  </div>:
-                  <Link to={nav}>
-                  <Icon />
-                  <span>{text}</span>
-                  </Link>
-               }
             </li>
          </>
       )
