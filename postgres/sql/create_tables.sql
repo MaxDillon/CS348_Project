@@ -51,7 +51,8 @@ CREATE TABLE IF NOT EXISTS Employee (
 CREATE TABLE IF NOT EXISTS CompanyHistory (
   company_id varchar(250) REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
   time_fetched BIGINT NOT NULL,
-  trading_price MONEY NOT NULL
+  trading_price MONEY NOT NULL,
+  num_shares INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Manages (
