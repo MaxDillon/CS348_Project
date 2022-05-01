@@ -3,6 +3,8 @@ import { RegisterPanel } from './Components/RegisterPanel';
 import { useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import sha256 from 'crypto-js/sha256'
+import loginStyles from '../LoginPage/loginPage.module.css'
+
 
 async function registerUser(email, username, password) {
 	const res = await fetch('/auth/register', {
@@ -50,7 +52,7 @@ export default function RegisterPage() {
 
 
 	return (
-		<div>
+		<div className={loginStyles.loginPage}>
 			<h1>Login Page</h1>
 			<RegisterPanel registerUser={onSubmit} />
 		</div>

@@ -3,6 +3,7 @@ import { LoginPanel } from './Components/LoginPanel'
 import { useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import sha256 from 'crypto-js/sha256'
+import styles from './loginPage.module.css'
 
 async function loginUser(username, password) {
 
@@ -50,7 +51,7 @@ export default function LoginPage() {
 
 
 	return (
-		<div>
+		<div className={styles.loginPage}>
 			<h1>Login Page</h1>
 			<LoginPanel loginUser={onSubmit} />
 		</div>
