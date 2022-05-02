@@ -1,9 +1,9 @@
-from sqlalchemy import select
+from sqlalchemy import false, select
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker, Session
 import flask
 from auth.auth_tools import login_required
-from database.schema import Company, t_companyhistory
+from database.schema import Company, Fundinfo, t_companyhistory
 # from plotly.offline import plot
 # from plotly.graph_objs import Scatter
 
@@ -76,16 +76,48 @@ def create_blueprint(Makesession: sessionmaker):
             res = flask.make_response(flask.jsonify(response_body), 400)
             return res
 
-        # Check if we have cash floating
-        enoughMoney = False
+        # Cleaning the request
+        reqBody["company"] = reqBody["company"].upper()
+        reqBody["value"] = int(reqBody["value"])
 
-        if (enoughMoney):
-            response_body["ok"] = True
-            res = flask.make_response(flask.jsonify(response_body), 200)
-            return res
-        else:
-            response_body["error"] = "Insufficient funds"
-            res = flask.make_response(flask.jsonify(response_body), 400)
-            return res
+        print(reqBody)
+
+        if reqBody["buy"] == True:
+            # Check if we have cash floating
+            fundValueQuery = session.query(Fundinfo.fund_value)
+            fundValue = session.execute(fundValueQuery).one()\
+                ._asdict()['fund_value']
+
+            print("fundvalue: ", fundValue, flush=True)
+
+            # Get last fetched time
+            ts = session.execute(
+                session.query(sqlalchemy.func.max(
+                    t_companyhistory.columns.time_fetched)
+                )
+                .filter(t_companyhistory.columns.company_id == reqBody["company"])
+            ).one()[0]
+
+            # Check the value of a share in the market now
+            stockPriceQuery = session.query(t_companyhistory.columns.trading_price)\
+                .filter(t_companyhistory.columns.company_id == reqBody["company"])\
+                .filter(t_companyhistory.columns.time_fetched == ts)
+
+            stockPrice = session.execute(stockPriceQuery).one()[0]
+
+            print("stock price: ", stockPrice, flush=True)
+
+            enoughMoney = fundValue * reqBody["value"] > stockPrice
+
+            print("enough money: ", enoughMoney, flush=True)
+
+            if not enoughMoney:
+                response_body["error"] = "Insufficient funds"
+                res = flask.make_response(flask.jsonify(response_body), 400)
+                return res
+
+        response_body["ok"] = True
+        res = flask.make_response(flask.jsonify(response_body), 200)
+        return res
 
     return buySellBlueprint

@@ -3,7 +3,6 @@ from retry import retry
 from blueprints import authBlueprint, buySellBlueprint, editBlueprint
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from flask_cors import CORS
 
 
 @retry(delay=1)

@@ -13,14 +13,14 @@ TODO:
      * @param {int} value Number of stocks in transaction
      * @param {boolean} buy Is it a buy or a sell transaction
      */
-const onSubmitHandler = async (value, buy) => {
+const onSubmitHandler = async (value, buy, company) => {
     const res = await fetch("/buySell/", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ buy, "value": value })
+        body: JSON.stringify({ buy, "value": value, company })
     })
     const parsedResponse = await res.json()
 
@@ -100,10 +100,10 @@ export default () => {
                         <h2>Transaction Volume: </h2>
                         <input value={value} onChange={e => setValue(e.target.value)} type={"number"} />
                         <button onClick={() => {
-                            onSubmitHandler(value, true)
+                            onSubmitHandler(value, true, companyID)
                         }}>Buy</button>
                         <button onClick={() => {
-                            onSubmitHandler(value, true)
+                            onSubmitHandler(value, false, companyID)
                         }}>Sell</button>
                     </div>
                 </>
