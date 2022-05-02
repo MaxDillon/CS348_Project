@@ -24,4 +24,4 @@ VALUES ('Vanguard 500',
 
 -- Creates fund history --
 INSERT INTO FundPerformance (ts, fund_value, fund_invested)
-VALUES (CURRENT_DATE, 0, 0);
+VALUES (extract(epoch from now()), 0, 0);
