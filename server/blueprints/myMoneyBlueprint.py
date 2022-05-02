@@ -23,7 +23,7 @@ def create_blueprint(MakeSession: sessionmaker):
             account = get_user(session)
             data = get_past_holding_dump(session, account, time_start, time_end)
 
-        resp.set_data(json.dumps({"data": data}))
+        resp.set_data(json.dumps({"data": data}, indent=4))
 
         return resp
 
