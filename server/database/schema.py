@@ -2,10 +2,10 @@
 from sqlalchemy import (
     Boolean,
     Column,
-    DateTime,
     ForeignKey,
     Integer,
     LargeBinary,
+    Numeric,
     String,
     Table,
     text,
@@ -67,6 +67,25 @@ class Employee(Base):
     )
 
 
+class Fundinfo(Base):
+    __tablename__ = "fundinfo"
+
+    fund_name = Column(String(50), primary_key=True)
+    fund_description = Column(String(200), nullable=False)
+    parent_company = Column(String(50), nullable=False)
+    fund_value = Column(MONEY, nullable=False)
+    fund_invested = Column(MONEY, nullable=False)
+
+
+t_fundperformance = Table(
+    "fundperformance",
+    metadata,
+    Column("ts", Numeric, nullable=False),
+    Column("fund_value", MONEY, nullable=False),
+    Column("fund_invested", MONEY, nullable=False),
+)
+
+
 t_companyhistory = Table(
     "companyhistory",
     metadata,
@@ -74,8 +93,9 @@ t_companyhistory = Table(
         "company_id",
         ForeignKey("company.company_id", ondelete="CASCADE", onupdate="CASCADE"),
     ),
-    Column("time_fetched", Integer, nullable=False),
+    Column("time_fetched", Numeric, nullable=False),
     Column("trading_price", MONEY, nullable=False),
+    Column("num_shares", Integer, nullable=False),
 )
 
 
@@ -86,7 +106,7 @@ class Loginsession(Base):
     user_id = Column(
         ForeignKey("account.user_id", ondelete="CASCADE", onupdate="CASCADE")
     )
-    time_created = Column(DateTime)
+    time_created = Column(Numeric)
 
     user = relationship("Account")
 
@@ -111,7 +131,7 @@ t_paymenthistory = Table(
     Column(
         "user_id", ForeignKey("account.user_id", ondelete="CASCADE", onupdate="CASCADE")
     ),
-    Column("time_created", DateTime, nullable=False),
+    Column("time_created", Numeric, nullable=False),
     Column("amount_invested", Integer, nullable=False),
 )
 
@@ -126,7 +146,7 @@ t_transactions = Table(
     Column(
         "user_id", ForeignKey("account.user_id", ondelete="CASCADE", onupdate="CASCADE")
     ),
-    Column("time_executed", DateTime, nullable=False),
+    Column("time_executed", Numeric, nullable=False),
     Column("num_shares", Integer, nullable=False),
     Column("buy_or_sell", Boolean, nullable=False),
 )
