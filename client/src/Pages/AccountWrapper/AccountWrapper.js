@@ -1,6 +1,8 @@
 import React from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { useState, useLayoutEffect } from 'react' 
+import { useState, useLayoutEffect } from 'react'
+import styles from './accountWrapper.module.css'
+
 
 import Navbar from './Components/Navbar'
 
@@ -28,7 +30,7 @@ function AccountWrapper() {
       {canDisplay ?
         <div>
           <Navbar fundName="CS348 Investing Fund"/>
-          <div className="content">
+          <div className={styles.content}>
             <Outlet />
           </div>
         </div>
