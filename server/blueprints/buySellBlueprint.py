@@ -1,12 +1,13 @@
-from sqlalchemy import false, select, update
+from sqlalchemy import false, insert, select, update
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker, Session
 import flask
-from auth.auth_tools import login_required
-from database.schema import Company, Fundinfo, t_companyhistory
+from auth.auth_tools import login_required, get_user
+from database.schema import Company, Fundinfo, t_companyhistory, t_transactions
+from datetime import datetime
 
 # TODO:
-# [] update stocks owned if buying/selling
+# [*] update stocks owned if buying/selling
 # [*] write condition for when selling
 # [] create new transaction
 
@@ -176,13 +177,22 @@ def create_blueprint(Makesession: sessionmaker):
                 "message": f"Successfuly sold {reqBody['value']} shares of {reqBody['company']}"
             }
 
+        # Create a new transaction
+        user_id = get_user(session).user_id
+
+        insert(t_transactions).values(
+            company_id=reqBody["company"],
+            user_id=user_id,
+            time_executed=datetime.now().timestamp(),
+            num_shares=reqBody["value"],
+            buy_or_sell=reqBody["buy"]
+        )
+
         # Update the stocks owned
         setSharesOwned(session, reqBody["company"], sharesOwned)
 
         # Update the cash floating
         setFundvalue(session, fundValue)
-
-        # Create a new transaction
 
         session.commit()
         session.close()
