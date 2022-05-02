@@ -5,7 +5,7 @@ from flask import Blueprint, make_response, request
 from auth.auth_tools import get_user
 from sqlalchemy.orm import sessionmaker
 
-from info.user_info import get_past_holding_dump
+from info.user_info import get_past_holdings
 
 
 def create_blueprint(MakeSession: sessionmaker):
@@ -21,7 +21,7 @@ def create_blueprint(MakeSession: sessionmaker):
 
         with MakeSession() as session:
             account = get_user(session)
-            times, values = get_past_holding_dump(
+            times, values = get_past_holdings(
                 session, account, time_start, time_end
             )
 
