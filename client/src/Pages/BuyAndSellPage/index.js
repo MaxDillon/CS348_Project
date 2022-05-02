@@ -24,7 +24,7 @@ const onSubmitHandler = async (value, buy, company) => {
     })
     const parsedResponse = await res.json()
 
-    if (parsedResponse.ok == false) {
+    if (parsedResponse.error != null || parsedResponse.data == null) {
         alert(parsedResponse.error)
     }
     else {
@@ -51,8 +51,9 @@ export default () => {
             // parsedResponse: {data: {time_fetched:int, trading_price:str}[], error: str}
 
             const dates = parsedResponse.data.stockData.map(row => row.time_fetched).map(ts => {
+
                 return DateTime
-                    .fromSeconds(ts).setZone("America/New_York")
+                    .fromSeconds(parseInt(ts)).setZone("America/New_York")
                     .toFormat("kkkk-LL-dd HH:mm:ss")
                 // https://moment.github.io/luxon/#/formatting?id=table-of-tokens
                 // https://plotly.com/javascript/time-series/

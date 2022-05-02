@@ -5,6 +5,8 @@ import flask
 from auth.auth_tools import login_required, get_user
 from database.schema import Company, Fundinfo, t_companyhistory, t_transactions
 from datetime import datetime
+from re import sub
+from decimal import Decimal
 
 # TODO:
 # [*] update stocks owned if buying/selling
@@ -12,7 +14,11 @@ from datetime import datetime
 # [] create new transaction
 
 
-def getCurrentShareprice(session: Session, company: str) -> float:
+def moneyStringToDecimal(money):
+    return Decimal(sub(r'[^\d.]', '', money))
+
+
+def getCurrentShareprice(session: Session, company: str):
     # Get last fetched time
     ts = session.execute(
         session.query(sqlalchemy.func.max(
@@ -28,7 +34,7 @@ def getCurrentShareprice(session: Session, company: str) -> float:
 
     stockPrice = session.execute(stockPriceQuery).one()[0]
 
-    return float(stockPrice[1:])
+    return moneyStringToDecimal(stockPrice)
 
 
 def getFundvalue(session: Session):
@@ -116,86 +122,89 @@ def create_blueprint(Makesession: sessionmaker):
             "data": None
         }
 
-        session: Session = Makesession()
+        # session: Session = Makesession()
 
-        reqBody = flask.request.get_json(silent=True)
+        with Makesession() as session:
 
-        if (reqBody == None):
-            response_body["error"] = "Malformed body"
-            res = flask.make_response(flask.jsonify(response_body), 400)
-            return res
+            reqBody = flask.request.get_json(silent=True)
 
-        if (reqBody == {}):
-            response_body["error"] = "Empty body"
-            res = flask.make_response(flask.jsonify(response_body), 400)
-            return res
-
-        # Cleaning the request
-        reqBody["company"] = reqBody["company"].upper()
-        reqBody["value"] = int(reqBody["value"])
-
-        # Check our cash floating
-        fundValue = float(getFundvalue(session)[1:])
-        print("fundvalue: ", fundValue, '\t', type(fundValue), flush=True)
-
-        # Check the value of a shares
-        stockPrice = getCurrentShareprice(session, reqBody["company"])
-        print("stock price: ", stockPrice, flush=True)
-
-        # Get number of shares owned
-        sharesOwned = getSharesOwned(session, reqBody["company"])
-        print("shares owned: ", sharesOwned, flush=True)
-
-        if reqBody["buy"] == True:
-
-            # Check if our floating cash is more than the transaction cost
-            if fundValue < stockPrice * reqBody["value"]:
-                response_body["error"] = "Insufficient funds"
+            if (reqBody == None):
+                response_body["error"] = "Malformed body"
                 res = flask.make_response(flask.jsonify(response_body), 400)
                 return res
 
-            # Updates the floating cash
-            fundValue -= stockPrice * reqBody["value"]
-
-            # Updates the number of shares owned
-            sharesOwned += reqBody["value"]
-
-            response_body["data"] = {
-                "message": f"Successfuly bought {reqBody['value']} shares of {reqBody['company']}"
-            }
-        else:
-            # Check if we have enough stocks for that company
-            if sharesOwned < reqBody["value"]:
-                response_body["error"] = "Insufficient shares owned"
+            if (reqBody == {}):
+                response_body["error"] = "Empty body"
                 res = flask.make_response(flask.jsonify(response_body), 400)
                 return res
 
-            sharesOwned -= reqBody["value"]
-            fundValue += stockPrice * reqBody["value"]
+            # Cleaning the request
+            reqBody["company"] = reqBody["company"].upper()
+            reqBody["value"] = int(reqBody["value"])
 
-            response_body["data"] = {
-                "message": f"Successfuly sold {reqBody['value']} shares of {reqBody['company']}"
-            }
+            # Check our cash floating
+            fundValue = moneyStringToDecimal(getFundvalue(session))
+            print("fundvalue: ", fundValue, '\t', type(fundValue), flush=True)
 
-        # Create a new transaction
-        user_id = get_user(session).user_id
+            # Check the value of a shares
+            stockPrice = getCurrentShareprice(session, reqBody["company"])
+            print("stock price: ", stockPrice, flush=True)
 
-        insert(t_transactions).values(
-            company_id=reqBody["company"],
-            user_id=user_id,
-            time_executed=datetime.now().timestamp(),
-            num_shares=reqBody["value"],
-            buy_or_sell=reqBody["buy"]
-        )
+            # Get number of shares owned
+            sharesOwned = getSharesOwned(session, reqBody["company"])
+            print("shares owned: ", sharesOwned, flush=True)
 
-        # Update the stocks owned
-        setSharesOwned(session, reqBody["company"], sharesOwned)
+            if reqBody["buy"] == True:
 
-        # Update the cash floating
-        setFundvalue(session, fundValue)
+                # Check if our floating cash is more than the transaction cost
+                if fundValue < stockPrice * reqBody["value"]:
+                    response_body["error"] = "Insufficient funds"
+                    res = flask.make_response(
+                        flask.jsonify(response_body), 400)
+                    return res
 
-        session.commit()
-        session.close()
+                # Updates the floating cash
+                fundValue -= stockPrice * reqBody["value"]
+
+                # Updates the number of shares owned
+                sharesOwned += reqBody["value"]
+
+                response_body["data"] = {
+                    "message": f"Successfuly bought {reqBody['value']} shares of {reqBody['company']}"
+                }
+            else:
+                # Check if we have enough stocks for that company
+                if sharesOwned < reqBody["value"]:
+                    response_body["error"] = "Insufficient shares owned"
+                    res = flask.make_response(
+                        flask.jsonify(response_body), 400)
+                    return res
+
+                sharesOwned -= reqBody["value"]
+                fundValue += stockPrice * reqBody["value"]
+
+                response_body["data"] = {
+                    "message": f"Successfuly sold {reqBody['value']} shares of {reqBody['company']}"
+                }
+
+            # Create a new transaction
+            user_id = get_user(session).user_id
+
+            session.execute(insert(t_transactions).values(
+                company_id=reqBody["company"],
+                user_id=user_id,
+                time_executed=datetime.now().timestamp(),
+                num_shares=reqBody["value"],
+                buy_or_sell=reqBody["buy"]
+            ))
+
+            # Update the stocks owned
+            setSharesOwned(session, reqBody["company"], sharesOwned)
+
+            # Update the cash floating
+            setFundvalue(session, fundValue)
+
+            session.commit()
 
         res = flask.make_response(flask.jsonify(response_body), 200)
 
