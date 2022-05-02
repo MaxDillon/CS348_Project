@@ -1,10 +1,9 @@
 import secrets
 import bcrypt
-from datetime import timedelta
+from datetime import timedelta, datetime
 from sqlalchemy.orm import Session
 from functools import wraps
 from database.schema import Loginsession
-from datetime import datetime
 
 
 def encode_password(password: str):
@@ -22,7 +21,7 @@ def generate_auth_cookie(resp, user_id: str, session: Session):
     token = secrets.token_hex(32).encode("utf-8")
 
     new_login_session = Loginsession(
-        user_id=user_id, token=token, time_created=datetime.now()
+        user_id=user_id, token=token, time_created=datetime.now().timestamp()
     )
     session.add(new_login_session)
     session.commit()

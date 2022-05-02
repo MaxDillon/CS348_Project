@@ -24,7 +24,7 @@ VALUES ('Vanguard 500',
 
 -- Creates fund history --
 INSERT INTO FundPerformance (ts, fund_value, fund_invested)
-VALUES (CURRENT_DATE, 0, 0);
+VALUES (extract(epoch from now()), 0, 0);
 
 
 INSERT INTO PaymentHistory (user_id, time_created, amount_invested)
@@ -49,3 +49,4 @@ VALUES
 ('GOOGL', 1651438502, 7),
 ('GOOGL', 1651438505, 8),
 ('GOOGL', 1689234123, 9);
+
