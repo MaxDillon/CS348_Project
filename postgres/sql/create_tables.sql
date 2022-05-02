@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Account (
   email varchar(250),
   phone varchar(250),
   pass_hash BYTEA NOT NULL,
-  money_invested INT NOT NULL DEFAULT 0
+  money_invested NUMERIC(16,2) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS LoginSession (
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS PaymentHistory (
 CREATE TABLE IF NOT EXISTS Company (
   company_id varchar(250) PRIMARY KEY,
   company_name varchar(250) NOT NULL,
-  current_trading_price MONEY NOT NULL,
+  current_trading_price NUMERIC(16,2) NOT NULL,
   num_shares INT NOT NULL
 );
 
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS Employee (
 CREATE TABLE IF NOT EXISTS CompanyHistory (
   company_id varchar(250) REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
   time_fetched DECIMAL NOT NULL,
-  trading_price MONEY NOT NULL
+  trading_price NUMERIC(16,2) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Manages (
@@ -63,12 +63,12 @@ CREATE TABLE IF NOT EXISTS FundInfo (
   fund_name varchar(50) NOT NULL PRIMARY KEY,
   fund_description varchar(200) NOT NULL,
   parent_company varchar(50) NOT NULL,
-  fund_value MONEY NOT NULL,
-  fund_invested MONEY NOT NULL
+  fund_value NUMERIC(16,2) NOT NULL,
+  fund_invested NUMERIC(16,2) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS FundPerformance (
   ts DECIMAL NOT NULL,
-  fund_value MONEY NOT NULL,
-  fund_invested MONEY NOT NULL
+  fund_value NUMERIC(16,2) NOT NULL,
+  fund_invested NUMERIC(16,2) NOT NULL
 );
