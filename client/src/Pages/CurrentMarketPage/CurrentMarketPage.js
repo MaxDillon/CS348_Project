@@ -28,7 +28,7 @@ export default function TransactionPage() {
 						<th className="th1">Company Name</th>
 						<th className="th1">Number Of Shares</th>
 						<th className="th1">Current Trading Price</th>
-
+						<th className="th1">Action </th>
 					</tr>
 				</thead>
 				<tbody>
@@ -42,6 +42,7 @@ export default function TransactionPage() {
 									<td className="td1">{company.company_name}</td>
 									<td className="td1">{company.num_shares}</td>
 									<td className="td1">{company.current_trading_price}</td>
+									<td> <button type="button">Buy/Sell</button></td>
 								</tr>
 							)
 						})
