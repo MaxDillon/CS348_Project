@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import "./currentMarketPage.css";
+import "./currentMarketPage.module.css";
 
 async function getMarkets() {
 	var res = await fetch("/current/getMarket")
