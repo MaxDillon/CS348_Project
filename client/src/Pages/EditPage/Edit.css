@@ -1,0 +1,18 @@
+.stackIt {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-left: 10%
+    };
+
+.button{
+    height:10px;
+    width:100px
+}
+
+.verticalSpace {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    height: 200px;
+}

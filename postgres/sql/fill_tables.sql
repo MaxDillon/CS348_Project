@@ -14,3 +14,14 @@ VALUES ('MSFT', 'Microsoft Corporation', 0, 0),
        ('AMZN', 'Amazon.com, Inc.', 0, 0),
        ('GS', 'The Goldman Sachs Group, Inc.', 0, 0),
        ('UBER', 'Uber Technologies Inc', 0, 0);
+
+-- Creates fund details --
+INSERT INTO FundInfo (fund_name, fund_description, parent_company, fund_value, fund_invested)
+VALUES ('Vanguard 500', 
+       'As the industry’s first index fund for individual investors, the 500 Index Fund is a low-cost way to gain diversified exposure to the U.S. equity market. ',
+       'Vanguard',
+       0, 0);
+
+-- Creates fund history --
+INSERT INTO FundPerformance (ts, fund_value, fund_invested)
+VALUES (CURRENT_DATE, 0, 0);

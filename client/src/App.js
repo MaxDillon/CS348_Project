@@ -5,6 +5,7 @@ import LoginPage from './Pages/LoginPage/LoginPage'
 import RegisterPage from './Pages/RegisterPage/RegisterPage'
 import InvestorPage from './Pages/InvestorPage/InvestorPage';
 import BuyAndSellPage from './Pages/BuyAndSellPage';
+import EditPage from './Pages/EditPage/EditPage';
 
 function App() {
 
@@ -19,6 +20,8 @@ function App() {
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="trade/:companyID" element={<BuyAndSellPage />} />
+          <Route path="edit" element={<EditPage />} />
+
         </Routes>
 
       </BrowserRouter>
