@@ -1,8 +1,10 @@
 import React from 'react'
 import { RegisterPanel } from './Components/RegisterPanel';
-import { useLayoutEffect } from 'react'
+import { useState, useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import sha256 from 'crypto-js/sha256'
+import loginStyles from '../LoginPage/loginPage.module.css'
+
 
 async function registerUser(email, username, password) {
 	const res = await fetch('/auth/register', {
@@ -22,8 +24,10 @@ async function registerUser(email, username, password) {
 
 
 
+
 export default function RegisterPage() {
 	const navigate = useNavigate()
+	const [canDisplay, setCanDisplay] = useState(false);
 
 	useLayoutEffect(() => {
 		fetch('/auth/isLoggedIn')
@@ -31,10 +35,11 @@ export default function RegisterPage() {
 		.then(data => {
 			if (data.answer === true) {
 				navigate("/account/dashboard")
+			} else {
+				setCanDisplay(true)
 			}
-			return data.answer
-		}).then(answer => console.log(answer))
-	}, [navigate])
+		})
+	}, [])
 
 	async function onSubmit(email, username, password) {
 		const success = await registerUser(email, username, password)
@@ -50,10 +55,16 @@ export default function RegisterPage() {
 
 
 	return (
-		<div>
+	<>{ canDisplay ? 
+		<div className={loginStyles.loginPage}>
 			<h1>Login Page</h1>
 			<RegisterPanel registerUser={onSubmit} />
 		</div>
+
+		: <></>
+	}</>
+
+
 	);
 }
 
