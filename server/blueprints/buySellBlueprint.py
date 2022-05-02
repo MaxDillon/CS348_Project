@@ -4,8 +4,50 @@ from sqlalchemy.orm import sessionmaker, Session
 import flask
 from auth.auth_tools import login_required
 from database.schema import Company, Fundinfo, t_companyhistory
-# from plotly.offline import plot
-# from plotly.graph_objs import Scatter
+
+# TODO:
+# [] update stocks owned if buying/selling
+# [*] write condition for when selling
+# [] create new transaction
+
+
+def getCurrentShareprice(session: Session, company: str) -> int:
+    # Get last fetched time
+    ts = session.execute(
+        session.query(sqlalchemy.func.max(
+            t_companyhistory.columns.time_fetched)
+        )
+        .filter(t_companyhistory.columns.company_id == company)
+    ).one()[0]
+
+    # Check the value of a share in the market now
+    stockPriceQuery = session.query(t_companyhistory.columns.trading_price)\
+        .filter(t_companyhistory.columns.company_id == company)\
+        .filter(t_companyhistory.columns.time_fetched == ts)
+
+    stockPrice = session.execute(stockPriceQuery).one()[0]
+
+    return stockPrice
+
+
+def getFundvalue(session: Session):
+    # with_for_update() sets update lock:
+    # https://dev.to/ivankwongtszfung/safe-update-operation-in-postgresql-using-sqlalchemy-3ela
+
+    fundValueQuery = session.query(
+        Fundinfo.fund_value).with_for_update()
+    fundValue = session.execute(fundValueQuery).one()\
+        ._asdict()['fund_value']
+
+    return fundValue
+
+
+def getSharesOwned(session: Session, company: str) -> int:
+    sharesOwnedQuery = session.query(Company.num_shares).filter(
+        Company.company_id == company)
+
+    sharesOwned = session.execute(sharesOwnedQuery).one()[0]
+    return sharesOwned
 
 
 def create_blueprint(Makesession: sessionmaker):
@@ -59,7 +101,7 @@ def create_blueprint(Makesession: sessionmaker):
     def executeTransaction():
         response_body = {
             "error": None,
-            "ok": False
+            "data": None
         }
 
         session: Session = Makesession()
@@ -80,44 +122,58 @@ def create_blueprint(Makesession: sessionmaker):
         reqBody["company"] = reqBody["company"].upper()
         reqBody["value"] = int(reqBody["value"])
 
-        print(reqBody)
+        # Check our cash floating
+        fundValue = getFundvalue()
+        print("fundvalue: ", fundValue, flush=True)
+
+        # Check the value of a shares
+        stockPrice = getCurrentShareprice(session, reqBody["company"])
+        print("stock price: ", stockPrice, flush=True)
+
+        # Get number of shares owned
+        sharesOwned = getSharesOwned(session, reqBody["company"])
+        print("shares owned: ", sharesOwned, flush=True)
 
         if reqBody["buy"] == True:
-            # Check if we have cash floating
-            fundValueQuery = session.query(Fundinfo.fund_value)
-            fundValue = session.execute(fundValueQuery).one()\
-                ._asdict()['fund_value']
 
-            print("fundvalue: ", fundValue, flush=True)
-
-            # Get last fetched time
-            ts = session.execute(
-                session.query(sqlalchemy.func.max(
-                    t_companyhistory.columns.time_fetched)
-                )
-                .filter(t_companyhistory.columns.company_id == reqBody["company"])
-            ).one()[0]
-
-            # Check the value of a share in the market now
-            stockPriceQuery = session.query(t_companyhistory.columns.trading_price)\
-                .filter(t_companyhistory.columns.company_id == reqBody["company"])\
-                .filter(t_companyhistory.columns.time_fetched == ts)
-
-            stockPrice = session.execute(stockPriceQuery).one()[0]
-
-            print("stock price: ", stockPrice, flush=True)
-
-            enoughMoney = fundValue * reqBody["value"] > stockPrice
-
-            print("enough money: ", enoughMoney, flush=True)
-
-            if not enoughMoney:
+            # Check if our floating cash is more than the transaction cost
+            if fundValue < stockPrice * reqBody["value"]:
                 response_body["error"] = "Insufficient funds"
                 res = flask.make_response(flask.jsonify(response_body), 400)
                 return res
 
-        response_body["ok"] = True
+            # Updates the floating cash
+            fundValue -= stockPrice * reqBody["value"]
+
+            # Updates the number of shares owned
+            sharesOwned += reqBody["value"]
+
+            response_body["data"] = {
+                "message": f"Successfuly bought {reqBody['value']} shares of {reqBody['company']}"
+            }
+
+        else:
+            # Check if we have enough stocks for that company
+            if sharesOwned < reqBody["value"]:
+                response_body["error"] = "Insufficient shares owned"
+                res = flask.make_response(flask.jsonify(response_body), 400)
+                return res
+
+            sharesOwned -= reqBody["value"]
+            fundValue += stockPrice * reqBody["value"]
+
+            response_body["data"] = {
+                "message": f"Successfuly sold {reqBody['value']} shares of {reqBody['company']}"
+            }
+
+        # Update the stocks owned
+        session.query()
+
+        session.commit()
+        session.close()
+
         res = flask.make_response(flask.jsonify(response_body), 200)
+
         return res
 
     return buySellBlueprint
