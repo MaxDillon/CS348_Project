@@ -1,4 +1,4 @@
-from sqlalchemy import false, select
+from sqlalchemy import false, select, update
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker, Session
 import flask
@@ -11,7 +11,7 @@ from database.schema import Company, Fundinfo, t_companyhistory
 # [] create new transaction
 
 
-def getCurrentShareprice(session: Session, company: str) -> int:
+def getCurrentShareprice(session: Session, company: str) -> float:
     # Get last fetched time
     ts = session.execute(
         session.query(sqlalchemy.func.max(
@@ -27,7 +27,7 @@ def getCurrentShareprice(session: Session, company: str) -> int:
 
     stockPrice = session.execute(stockPriceQuery).one()[0]
 
-    return stockPrice
+    return float(stockPrice[1:])
 
 
 def getFundvalue(session: Session):
@@ -42,12 +42,21 @@ def getFundvalue(session: Session):
     return fundValue
 
 
+def setFundvalue(session: Session, newFundValue: int):
+    session.query(Fundinfo).update({"fund_value": newFundValue})
+
+
 def getSharesOwned(session: Session, company: str) -> int:
     sharesOwnedQuery = session.query(Company.num_shares).filter(
         Company.company_id == company)
 
     sharesOwned = session.execute(sharesOwnedQuery).one()[0]
     return sharesOwned
+
+
+def setSharesOwned(session: Session, company: str, sharesAmt: int):
+    session.query(Company).filter(Company.company_id ==
+                                  company).update({"num_shares": sharesAmt})
 
 
 def create_blueprint(Makesession: sessionmaker):
@@ -82,7 +91,9 @@ def create_blueprint(Makesession: sessionmaker):
         companyDetailsQuery = session.query(
             Company.company_name, Company.num_shares).filter(Company.company_id == companyID)
 
-        companyDetails = session.execute(companyDetailsQuery).one()
+        companyDetails = session.execute(companyDetailsQuery).one()._asdict()
+        companyDetails["currentTradingPrice"] = getCurrentShareprice(
+            session, companyID)
 
         session.close()
 
@@ -90,7 +101,7 @@ def create_blueprint(Makesession: sessionmaker):
 
         response_body["data"] = {
             "stockData": response,
-            "companyDetails": companyDetails._asdict()
+            "companyDetails": companyDetails
         }
 
         res = flask.make_response(flask.jsonify(response_body), 200)
@@ -123,8 +134,8 @@ def create_blueprint(Makesession: sessionmaker):
         reqBody["value"] = int(reqBody["value"])
 
         # Check our cash floating
-        fundValue = getFundvalue()
-        print("fundvalue: ", fundValue, flush=True)
+        fundValue = float(getFundvalue(session)[1:])
+        print("fundvalue: ", fundValue, '\t', type(fundValue), flush=True)
 
         # Check the value of a shares
         stockPrice = getCurrentShareprice(session, reqBody["company"])
@@ -151,7 +162,6 @@ def create_blueprint(Makesession: sessionmaker):
             response_body["data"] = {
                 "message": f"Successfuly bought {reqBody['value']} shares of {reqBody['company']}"
             }
-
         else:
             # Check if we have enough stocks for that company
             if sharesOwned < reqBody["value"]:
@@ -167,7 +177,12 @@ def create_blueprint(Makesession: sessionmaker):
             }
 
         # Update the stocks owned
-        session.query()
+        setSharesOwned(session, reqBody["company"], sharesOwned)
+
+        # Update the cash floating
+        setFundvalue(session, fundValue)
+
+        # Create a new transaction
 
         session.commit()
         session.close()

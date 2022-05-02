@@ -84,7 +84,7 @@ export default () => {
             !isLoading
                 ? (<>
                     <h1>{companyDetails.company_name} - {companyID.toUpperCase()}</h1>
-                    <h2>Trading price: {data[0].y[data[0].y.length - 1]}</h2>
+                    <h2>Trading price: {companyDetails.currentTradingPrice}</h2>
                     <h2>Current holdings: {companyDetails.num_shares}</h2>
                     <Plot data={data} style={{
                         display: "block", width: "80%", margin: "0 auto"
