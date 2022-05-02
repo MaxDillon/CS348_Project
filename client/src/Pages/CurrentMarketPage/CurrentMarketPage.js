@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import "./currentMarketPage.module.css";
+import styles from "./currentMarketPage.module.css";
 
 async function getMarkets() {
 	var res = await fetch("/current/getMarket")
@@ -19,7 +19,7 @@ export default function TransactionPage() {
 	},[])
 
 	return (
-		<div className="app-container">
+		<div className={styles.currentTable}>
 			<h1>Markets:</h1>
 			<table className="table1">
 				<thead>
