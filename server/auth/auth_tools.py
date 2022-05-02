@@ -7,8 +7,8 @@ from database.schema import Account, Loginsession
 
 
 def get_accounts(session: Session):
-    account_query = select(user_id, username, cast(
-        pass_hash, String).label("pass_hash"))
+    account_query = select(Account.user_id, Account.username, cast(
+        Account.pass_hash, String).label("pass_hash"))
     accounts = session.execute(account_query).all()
 
     return {'data': [dict(account) for account in accounts]}

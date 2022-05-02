@@ -1,17 +1,41 @@
 import React, { useEffect, useState } from "react";
 import Plot from 'react-plotly.js';
 import { DateTime } from "luxon";
+import { useParams } from "react-router-dom";
 // import { useHistory } from "react-router-history"
 /*
 TODO:
-[] Figure out cors
-[] 
+[*] Figure out cors 
 */
 
+/**
+     * 
+     * @param {int} value Number of stocks in transaction
+     * @param {boolean} buy Is it a buy or a sell transaction
+     */
+const onSubmitHandler = async (value, buy) => {
+    const res = await fetch("/buySell/", {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ buy, "value": value })
+    })
+    const parsedResponse = await res.json()
+
+    if (parsedResponse.ok == false) {
+        alert(parsedResponse.error)
+    }
+    else {
+        alert("Transaction successful")
+        // return to previous page
+    }
+}
 
 export default () => {
 
-    const companyID = "uber"
+    const { companyID } = useParams()
 
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState()
@@ -19,30 +43,6 @@ export default () => {
 
     const [value, setValue] = useState(0);
 
-    /**
-     * 
-     * @param {int} value Number of stocks in transaction
-     * @param {boolean} buy Is it a buy or a sell transaction
-     */
-    const onSubmitHandler = async (value, buy) => {
-        const res = await fetch("/buySell/", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ buy, "value": value })
-        })
-        const parsedResponse = await res.json()
-
-        if (parsedResponse.ok == false) {
-            alert(parsedResponse.error)
-        }
-        else {
-            alert("Transaction successful")
-            // return to previous page
-        }
-    }
 
     useEffect(() => {
         (async () => {

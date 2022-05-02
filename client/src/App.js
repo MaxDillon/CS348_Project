@@ -18,7 +18,7 @@ function App() {
           </Route>
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
-          <Route path="trade" element={<BuyAndSellPage />} />
+          <Route path="trade/:companyID" element={<BuyAndSellPage />} />
         </Routes>
 
       </BrowserRouter>
