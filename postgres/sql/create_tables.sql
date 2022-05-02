@@ -8,32 +8,32 @@ CREATE TABLE IF NOT EXISTS Account (
   email varchar(250),
   phone varchar(250),
   pass_hash BYTEA NOT NULL,
-  money_invested INT NOT NULL DEFAULT 0
+  money_invested NUMERIC(16,2) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS LoginSession (
   token BYTEA PRIMARY KEY,
   user_id INT REFERENCES Account (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
-  time_created TIMESTAMP 
+  time_created DECIMAL 
 );
 
 CREATE TABLE IF NOT EXISTS PaymentHistory (
   user_id INT REFERENCES Account (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
-  time_created TIMESTAMP NOT NULL,
+  time_created DECIMAL NOT NULL,
   amount_invested INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Company (
   company_id varchar(250) PRIMARY KEY,
   company_name varchar(250) NOT NULL,
-  current_trading_price MONEY NOT NULL,
+  current_trading_price NUMERIC(16,2) NOT NULL,
   num_shares INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Transactions (
   company_id varchar(250) REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
   user_id INT REFERENCES Account (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
-  time_executed TIMESTAMP NOT NULL,
+  time_executed DECIMAL NOT NULL,
   num_shares INT NOT NULL,
   buy_or_sell BOOLEAN NOT NULL
 );
@@ -50,11 +50,25 @@ CREATE TABLE IF NOT EXISTS Employee (
 
 CREATE TABLE IF NOT EXISTS CompanyHistory (
   company_id varchar(250) REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
-  time_fetched INT NOT NULL,
-  trading_price MONEY NOT NULL
+  time_fetched DECIMAL NOT NULL,
+  trading_price NUMERIC(16,2) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Manages (
   manager_id INT REFERENCES Employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE,
   employee_id INT REFERENCES Employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS FundInfo (
+  fund_name varchar(50) NOT NULL PRIMARY KEY,
+  fund_description varchar(200) NOT NULL,
+  parent_company varchar(50) NOT NULL,
+  fund_value NUMERIC(16,2) NOT NULL,
+  fund_invested NUMERIC(16,2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS FundPerformance (
+  ts DECIMAL NOT NULL,
+  fund_value NUMERIC(16,2) NOT NULL,
+  fund_invested NUMERIC(16,2) NOT NULL
 );

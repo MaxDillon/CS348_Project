@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useState } from 'react'
 import PropTypes from 'prop-types';
-
+import loginStyles from '../../LoginPage/loginPage.module.css'
 
 
 export function RegisterPanel({registerUser}) {
@@ -17,7 +17,7 @@ export function RegisterPanel({registerUser}) {
 	}
 
 	return (
-		<div>
+		<div className={loginStyles.loginPanel}>
 			{toggleFailure && 
 			<p>
 				The Username or Password you entered was Incorrect!

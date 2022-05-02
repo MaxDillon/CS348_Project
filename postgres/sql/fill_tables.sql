@@ -14,3 +14,37 @@ VALUES ('MSFT', 'Microsoft Corporation', 0, 0),
        ('AMZN', 'Amazon.com, Inc.', 0, 0),
        ('GS', 'The Goldman Sachs Group, Inc.', 0, 0),
        ('UBER', 'Uber Technologies Inc', 0, 0);
+
+-- Creates fund details --
+INSERT INTO FundInfo (fund_name, fund_description, parent_company, fund_value, fund_invested)
+VALUES ('Vanguard 500', 
+       'As the industry’s first index fund for individual investors, the 500 Index Fund is a low-cost way to gain diversified exposure to the U.S. equity market. ',
+       'Vanguard',
+       0, 0);
+
+-- Creates fund history --
+INSERT INTO FundPerformance (ts, fund_value, fund_invested)
+VALUES 
+(0, 0, 0),
+(10, 13, 0),
+(20, 39, 0),
+(30, 19, 0),
+(40, 22, 0),
+(50, 26, 0),
+(60, 20, 0),
+(70, 23, 0),
+(80, 25, 0),
+(90, 46, 0),
+(extract(epoch from now()), 0, 0);
+
+
+INSERT INTO PaymentHistory (user_id, time_created, amount_invested)
+VALUES 
+(1, 1, 4),
+(1, 6, 5),
+(1, 14, 30),
+(1, 34, 36),
+(1, 61, 500),
+(1, 85, 576);
+
+

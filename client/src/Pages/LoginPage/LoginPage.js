@@ -1,8 +1,9 @@
 import React from 'react'
 import { LoginPanel } from './Components/LoginPanel'
-import { useLayoutEffect } from 'react'
+import { useState, useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import sha256 from 'crypto-js/sha256'
+import styles from './loginPage.module.css'
 
 async function loginUser(username, password) {
 
@@ -24,6 +25,7 @@ async function loginUser(username, password) {
 
 export default function LoginPage() {
 	const navigate = useNavigate()
+	const [canDisplay, setCanDisplay] = useState(false);
 
 	useLayoutEffect(() => {
 		fetch('/auth/isLoggedIn')
@@ -31,10 +33,12 @@ export default function LoginPage() {
 		.then(data => {
 			if (data.answer === true) {
 				navigate("/account/dashboard")
+			} else {
+				setCanDisplay(true)
 			}
-			return data.answer
-		}).then(answer => console.log(answer))
-	}, [navigate])
+		})
+
+	}, [])
 
 
 	async function onSubmit(username, password) {
@@ -50,10 +54,14 @@ export default function LoginPage() {
 
 
 	return (
-		<div>
-			<h1>Login Page</h1>
-			<LoginPanel loginUser={onSubmit} />
-		</div>
+		<>
+		{ canDisplay ?
+			<div className={styles.loginPage}>
+				<h1>Login Page</h1>
+				<LoginPanel loginUser={onSubmit} />
+			</div> : <></>
+		}
+		</>
 	);
 }
 
