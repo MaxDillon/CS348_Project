@@ -24,29 +24,27 @@ VALUES ('Vanguard 500',
 
 -- Creates fund history --
 INSERT INTO FundPerformance (ts, fund_value, fund_invested)
-VALUES (extract(epoch from now()), 0, 0);
+VALUES 
+(0, 0, 0),
+(10, 13, 0),
+(20, 39, 0),
+(30, 19, 0),
+(40, 22, 0),
+(50, 26, 0),
+(60, 20, 0),
+(70, 23, 0),
+(80, 25, 0),
+(90, 46, 0),
+(extract(epoch from now()), 0, 0);
 
 
 INSERT INTO PaymentHistory (user_id, time_created, amount_invested)
 VALUES 
-(1, 1574588929, 10),
-(1, 1774588929, 2),
-(1, 1574582346, 3),
-(1, 1574581191, 7),
-(1, 1574588929, 5),
-(1, 1374588929, 12);
+(1, 1, 4),
+(1, 6, 5),
+(1, 14, 30),
+(1, 34, 36),
+(1, 61, 500),
+(1, 85, 576);
 
-
-
-INSERT INTO CompanyHistory (company_id, time_fetched, trading_price)
-VALUES 
-('GOOGL', 1511362342, 1),
-('GOOGL', 1588366500, 2),
-('GOOGL', 1588366502, 3),
-('GOOGL', 1588366505, 4),
-('GOOGL', 1621324232, 5),
-('GOOGL', 1651438500, 6),
-('GOOGL', 1651438502, 7),
-('GOOGL', 1651438505, 8),
-('GOOGL', 1689234123, 9);
 
