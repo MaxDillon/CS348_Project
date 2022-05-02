@@ -6,17 +6,17 @@ async function getMarkets() {
 		.then(res => res.json())
 		.then(data => {
 			return data
-		}, [])
+		})
 	return res
 }
 
 export default function TransactionPage() {
-	const [contacts, setContacts] = useState([]);
+	const [contacts, setContacts] = useState({ 'data': [] });
 
 	useEffect(async () => {
 		var newContacts = await getMarkets()
 		setContacts(newContacts)
-	})
+	},[])
 
 	return (
 		<div className="app-container">
