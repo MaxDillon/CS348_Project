@@ -22,7 +22,6 @@ function App() {
           <Route path="/" element={<Navigate replace to="/login"/>} />
           <Route path="account" element={<AccountWrapper />} >
             <Route path="dashboard" element={<InvestorPage/>} />
-            <Route path="test" element={<div style={{'text-align': 'center'}}> Test Stuff </div>} />
             <Route path="edit" element={<EditPage />} />
             <Route path="fundinfo" element={<FundInfo />} />
           </Route>

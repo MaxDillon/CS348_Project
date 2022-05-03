@@ -10,7 +10,7 @@ export default function FundInfo() {
         fetch("/money/pastHoldings")
         .then(res => res.json())
         .then( data => {
-            console.log(data)
+
             setData({
                 x: data.times,
                 y: data.values,
