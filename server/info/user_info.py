@@ -28,8 +28,6 @@ def get_fund_fitness(session: Session, time):
 def get_past_holdings(
     session: Session, account: Account, time_start: float, time_end: float
 ):
-    time_start = 0
-    time_end = 100
 
     times = []
     values = []
