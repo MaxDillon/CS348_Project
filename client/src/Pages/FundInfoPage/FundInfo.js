@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Plot from 'react-plotly.js';
+import TableDatePicker from './DatePicker.js'
 
 export default function FundInfo() {
 
@@ -31,6 +32,8 @@ export default function FundInfo() {
                 style={{
                     display: "block", width: "100%", margin: "0 auto", listStylePosition: "relative"
                     }} />
+            <TableDatePicker />
+            <br></br>
         </>): "Loading" }
     </>)
 }
