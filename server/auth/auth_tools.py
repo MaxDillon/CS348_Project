@@ -47,7 +47,7 @@ def check_loggedin_token(token, session: Session):
         return False
 
     session_query = select(Loginsession).where(
-        Loginsession.token == token.encode("utf-8")
+        Loginsession.token == token.encode('utf-8')
     )
     this_session = session.execute(session_query).one_or_none()
 
@@ -66,7 +66,8 @@ def login_required(MakeSession: sessionmaker):
             with MakeSession() as session:
                 is_logged_in = check_loggedin_token(cookie_token, session)
 
-            if not is_logged_in:  # or cookie_username != user_info.get('username'):
+            # or cookie_username != user_info.get('username'):
+            if not is_logged_in:
                 resp = make_response({"message": "Incorrect Auth Token"})
                 resp.delete_cookie("token")
                 resp.status_code = 401

@@ -15,7 +15,10 @@
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
     "universal-cookie": "^4.0.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "react-plotly.js": "^2.5.1",
+    "plotly.js": "^2.11.1",
+    "luxon": "^2.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
