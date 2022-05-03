@@ -14,28 +14,27 @@ from database.schema import Employee
 
 
 def create_blueprint(MakeSession: sessionmaker):
-	transactionBlueprint = Blueprint('transactionBlueprint', __name__)
+    transactionBlueprint = Blueprint('transactionBlueprint', __name__)
 
-	@transactionBlueprint.route('/getTransactions', methods=['GET'])
-	def getTransactions():
-		resp = make_response()
+    @transactionBlueprint.route('/getTransactions', methods=['GET'])
+    def getTransactions():
+        resp = make_response()
 
-		session:Session = MakeSession()
+        session: Session = MakeSession()
 
-		# with MakeSession() as session:
-		user = get_user(session)
-		#print("User->\t", user, flush=True)
-		#print("hello!!!  ", user.user_id, flush=True)
+        # with MakeSession() as session:
+        user = get_user(session)
+        #print("User->\t", user, flush=True)
+        #print("hello!!!  ", user.user_id, flush=True)
 
-		numb = user.user_id
-		transactionHistory = select(t_transactions.columns.company_id,t_transactions.columns.num_shares,t_transactions.columns.buy_or_sell,t_transactions.columns.time_executed).filter(t_transactions.columns.user_id == numb)
-		historyDetails = session.execute(transactionHistory).all()
-		response = [x._asdict() for x in historyDetails]
-		res = flask.make_response(flask.jsonify(response), 200)
-		session.close()
-		#print(res)
-		return res
+        numb = user.user_id
+        transactionHistory = select(t_transactions.columns.company_id, t_transactions.columns.num_shares,
+                                    t_transactions.columns.buy_or_sell, t_transactions.columns.time_executed).filter(t_transactions.columns.user_id == numb)
+        historyDetails = session.execute(transactionHistory).all()
+        response = [x._asdict() for x in historyDetails]
+        res = flask.make_response(flask.jsonify(response), 200)
+        session.close()
+        # print(res)
+        return res
 
-
-	return transactionBlueprint
-
+    return transactionBlueprint

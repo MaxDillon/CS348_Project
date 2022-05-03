@@ -9,7 +9,8 @@ async function getContacts() {
 		.then(data => {
 			return data
 		})
-		return res
+	console.log(res)
+	return res
 }
 
 export default function TransactionPage() {
@@ -43,7 +44,7 @@ export default function TransactionPage() {
 								<tr key={company.company_id}>
 									<td class="td1">{company.company_id}</td>
 									<td class="td1">{company.num_shares}</td>
-									<td class="td1">{company.buy_or_sell}</td>
+									<td class="td1">{company.buy_or_sell ? "Buy" : "Sell"}</td>
 									<td class="td1">{company.time_executed}</td>
 								</tr>
 							)

@@ -26,11 +26,11 @@ function App() {
             <Route path="test" element={<div style={{ 'text-align': 'center' }}> Test Stuff </div>} />
             <Route path="edit" element={<EditPage />} />
             <Route path="trade/:companyID" element={<BuyAndSellPage />} />
+            <Route path="transaction" element={<TransactionPage />} />
+            <Route path="fundInfo" element={<FundInfo />} />
           </Route>
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
-          <Route path="transaction" element={<TransactionPage />} />
-          <Route path="fundInfo" element={<FundInfo />} />
         </Routes >
 
       </BrowserRouter >

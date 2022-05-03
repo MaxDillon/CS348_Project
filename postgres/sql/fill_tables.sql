@@ -17,7 +17,7 @@ VALUES ('MSFT', 'Microsoft Corporation', 0, 30),
 
 INSERT INTO Transactions(company_id, user_id, time_executed, num_shares, buy_or_sell)
 VALUES ('MSFT', 1, '1651551135', 3,'0'), 
-       ('APPL', 1, '1651551200', 4,'1'),
+       ('GOOGL', 1, '1651551200', 4,'1'),
        ('AMZN', 2, '1651551135', 5,'0');
 
 -- Creates fund details --
