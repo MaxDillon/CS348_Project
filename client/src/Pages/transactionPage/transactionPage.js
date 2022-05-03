@@ -9,17 +9,17 @@ async function getContacts() {
 		.then(data => {
 			return data
 		})
-	console.log(res)
 	return res
 }
 
 export default function TransactionPage() {
 	const [contacts, setContacts] = useState([]);
 
-	useEffect(async () => {
-		var newContacts = await getContacts()
-		//console.log("answer: ", newContacts)
-		setContacts(newContacts)
+	useEffect(() => {
+		getContacts()
+		.then(data => {
+			setContacts(data)
+		})
 
 	}, [])
 
@@ -28,11 +28,11 @@ export default function TransactionPage() {
 			<h1>Transaction History:</h1>
 			<table className="table1">
 				<thead>
-					<tr class="tr1">
-						<th class="th1">Company ID</th>
-						<th class="th1">Number Of Shares</th>
-						<th class="th1">Buy/Sell</th>
-						<th class="th1">Time</th>
+					<tr className="tr1">
+						<th className="th1">Company ID</th>
+						<th className="th1">Number Of Shares</th>
+						<th className="th1">Buy/Sell</th>
+						<th className="th1">Time</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -42,10 +42,10 @@ export default function TransactionPage() {
 						contacts.map(company => {
 							return (
 								<tr key={company.company_id}>
-									<td class="td1">{company.company_id}</td>
-									<td class="td1">{company.num_shares}</td>
-									<td class="td1">{company.buy_or_sell ? "Buy" : "Sell"}</td>
-									<td class="td1">{company.time_executed}</td>
+									<td className="td1">{company.company_id}</td>
+									<td className="td1">{company.num_shares}</td>
+									<td className="td1">{company.buy_or_sell ? "Buy" : "Sell"}</td>
+									<td className="td1">{company.time_executed}</td>
 								</tr>
 							)
 						})
