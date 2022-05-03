@@ -11,7 +11,7 @@ from info.user_info import get_past_holdings
 def create_blueprint(MakeSession: sessionmaker):
     myMoneyBlueprint = Blueprint("myMoneyBlueprint", __name__)
 
-    @myMoneyBlueprint.route("/pastHoldings", methods=["GET"])
+    @myMoneyBlueprint.route("/pastHoldings", methods=["POST"])
     def pastHoldings():
 
         resp = make_response()

@@ -6,9 +6,22 @@ export default function FundInfo() {
 
     const [data, setData] = useState()
     const [isLoading, setIsLoading] = useState(true)
+    const [start, setStart] = useState(0)
+    const [end, setEnd] = useState(100)
+
 
     useEffect(() => {
-        fetch("/money/pastHoldings")
+        fetch("/money/pastHoldings", 
+        {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'start': start,
+                'end': end
+            })
+        })
         .then(res => res.json())
         .then( data => {
 
@@ -20,7 +33,7 @@ export default function FundInfo() {
             setIsLoading(false)
         })
 
-    }, []) 
+    }, [start, end]) 
 
 
 
@@ -32,8 +45,9 @@ export default function FundInfo() {
                 style={{
                     display: "block", width: "100%", margin: "0 auto", listStylePosition: "relative"
                     }} />
-            <TableDatePicker />
-            <br></br>
+            
         </>): "Loading" }
+        <TableDatePicker setStart={setStart} setEnd={setEnd}/>
+            <br></br>
     </>)
 }
