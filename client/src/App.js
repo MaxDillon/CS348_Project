@@ -3,7 +3,9 @@ import { BrowserRouter, Route, Routes, Navigate, Link, Outlet } from 'react-rout
 
 import LoginPage from './Pages/LoginPage/LoginPage'
 import RegisterPage from './Pages/RegisterPage/RegisterPage'
-import InvestorPage from './Pages/InvestorPage/InvestorPage';
+import InvestorPage from './Pages/InvestorPage/InvestorPage'
+import TransactionPage from './Pages/transactionPage/transactionPage'
+import FundInfo from './Pages/fundInfo/fundInfo'
 import BuyAndSellPage from './Pages/BuyAndSellPage';
 import EditPage from './Pages/EditPage/EditPage';
 import { useLayoutEffect } from 'react';
@@ -21,16 +23,18 @@ function App() {
           <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="account" element={<AccountWrapper />} >
             <Route path="dashboard" element={<InvestorPage />} />
-            <Route path="test" element={<div style={{'text-align': 'center'}}> Test Stuff </div>} />
+            <Route path="test" element={<div style={{ 'text-align': 'center' }}> Test Stuff </div>} />
             <Route path="edit" element={<EditPage />} />
             <Route path="trade/:companyID" element={<BuyAndSellPage />} />
+            <Route path="transaction" element={<TransactionPage />} />
+            <Route path="fundInfo" element={<FundInfo />} />
           </Route>
-          <Route path="login" element={<LoginPage/>} />
+          <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
-        </Routes>
+        </Routes >
 
-      </BrowserRouter>
-    </div>
+      </BrowserRouter >
+    </div >
   );
 }
 

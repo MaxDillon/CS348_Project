@@ -41,6 +41,8 @@ function Navbar({ fundName }) {
                <Navlink Icon={FaIcons.FaDesktop} path="/account/dashboard" text="Dashboard"/>
                <Navlink Icon={AiIcons.AiOutlineClose} path="/account/test" text="Test"/>
                <Navlink Icon={AiIcons.AiOutlineClose} path="/account/edit" text="Edit"/>
+               <Navlink Icon={AiIcons.AiOutlineClose} path="/account/fundInfo" text="Fund Info"/>
+               <Navlink Icon={AiIcons.AiOutlineClose} path="/account/transaction" text="Transaction"/>
             </ul>
          </nav>
       </div>
