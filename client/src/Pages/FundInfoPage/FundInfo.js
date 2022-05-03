@@ -51,50 +51,51 @@ export default function FundInfo() {
     const times = sample.data.stockData.map(row => {return row.time});
     const fundVal = sample.data.stockData.map(row => {return row.fund});
 
-    useEffect(() => {
+   /* useEffect(() => {
         setData(() => ([{
             x: times,
             y: fundVal,
             type: 'scatter'
         }]))
 
-    }, [])    
+    }, [])   */ 
 
-/*
+
 
     useEffect(() => {
         (async () => {
-            const response = await fetch("/buySell/?company=" + companyID)
-            const parsedResponse = await response.json()
+            const response = await fetch("/money/pastHoldings")
+            .then(res => res.json())
+            .then( data => {
+                setData(data)
+            })
             // parsedResponse: {data: {time_fetched:int, trading_price:str}[], error: str}
 
-            const dates = parsedResponse.data.stockData.map(row => row.time_fetched).map(ts => {
+           /* const dates = parsedResponse.data.stockData.map(row => row.time_fetched).map(ts => {
                 return DateTime
                     .fromSeconds(ts).setZone("America/New_York")
                     .toFormat("kkkk-LL-dd HH:mm:ss")
                 // https://moment.github.io/luxon/#/formatting?id=table-of-tokens
                 // https://plotly.com/javascript/time-series/
-            })
+            })*/
+            const times = data.times;
 
-            const prices = parsedResponse.data.stockData.map(row => row.trading_price)
+            const values = data.values;
 
             // console.log(date_data)
             setData(() => ([{
-                x: dates,
-                y: prices,
+                x: times,
+                y: values,
                 type: 'scatter'
             }]))
 
-            setCompanyDetails(
-                parsedResponse.data.companyDetails
-            )
-
-            console.log(parsedResponse)
+            
+            console.log(data)
 
             setIsLoading(false)
         })()
     }, []
-    ) */
+    ) 
 
 
     return <div>

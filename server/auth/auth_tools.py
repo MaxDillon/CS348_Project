@@ -22,6 +22,19 @@ def get_tokens(session: Session):
 
     return {'data': [dict(login_session) for login_session in login_sessions]}
 
+def get_user(session: Session) -> Account:
+    token = request.cookies.get("token")
+    if token == None:
+        return None
+    session_query = (
+        select(Account)
+        .join(Loginsession)
+        .where(Loginsession.token == token.encode("utf-8"))
+    )
+    print(session_query, file=sys.stderr)
+    this_session = session.execute(session_query).one_or_none()
+
+    return this_session.Account
 
 def check_loggedin_token(token, session: Session):
     if token is None:
