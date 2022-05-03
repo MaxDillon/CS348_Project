@@ -12,11 +12,12 @@ async function getContacts() {
 }
 
 export default function FundInfo() {
-	const [contacts, setContacts] = useState([]);
-	useEffect(async () => {
-		var newContacts = await getContacts()
-		console.log("answer: ", newContacts)
-		setContacts(newContacts)
+	const [contacts, setContacts] = useState({});
+	useEffect(() => {
+		getContacts()
+		.then(data => {
+			setContacts(data)
+		})
 
 	}, [])
 	return (
@@ -25,7 +26,7 @@ export default function FundInfo() {
 			<table className="table2"  >
 				<tbody>
 					<tr>
-						<td colspan="3" className="td2">Fund Information</td>
+						<td colSpan="3" className="td2">Fund Information</td>
 					</tr>
 					<tr>
 						<td className="td2">Fund Name: </td>
@@ -53,42 +54,3 @@ export default function FundInfo() {
 		</div>
 	);
 }
-
-/**
- * <table className="table2"  >
-				<tr>
-					<td colspan = "3"  className="td2">Fund Information</td>
-					</tr>
-				{contacts.map((contacter)=>(
-						<tr>
-						<td className="td2">Fund Name: </td>
-						<td className="td2">{contacter.fund_name}</td>
-						</tr>
-				))}
-				{contacts.map((contacter)=>(
-						<tr>
-						<td className="td2">Fund Description: </td>
-						<td className="td2">value: ${contacter.fund_description}</td>
-						</tr>
-				))}
-				{contacts.map((contacter)=>(
-						<tr>
-						<td className="td2">Fund Value: </td>
-						<td className="td2">name: {contacter.fund_value}</td>
-						</tr>
-				))}
-				{contacts.map((contacter)=>(
-						<tr>
-						<td className="td2">Fund Invested: </td>
-						<td className="td2">value: ${contacter.fund_invested}</td>
-						</tr>
-				))}
-				{contacts.map((contacter)=>(
-						<tr>
-						<td className="td2">Parent Company: </td>
-						<td className="td2">name: {contacter.parent_company}</td>
-						</tr>
-				))}
-				
-				</table>
- */
