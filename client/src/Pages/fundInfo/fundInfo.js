@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./fund_Info.css";
 import values from './fundData.json';
 
@@ -15,50 +15,80 @@ export default function FundInfo() {
 	const [contacts, setContacts] = useState([]);
 	useEffect(async () => {
 		var newContacts = await getContacts()
-		//console.log("answer: ", newContacts)
+		console.log("answer: ", newContacts)
 		setContacts(newContacts)
 
 	}, [])
 	return (
-		<div classname="second-container">
+		<div className="second-container">
 
-			<table class="table2"  >
-				<tr>
-					<td colspan="3" class="td2">Fund Information</td>
-				</tr>
-				{contacts.map((contacter) => (
+			<table className="table2"  >
+				<tbody>
 					<tr>
-						<td class="td2">Fund Name: </td>
-						<td class="td2">{contacter.fund_name}</td>
+						<td colspan="3" className="td2">Fund Information</td>
 					</tr>
-				))}
-				{contacts.map((contacter) => (
 					<tr>
-						<td class="td2">Fund Description: </td>
-						<td class="td2">value: ${contacter.fund_description}</td>
+						<td className="td2">Fund Name: </td>
+						<td className="td2">{contacts.fund_name}</td>
 					</tr>
-				))}
-				{contacts.map((contacter) => (
 					<tr>
-						<td class="td2">Fund Value: </td>
-						<td class="td2">name: {contacter.fund_value}</td>
+						<td className="td2">Fund Description: </td>
+						<td className="td2">{contacts.fund_description}</td>
 					</tr>
-				))}
-				{contacts.map((contacter) => (
 					<tr>
-						<td class="td2">Fund Invested: </td>
-						<td class="td2">value: ${contacter.fund_invested}</td>
+						<td className="td2">Fund Value: </td>
+						<td className="td2">{contacts.fund_value}</td>
 					</tr>
-				))}
-				{contacts.map((contacter) => (
 					<tr>
-						<td class="td2">Parent Company: </td>
-						<td class="td2">name: {contacter.parent_company}</td>
+						<td className="td2">Fund Invested: </td>
+						<td className="td2">{contacts.fund_invested}</td>
 					</tr>
-				))}
+					<tr>
+						<td className="td2">Parent Company: </td>
+						<td className="td2">{contacts.parent_company}</td>
+					</tr>
+				</tbody>
 
 			</table>
 		</div>
 	);
 }
 
+/**
+ * <table className="table2"  >
+				<tr>
+					<td colspan = "3"  className="td2">Fund Information</td>
+					</tr>
+				{contacts.map((contacter)=>(
+						<tr>
+						<td className="td2">Fund Name: </td>
+						<td className="td2">{contacter.fund_name}</td>
+						</tr>
+				))}
+				{contacts.map((contacter)=>(
+						<tr>
+						<td className="td2">Fund Description: </td>
+						<td className="td2">value: ${contacter.fund_description}</td>
+						</tr>
+				))}
+				{contacts.map((contacter)=>(
+						<tr>
+						<td className="td2">Fund Value: </td>
+						<td className="td2">name: {contacter.fund_value}</td>
+						</tr>
+				))}
+				{contacts.map((contacter)=>(
+						<tr>
+						<td className="td2">Fund Invested: </td>
+						<td className="td2">value: ${contacter.fund_invested}</td>
+						</tr>
+				))}
+				{contacts.map((contacter)=>(
+						<tr>
+						<td className="td2">Parent Company: </td>
+						<td className="td2">name: {contacter.parent_company}</td>
+						</tr>
+				))}
+				
+				</table>
+ */

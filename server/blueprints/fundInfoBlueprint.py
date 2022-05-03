@@ -8,29 +8,31 @@ from auth.logout import logout_user
 from auth.register import register_account
 from auth.auth_tools import get_accounts, get_tokens, get_user, login_required, check_loggedin_token
 from sqlalchemy.orm import sessionmaker, Session
-from database.schema import t_transactions #import the fund info table from the schema.py
+# import the fund info table from the schema.py
+from database.schema import Fundinfo, t_transactions
 from sqlalchemy import select
 from database.schema import Employee
 
 
 def create_blueprint(MakeSession: sessionmaker):
-	fundInfoBlueprint = Blueprint('fundInfoBlueprint', __name__)
+    fundInfoBlueprint = Blueprint('fundInfoBlueprint', __name__)
 
-	@fundInfoBlueprint.route('/getFunds', methods=['GET'])
-	def getFunds():
-		#resp = make_response()
+    @fundInfoBlueprint.route('/getFunds', methods=['GET'])
+    def getFunds():
+        #resp = make_response()
 
-		session:Session = MakeSession()
+        session: Session = MakeSession()
 
-		transactionHistory = select(t_transactions.columns.fund_name,t_transactions.columns.fund_description,t_transactions.columns.parent_company,t_transactions.columns.fund_value,t_transactions.columns.fund_invested)
-		#
-        historyDetails = session.execute(transactionHistory).all()
-		response = [x._asdict() for x in historyDetails]
-		res = flask.make_response(flask.jsonify(response), 200)
-		session.close()
-		#print(res)
-		return res
+        fundHistory = select(Fundinfo.fund_name, Fundinfo.fund_description,
+                             Fundinfo.parent_company, Fundinfo.fund_value, Fundinfo.fund_invested)
 
+        # import the fund info table from the schema.py
+        historyDetails = session.execute(fundHistory).one_or_none()
+        print("Answer: ", historyDetails, flush=True)
+        # response = [x for x in historyDetails]
+        response = historyDetails._asdict()
+        res = flask.make_response(flask.jsonify(response), 200)
+        session.close()
+        return res
 
-	return transactionBlueprint
-
+    return fundInfoBlueprint
