@@ -22,6 +22,8 @@ services:
       - ./scripts:/scripts
     depends_on:
       - postgres
+    environment:
+      - TZ=America/New_York
   postgres:
     image: postgres:10.5
     restart: always
