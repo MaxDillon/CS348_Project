@@ -33,7 +33,7 @@ INSERT INTO FundInfo (fund_name, fund_description, parent_company, fund_value, f
 VALUES ('Vanguard 500', 
        'As the industry’s first index fund for individual investors, the 500 Index Fund is a low-cost way to gain diversified exposure to the U.S. equity market. ',
        'Vanguard',
-       0, 0);
+       50000, 0);
 
 -- Creates fund history --
 INSERT INTO FundPerformance (ts, fund_value, fund_invested)
