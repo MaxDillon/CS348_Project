@@ -39,6 +39,7 @@ function Navbar({ fundName }) {
                </li>
                <Navlink Icon={FaIcons.FaDoorOpen} onClick={() => { logout(navigate) }} text="Logout" />
                <Navlink Icon={FaIcons.FaDesktop} path="/account/dashboard" text="Dashboard" />
+               <Navlink Icon={AiIcons.AiOutlineClose} path="/account/edit" text="Edit" />
                <Navlink Icon={AiIcons.AiOutlineClose} path="/account/fundInfo" text="Fund Info" />
                <Navlink Icon={AiIcons.AiOutlineClose} path="/account/fundgraph" text="Fund Graph" />
                <Navlink Icon={AiIcons.AiOutlineClose} path="/account/transaction" text="Transaction" />
