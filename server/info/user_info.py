@@ -40,7 +40,8 @@ def get_past_holdings(
             t_paymenthistory.columns.time_created
             == (
                 select(func.max(t_paymenthistory.columns.time_created)).where(
-                    t_paymenthistory.columns.time_created <= time
+                    t_paymenthistory.columns.time_created <= time,
+                    t_paymenthistory.columns.user_id == account.user_id
                 )
             )
         )
