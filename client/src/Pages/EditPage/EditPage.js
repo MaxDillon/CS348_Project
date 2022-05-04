@@ -23,7 +23,7 @@ export default function EditPage(props) {
             setDetails(data)
         })
 
-    }, [])
+    },[])
     
     return (
         <div> <h1>Your Profile</h1> 

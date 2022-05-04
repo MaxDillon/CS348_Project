@@ -1,3 +1,7 @@
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+from blueprints import authBlueprint, transactionBlueprint, buySellBlueprint, editBlueprint, fundInfoBlueprint
+from blueprints import authBlueprint, editBlueprint, currentMarketBlueprint
 from flask import Flask
 from retry import retry
 from blueprints import authBlueprint, editBlueprint, myMoneyBlueprint, transactionBlueprint, buySellBlueprint, fundInfoBlueprint
@@ -32,13 +36,20 @@ if __name__ == "__main__":
         myMoneyBlueprint.create_blueprint(sessionmaker), url_prefix="/money"
     )
 
-    app.register_blueprint(transactionBlueprint.create_blueprint(
-        sessionmaker), url_prefix='/transactions')
+    app.register_blueprint(
+        transactionBlueprint.create_blueprint(sessionmaker), url_prefix='/transactions'
+    )
 
-    app.register_blueprint(buySellBlueprint.create_blueprint(
-        sessionmaker), url_prefix='/buySell')
+    app.register_blueprint(
+        buySellBlueprint.create_blueprint(sessionmaker), url_prefix='/buySell'
+    )
 
-    app.register_blueprint(fundInfoBlueprint.create_blueprint(
-        sessionmaker), url_prefix="/fundInfo")
+    app.register_blueprint(
+        currentMarketBlueprint.create_blueprint(sessionmaker), url_prefix="/current"
+    )
+
+    app.register_blueprint(
+        fundInfoBlueprint.create_blueprint(sessionmaker), url_prefix="/fundInfo"
+    )
 
     app.run(debug=True, host="0.0.0.0")

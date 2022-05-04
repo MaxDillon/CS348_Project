@@ -37,7 +37,8 @@ def get_past_holdings(
     last_fund_fitness = 0
     for time in np.linspace(time_start, time_end, 500):
         query = select(t_paymenthistory).where(
-            t_paymenthistory.columns.time_created == (
+            t_paymenthistory.columns.time_created
+            == (
                 select(func.max(t_paymenthistory.columns.time_created)).where(
                     t_paymenthistory.columns.time_created <= time
                 )
@@ -60,6 +61,10 @@ def get_past_holdings(
         new_fund_fitness = get_fund_fitness(session, time)
         times.append(time)
         # print(new_fund_fitness, last_fund_fitness, last_investment, file=sys.stderr)
-        values.append(0 if last_fund_fitness == 0 else new_fund_fitness / last_fund_fitness * last_investment)
+        values.append(
+            0
+            if last_fund_fitness == 0
+            else new_fund_fitness / last_fund_fitness * last_investment
+        )
 
     return (times, values)

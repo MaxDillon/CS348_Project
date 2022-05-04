@@ -21,9 +21,7 @@ def create_blueprint(MakeSession: sessionmaker):
 
         with MakeSession() as session:
             account = get_user(session)
-            times, values = get_past_holdings(
-                session, account, time_start, time_end
-            )
+            times, values = get_past_holdings(session, account, time_start, time_end)
 
         resp.set_data(json.dumps({"times": times, "values": values}, indent=4))
 
