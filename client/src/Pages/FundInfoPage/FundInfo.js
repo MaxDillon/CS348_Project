@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Plot from 'react-plotly.js';
 import TableDatePicker from './DatePicker.js'
 
-export default function FundInfo() {
+export default function FundGraph() {
 
     const [data, setData] = useState()
     const [isLoading, setIsLoading] = useState(true)
