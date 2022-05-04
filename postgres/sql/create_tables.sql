@@ -17,15 +17,18 @@ CREATE TABLE IF NOT EXISTS LoginSession (
   time_created DECIMAL 
 );
 
+CREATE INDEX idx_loginSession 
+ON LoginSession USING HASH (token);
+
 CREATE TABLE IF NOT EXISTS PaymentHistory (
   user_id INT REFERENCES Account (user_id) ON UPDATE CASCADE ON DELETE CASCADE,
   time_created DECIMAL NOT NULL,
   amount_invested INT NOT NULL
 );
+
 /*B+ tree Index on time_created on PaymentHistory */
 CREATE INDEX idx_timeCreated 
 ON PaymentHistory USING btree(time_created);
-
 
 CREATE TABLE IF NOT EXISTS Company (
   company_id varchar(250) PRIMARY KEY,
@@ -45,6 +48,10 @@ CREATE TABLE IF NOT EXISTS Transactions (
   num_shares INT NOT NULL,
   buy_or_sell BOOLEAN NOT NULL
 );
+
+/*B+ Index on company_id on Transactions */
+CREATE INDEX idx_transactions 
+ON Transactions USING btree (user_id);
 
 CREATE TABLE IF NOT EXISTS Employee (
   employee_id SERIAL PRIMARY KEY,
