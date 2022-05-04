@@ -6,6 +6,7 @@ import RegisterPage from './Pages/RegisterPage/RegisterPage'
 import InvestorPage from './Pages/InvestorPage/InvestorPage';
 import BuyAndSellPage from './Pages/BuyAndSellPage';
 import FundInfo from './Pages/FundInfoPage/FundInfo';
+import TransactionPage from './Pages/transactionPage/transactionPage'
 import EditPage from './Pages/EditPage/EditPage';
 import { useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -19,19 +20,21 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate replace to="/login"/>} />
+          <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="account" element={<AccountWrapper />} >
-            <Route path="dashboard" element={<InvestorPage/>} />
+            <Route path="dashboard" element={<InvestorPage />} />
             <Route path="edit" element={<EditPage />} />
             <Route path="fundinfo" element={<FundInfo />} />
+            <Route path="test" element={<div style={{ 'text-align': 'center' }}> Test Stuff </div>} />
+            <Route path="trade/:companyID" element={<BuyAndSellPage />} />
+            <Route path="transaction" element={<TransactionPage />} />
           </Route>
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
-          <Route path="trade" element={<BuyAndSellPage />} />
-        </Routes>
+        </Routes >
 
-      </BrowserRouter>
-    </div>
+      </BrowserRouter >
+    </div >
   );
 }
 

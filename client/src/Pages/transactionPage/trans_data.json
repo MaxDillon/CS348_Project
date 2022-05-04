@@ -1,0 +1,50 @@
+[
+    {
+        "employeeID": 121,
+        "buySell": "Buy",
+        "companyId":"A1234",
+        "sharesHeld": 5
+    },
+    {
+        "employeeID": 122,
+        "buySell": "Sell",
+        "companyId":"B1234",
+        "sharesHeld": 0
+    },
+    {
+        "employeeID": 123,
+        "buySell": "Buy",
+        "companyId":"C1234",
+        "sharesHeld": 1009
+    },
+    {
+        "employeeID": 124,
+        "buySell": "Sell",
+        "companyId":"D1234",
+        "sharesHeld": 2022
+    },
+    {
+        "employeeID": 121,
+        "buySell": "Buy",
+        "companyId":"A1234",
+        "sharesHeld": 5
+    },
+    {
+        "employeeID": 122,
+        "buySell": "Sell",
+        "companyId":"B1234",
+        "sharesHeld": 0
+    },
+    {
+        "employeeID": 123,
+        "buySell": "Buy",
+        "companyId":"C1234",
+        "sharesHeld": 1009
+    },
+    {
+        "employeeID": 124,
+        "buySell": "Sell",
+        "companyId":"D1234",
+        "sharesHeld": 2022
+    }
+]
