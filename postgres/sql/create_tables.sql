@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS PaymentHistory (
 );
 /*B+ tree Index on time_created on PaymentHistory */
 CREATE INDEX idx_timeCreated 
-ON PaymentHistory[btree](time_created);
+ON PaymentHistory USING btree(time_created);
 
 
 CREATE TABLE IF NOT EXISTS Company (
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS Company (
 
 /*Hash Index on company_id on Company */
 CREATE INDEX idx_compIdCompany 
-ON Company[hash](company_id);
+ON Company USING HASH (company_id);
 
 CREATE TABLE IF NOT EXISTS Transactions (
   company_id varchar(250) REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS CompanyHistory (
 
 /*B+ Index on company_id on CompanyHistory */
 CREATE INDEX idx_compIdHistory 
-ON CompanyHistory[btree](company_id);
+ON CompanyHistory USING btree (company_id);
 
 CREATE TABLE IF NOT EXISTS Manages (
   manager_id INT REFERENCES Employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -87,4 +87,4 @@ CREATE TABLE IF NOT EXISTS FundPerformance (
 
 /*B+ Index on ts on FundPerformance */
 CREATE INDEX idx_ts 
-ON FundPerformance[btree](ts);
+ON FundPerformance USING btree(ts);
