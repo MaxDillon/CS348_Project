@@ -9,11 +9,16 @@ VALUES ('example', '$2b$12$g.wF9IuRY5tnnLFyfy6MweAe1tb5CCa1ameIOnlcQwlfa4hLTSLwO
 
 -- Creates the companies' stocks we'll be trading --
 INSERT INTO Company(company_id, company_name, current_trading_price, num_shares)
-VALUES ('MSFT', 'Microsoft Corporation', 0, 0), 
-       ('GOOGL', 'Alphabet Inc. ', 0, 0),
-       ('AMZN', 'Amazon.com, Inc.', 0, 0),
-       ('GS', 'The Goldman Sachs Group, Inc.', 0, 0),
+VALUES ('MSFT', 'Microsoft Corporation', 0, 30), 
+       ('GOOGL', 'Alphabet Inc. ', 0, 2),
+       ('AMZN', 'Amazon.com, Inc.', 0, 16),
+       ('GS', 'The Goldman Sachs Group, Inc.', 0, 1),
        ('UBER', 'Uber Technologies Inc', 0, 0);
+
+INSERT INTO Transactions(company_id, user_id, time_executed, num_shares, buy_or_sell)
+VALUES ('MSFT', 1, '1651551135', 3,'0'), 
+       ('GOOGL', 1, '1651551200', 4,'1'),
+       ('AMZN', 2, '1651551135', 5,'0');
 
 -- Creates fund details --
 INSERT INTO FundInfo (fund_name, fund_description, parent_company, fund_value, fund_invested)

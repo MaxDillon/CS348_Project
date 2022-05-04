@@ -38,11 +38,10 @@ export default function Field({ name, field, value }) {
     }
 
     return (
-        <div key={name} className={"stackIt"}>
-            <p>{name}</p>
+        <div key={name} className={"verticalSpace"}>
             {isEditing ? 
-                <Edit onSave={handleSubmit} onCancel={() => setEditing(false)} /> : 
-                <View value={fieldValue} onEdit={() => setEditing(true)} />
+                <Edit onSave={handleSubmit} onCancel={() => setEditing(false)} name={name} /> : 
+                <View value={fieldValue} onEdit={() => setEditing(true)} name={name} />
             }
         </div>
     );
@@ -51,12 +50,14 @@ export default function Field({ name, field, value }) {
 }
 
 
-function Edit({ onSave, onCancel }) {
+function Edit({ onSave, onCancel, name }) {
     const [value, setValue] = useState("")
     return (
-        <div>
+        <div className={"stackIt"}>
+            <div>{name}</div>
             <input type="text" onChange={e => setValue(e.target.value)} value={value} ></input>
 
+            <div>
             <button className={"button"} onClick={e => {
                 e.preventDefault()
                 onSave(value)
@@ -66,15 +67,17 @@ function Edit({ onSave, onCancel }) {
                 e.preventDefault()
                 onCancel()
             }}>Cancel</button>
+            </div>
 
         </div>
 
     )
 }
 
-function View({ value, onEdit }) {
+function View({ value, onEdit, name }) {
     return (
-        <div>
+        <div className={"stackIt"}>
+            <div>{name}</div>
             <div>{value}</div> 
             <button className="button" onClick={e => {
                 e.preventDefault()
