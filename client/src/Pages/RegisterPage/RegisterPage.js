@@ -1,7 +1,7 @@
 import React from 'react'
 import { RegisterPanel } from './Components/RegisterPanel';
 import { useState, useLayoutEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import sha256 from 'crypto-js/sha256'
 import loginStyles from '../LoginPage/loginPage.module.css'
 
@@ -55,13 +55,13 @@ export default function RegisterPage() {
 
 
 	return (
-	<>{ canDisplay ? 
+	<>{ canDisplay ? <>
+		<Link to="/login"> Login </Link>
 		<div className={loginStyles.loginPage}>
 			<h1>Login Page</h1>
 			<RegisterPanel registerUser={onSubmit} />
 		</div>
-
-		: <></>
+		</> : <></>
 	}</>
 
 

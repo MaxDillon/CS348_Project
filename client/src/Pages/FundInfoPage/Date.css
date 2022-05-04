@@ -1,0 +1,6 @@
+.react-datepicker-popper {
+    position: relative !important;
+    inset: 0 !important;
+    transform: translate3d(0px, 0px, 0px) !important;
+
+}

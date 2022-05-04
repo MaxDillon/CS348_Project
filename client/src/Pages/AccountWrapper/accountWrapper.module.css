@@ -34,7 +34,8 @@
 	text-align: left;
 	width: 200px;
 	transition: 200ms;
-	position: fixed;
+	position: absolute;
+	z-index: 100;
 	
 	top: 0;
 	height: 100%;	

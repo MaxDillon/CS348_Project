@@ -47,7 +47,7 @@ def check_loggedin_token(token, session: Session):
         return False
 
     session_query = select(Loginsession).where(
-        Loginsession.token == token.encode('utf-8')
+        Loginsession.token == token.encode("utf-8")
     )
     this_session = session.execute(session_query).one_or_none()
 

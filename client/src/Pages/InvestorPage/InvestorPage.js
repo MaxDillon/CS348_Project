@@ -5,7 +5,7 @@ import React from "react";
 
 export default function InvestorPage() {
 	return (
-	  <div style={{'text-align': 'center'}}>
+	  <div>
 		  <h1>Hey!</h1>
 	  </div>
 	);
