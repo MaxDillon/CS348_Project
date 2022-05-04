@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from "./currentMarketPage.module.css";
 
 async function getMarkets() {
@@ -13,10 +14,12 @@ async function getMarkets() {
 export default function TransactionPage() {
 	const [contacts, setContacts] = useState({ 'data': [] });
 
+	const navigate = useNavigate()
+
 	useEffect(async () => {
 		var newContacts = await getMarkets()
 		setContacts(newContacts)
-	},[])
+	}, [])
 
 	return (
 		<div className={styles.currentTable}>
@@ -42,7 +45,9 @@ export default function TransactionPage() {
 									<td className="td1">{company.company_name}</td>
 									<td className="td1">{company.num_shares}</td>
 									<td className="td1">{company.current_trading_price}</td>
-									<td> <button type="button">Buy/Sell</button></td>
+									<td> <button type="button" onClick={() => {
+										navigate('/account/trade/' + company.company_id)
+									}}>Buy/Sell</button></td>
 								</tr>
 							)
 						})

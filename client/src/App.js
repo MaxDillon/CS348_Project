@@ -29,11 +29,10 @@ function App() {
             <Route path="trade/:companyID" element={<BuyAndSellPage />} />
             <Route path="transaction" element={<TransactionPage />} />
             <Route path="fundInfo" element={<FundInfo />} />
+            <Route path="current" element={<CurrentMarketPage />} />
           </Route>
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
-          <Route path="edit" element={<EditPage />} />
-          <Route path="current" element={<CurrentMarketPage />} />
         </Routes>
 
       </BrowserRouter >

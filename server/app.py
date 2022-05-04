@@ -4,9 +4,6 @@ from blueprints import authBlueprint, transactionBlueprint, buySellBlueprint, ed
 from blueprints import authBlueprint, editBlueprint, currentMarketBlueprint
 from flask import Flask
 from retry import retry
-<< << << < HEAD
-== == == =
->>>>>> > main
 
 
 @retry(delay=1)
