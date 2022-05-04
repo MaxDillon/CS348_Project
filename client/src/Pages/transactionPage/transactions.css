@@ -1,0 +1,47 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 1rem;
+  }
+  
+  table.table1 {
+    border-collapse: collapse;
+    width: 70%;
+    margin-top:10px;
+    margin-left:300px;
+  }
+  
+  th.th1,
+  td.td1 {
+    border: 1px solid #ffffff;
+    text-align: left;
+    padding: 8px;
+    font-size: 22px;
+  }
+  
+  th.th1 {
+    background-color: rgb(0, 0, 0);
+    color: white;
+  }
+  
+  td.td1 {
+    background-color: rgb(193, 196, 196);
+  }
+  
+  h1 {
+    margin-left:150px;
+  }
+  form {
+    display: flex;
+    gap: 5px;
+  }
+  
+  form td:last-child.td1 {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  form * {
+    font-size: 25px;
+  }
