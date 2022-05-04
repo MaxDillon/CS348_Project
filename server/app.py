@@ -1,8 +1,9 @@
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+from blueprints import authBlueprint, transactionBlueprint, buySellBlueprint, editBlueprint, fundInfoBlueprint
+from blueprints import authBlueprint, editBlueprint, currentMarketBlueprint
 from flask import Flask
 from retry import retry
-from blueprints import authBlueprint, transactionBlueprint, buySellBlueprint, editBlueprint, fundInfoBlueprint
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 
 @retry(delay=1)
@@ -33,6 +34,9 @@ if __name__ == "__main__":
 
     app.register_blueprint(
         editBlueprint.create_blueprint(sessionmaker), url_prefix="/edit"
+    )
+    app.register_blueprint(
+        currentMarketBlueprint.create_blueprint(sessionmaker), url_prefix="/current"
     )
 
     app.register_blueprint(fundInfoBlueprint.create_blueprint(

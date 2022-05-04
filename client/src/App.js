@@ -8,6 +8,7 @@ import TransactionPage from './Pages/transactionPage/transactionPage'
 import FundInfo from './Pages/fundInfo/fundInfo'
 import BuyAndSellPage from './Pages/BuyAndSellPage';
 import EditPage from './Pages/EditPage/EditPage';
+import CurrentMarketPage from "./Pages/CurrentMarketPage/CurrentMarketPage";
 import { useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Pages/AccountWrapper/Components/Navbar';
@@ -28,10 +29,11 @@ function App() {
             <Route path="trade/:companyID" element={<BuyAndSellPage />} />
             <Route path="transaction" element={<TransactionPage />} />
             <Route path="fundInfo" element={<FundInfo />} />
+            <Route path="current" element={<CurrentMarketPage />} />
           </Route>
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
-        </Routes >
+        </Routes>
 
       </BrowserRouter >
     </div >
