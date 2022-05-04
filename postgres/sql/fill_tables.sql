@@ -16,12 +16,12 @@ VALUES ('MSFT', 'Microsoft Corporation', 0, 30),
        ('UBER', 'Uber Technologies Inc', 0, 0);
 
 -- Fake company history --
-INSERT INTO CompanyHistory (company_id, time_fetched, trading_price)
-VALUES ('MSFT', extract(epoch from now()), 0),
-       ('GOOGL', extract(epoch from now()), 0),
-       ('AMZN', extract(epoch from now()), 0),
-       ('GS', extract(epoch from now()), 0),
-       ('UBER', extract(epoch from now()), 0);
+-- INSERT INTO CompanyHistory (company_id, time_fetched, trading_price)
+-- VALUES ('MSFT', extract(epoch from now()), 0),
+--        ('GOOGL', extract(epoch from now()), 0),
+--        ('AMZN', extract(epoch from now()), 0),
+--        ('GS', extract(epoch from now()), 0),
+--        ('UBER', extract(epoch from now()), 0);
 
 INSERT INTO Transactions(company_id, user_id, time_executed, num_shares, buy_or_sell)
 VALUES ('MSFT', 1, '1651551135', 3,'0'), 
