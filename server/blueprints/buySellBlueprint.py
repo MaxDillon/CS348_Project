@@ -35,7 +35,7 @@ def getCurrentShareprice(session: Session, company: str):
 
     stockPrice = session.execute(stockPriceQuery).one()[0]
 
-    return moneyStringToDecimal(stockPrice)
+    return float(stockPrice)
 
 
 def getFundvalue(session: Session):

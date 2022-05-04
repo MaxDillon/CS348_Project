@@ -30,7 +30,7 @@ def create_blueprint(MakeSession: sessionmaker):
             {
                 "company_id": result.company_id,
                 "company_name": result.company_name,
-                "current_trading_price": result.current_trading_price,
+                "current_trading_price": float(result.current_trading_price),
                 "num_shares": result.num_shares,
             }
             for result in allCompanies
