@@ -140,7 +140,7 @@ def create_blueprint(Makesession: sessionmaker):
             reqBody["value"] = int(reqBody["value"])
 
             # Check our cash floating
-            fundValue = moneyStringToDecimal(getFundvalue(session))
+            fundValue = float(getFundvalue(session))
             print("fundvalue: ", fundValue, "\t", type(fundValue), flush=True)
 
             # Check the value of a shares
