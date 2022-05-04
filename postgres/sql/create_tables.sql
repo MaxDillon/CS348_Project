@@ -22,6 +22,10 @@ CREATE TABLE IF NOT EXISTS PaymentHistory (
   time_created DECIMAL NOT NULL,
   amount_invested INT NOT NULL
 );
+/*B+ tree Index on time_created on PaymentHistory */
+CREATE INDEX idx_timeCreated 
+ON PaymentHistory[btree](time_created);
+
 
 CREATE TABLE IF NOT EXISTS Company (
   company_id varchar(250) PRIMARY KEY,
@@ -29,6 +33,10 @@ CREATE TABLE IF NOT EXISTS Company (
   current_trading_price NUMERIC(16,2) NOT NULL,
   num_shares INT NOT NULL
 );
+
+/*Hash Index on company_id on Company */
+CREATE INDEX idx_compIdCompany 
+ON Company[hash](company_id);
 
 CREATE TABLE IF NOT EXISTS Transactions (
   company_id varchar(250) REFERENCES Company(company_id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -54,6 +62,10 @@ CREATE TABLE IF NOT EXISTS CompanyHistory (
   trading_price NUMERIC(16,2) NOT NULL
 );
 
+/*B+ Index on company_id on CompanyHistory */
+CREATE INDEX idx_compIdHistory 
+ON CompanyHistory[btree](company_id);
+
 CREATE TABLE IF NOT EXISTS Manages (
   manager_id INT REFERENCES Employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE,
   employee_id INT REFERENCES Employee(employee_id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -72,3 +84,7 @@ CREATE TABLE IF NOT EXISTS FundPerformance (
   fund_value NUMERIC(16,2) NOT NULL,
   fund_invested NUMERIC(16,2) NOT NULL
 );
+
+/*B+ Index on ts on FundPerformance */
+CREATE INDEX idx_ts 
+ON FundPerformance[btree](ts);
