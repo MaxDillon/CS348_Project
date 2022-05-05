@@ -1,6 +1,7 @@
 # CS348_Project
 
 ### How To Test
+Note: Run the application when the market is open to fetch some data
 - Install Docker Desktop: https://www.docker.com/products/docker-desktop/
 - Start Docker Desktop
 - `git clone https://github.com/MaxDillon/CS348_Project.git` 
