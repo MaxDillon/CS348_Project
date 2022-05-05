@@ -58,7 +58,7 @@ export default function RegisterPage() {
 	<>{ canDisplay ? <>
 		<Link to="/login"> Login </Link>
 		<div className={loginStyles.loginPage}>
-			<h1>Login Page</h1>
+			<h1>Register Page</h1>
 			<RegisterPanel registerUser={onSubmit} />
 		</div>
 		</> : <></>
